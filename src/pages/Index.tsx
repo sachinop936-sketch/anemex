@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProfileCard from "@/components/ProfileCard";
 import CustomerFeedback from "@/components/CustomerFeedback";
+import ServiceProof from "@/components/ServiceProof";
 import SessionInformation from "@/components/SessionInformation";
 import FloatingHelpButton from "@/components/FloatingHelpButton";
 import AgeVerificationModal from "@/components/AgeVerificationModal";
@@ -50,6 +51,9 @@ const Index = () => {
 
         {/* Customer Feedback Section */}
         <CustomerFeedback />
+
+        {/* Service Proof Section */}
+        <ServiceProof />
 
         {/* Session Information Section */}
         <SessionInformation />
