@@ -5,6 +5,7 @@ import ProfileCard from '@/components/ProfileCard';
 import FAQ from '@/components/FAQ';
 import FloatingHelpButton from '@/components/FloatingHelpButton';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
+import NotificationPrompt from '@/components/NotificationPrompt';
 import { profiles } from '@/data/profiles';
 import { ShieldCheck } from 'lucide-react';
 
@@ -60,6 +61,7 @@ const Index = () => {
         <FAQ />
       </main>
 
+      <NotificationPrompt />
       <FloatingHelpButton />
       <Footer />
     </div>
