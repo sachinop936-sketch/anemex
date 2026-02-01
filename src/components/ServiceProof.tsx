@@ -21,7 +21,8 @@ const feedbackImages = [
 const bulletPoints = [
   "Feedback shared voluntarily by customers",
   "Privacy protected (names & numbers hidden)",
-  "Support available during service hours",
+  "Support available during service hours 24x7 available",
+  "payment karo screenshot bhejo done",
 ];
 
 const ServiceProof = () => {
@@ -30,9 +31,7 @@ const ServiceProof = () => {
   return (
     <section className="py-8">
       <div className="container">
-        <h2 className="mb-2 text-center text-xl font-bold text-foreground">
-          Customer Feedback & Service Proof
-        </h2>
+        <h2 className="mb-2 text-center text-xl font-bold text-foreground">Customer Feedback & Service Proof</h2>
         <p className="mb-1 text-center text-sm text-muted-foreground">
           Some recent feedback shared by customers after service completion.
         </p>
@@ -48,12 +47,7 @@ const ServiceProof = () => {
               className="cursor-pointer overflow-hidden rounded-xl bg-card/80 backdrop-blur-sm card-shadow transition-all duration-300 hover:card-shadow-hover hover:scale-[1.02] active:scale-[0.98]"
               onClick={() => setSelectedImage(image.src)}
             >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-auto object-cover aspect-[3/4]"
-                loading="lazy"
-              />
+              <img src={image.src} alt={image.alt} className="w-full h-auto object-cover aspect-[3/4]" loading="lazy" />
             </div>
           ))}
         </div>
