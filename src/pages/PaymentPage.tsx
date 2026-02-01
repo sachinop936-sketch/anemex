@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { CreditCard, ArrowLeft, ShieldCheck, Loader2 } from "lucide-react";
+import { CreditCard, ArrowLeft, ShieldCheck, MessageCircle, ExternalLink, AlertTriangle } from "lucide-react";
 
 const PaymentPage = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
 
   const profileName = searchParams.get("profile") || "Service";
   const serviceName = searchParams.get("service") || "Call";
@@ -15,22 +14,135 @@ const PaymentPage = () => {
 
   const UPI_ID = "sunitaupadhayay@naviaxis";
   const PAYMENT_NOTE = "Service Booking – QuickCall";
+  const TELEGRAM_URL = "https://t.me/SUNITA_OKK";
 
   const handlePayNow = () => {
-    setIsRedirecting(true);
-
     // Create UPI payment intent URL
     const upiUrl = `upi://pay?pa=${UPI_ID}&pn=QuickCall&am=${amount}&cu=INR&tn=${encodeURIComponent(PAYMENT_NOTE)}`;
-
+    
     // Try to open UPI app
     window.location.href = upiUrl;
-
-    // Redirect to success page after a delay (simulating payment completion)
-    setTimeout(() => {
-      navigate("/success");
-    }, 3000);
+    
+    // Show verification screen
+    setShowVerification(true);
   };
 
+  const handleOpenUPI = () => {
+    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=QuickCall&am=${amount}&cu=INR&tn=${encodeURIComponent(PAYMENT_NOTE)}`;
+    window.location.href = upiUrl;
+  };
+
+  const handleOpenTelegram = () => {
+    window.open(TELEGRAM_URL, "_blank");
+  };
+
+  const handleGoBack = () => {
+    if (showVerification) {
+      setShowVerification(false);
+    } else {
+      window.history.back();
+    }
+  };
+
+  // Verification Screen
+  if (showVerification) {
+    return (
+      <div className="min-h-screen gradient-hero">
+        <Header />
+
+        <main className="container py-6">
+          {/* Back Button */}
+          <button
+            onClick={handleGoBack}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+
+          {/* Verification Card */}
+          <div className="rounded-2xl bg-card card-shadow p-6 animate-scale-in">
+            <div className="flex items-center justify-center mb-6">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
+                <MessageCircle className="h-8 w-8 text-amber-600" />
+              </div>
+            </div>
+
+            <h1 className="text-center text-xl font-bold text-foreground mb-2">Complete Your Payment</h1>
+            
+            <p className="text-center text-sm text-muted-foreground mb-4">
+              Please complete the payment using your UPI app.
+              <br />
+              After successful payment, send a screenshot on Telegram to verify your order.
+            </p>
+
+            {/* Important Notice */}
+            <div className="rounded-xl bg-primary/10 border border-primary/20 p-4 mb-6">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <p className="text-sm font-medium text-foreground">
+                  Access will be provided only after payment screenshot verification.
+                </p>
+              </div>
+            </div>
+
+            {/* Order Summary */}
+            <div className="rounded-xl bg-muted p-4 mb-6">
+              <h2 className="text-sm font-semibold text-foreground mb-3">Order Summary</h2>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Profile</span>
+                  <span className="font-medium text-foreground">{profileName}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Service</span>
+                  <span className="font-medium text-foreground">{serviceName}</span>
+                </div>
+                <div className="border-t border-border my-2" />
+                <div className="flex justify-between">
+                  <span className="font-semibold text-foreground">Total</span>
+                  <span className="text-xl font-bold gradient-text">₹{amount}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full"
+                onClick={handleOpenUPI}
+              >
+                <CreditCard className="h-5 w-5" />
+                Open UPI App
+              </Button>
+              
+              <Button 
+                variant="gradient" 
+                size="xl" 
+                className="w-full"
+                onClick={handleOpenTelegram}
+              >
+                <ExternalLink className="h-5 w-5" />
+                Verify Payment on Telegram
+              </Button>
+            </div>
+
+            {/* Warning Text */}
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <AlertTriangle className="h-3 w-3 text-destructive" />
+              <p className="text-xs text-destructive font-medium">
+                Unverified payments will not receive service.
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Initial Payment Screen
   return (
     <div className="min-h-screen gradient-hero">
       <Header />
@@ -38,7 +150,7 @@ const PaymentPage = () => {
       <main className="container py-6">
         {/* Back Button */}
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleGoBack}
           className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -95,19 +207,12 @@ const PaymentPage = () => {
           </div>
 
           {/* Pay Button */}
-          <Button variant="gradient" size="xl" className="w-full" onClick={handlePayNow} disabled={isRedirecting}>
-            {isRedirecting ? (
-              <>
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Redirecting to UPI...
-              </>
-            ) : (
-              `Pay ₹${amount} via UPI`
-            )}
+          <Button variant="gradient" size="xl" className="w-full" onClick={handlePayNow}>
+            Pay ₹{amount} via UPI
           </Button>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            After successful payment, you will be redirected automatically.
+            You will need to verify your payment via Telegram.
           </p>
         </div>
       </main>
