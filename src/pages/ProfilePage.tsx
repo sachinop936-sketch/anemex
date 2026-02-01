@@ -60,7 +60,10 @@ const ProfilePage = () => {
             
             <div className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+                <div>
+                  <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+                  <span className="text-sm text-muted-foreground">Session Host</span>
+                </div>
                 <div className="flex items-center gap-1 rounded-full bg-muted px-2 py-1">
                   <CheckCircle className="h-3 w-3 text-green-500" />
                   <span className="text-xs font-medium text-foreground">Verified</span>

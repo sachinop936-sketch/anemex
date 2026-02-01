@@ -53,7 +53,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           className="w-full"
           onClick={handleBookNow}
         >
-          Book Now
+          Book Session
         </Button>
       </div>
     </div>
