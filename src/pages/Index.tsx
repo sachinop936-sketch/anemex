@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProfileCard from '@/components/ProfileCard';
 import FAQ from '@/components/FAQ';
+import CustomerFeedback from '@/components/CustomerFeedback';
 import FloatingHelpButton from '@/components/FloatingHelpButton';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 import NotificationPrompt from '@/components/NotificationPrompt';
@@ -56,6 +57,9 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Customer Feedback Section */}
+        <CustomerFeedback />
 
         {/* FAQ Section */}
         <FAQ />
