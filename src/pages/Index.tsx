@@ -32,10 +32,10 @@ const Index = () => {
             </div>
             
             <h1 className="text-center text-2xl font-bold text-foreground mb-1">
-              Book Your <span className="gradient-text">Call</span> Now
+              Book Your <span className="gradient-text">Session</span> Now
             </h1>
             <p className="text-center text-sm text-muted-foreground">
-              Video & Voice calls starting ₹50 only
+              Online sessions starting ₹79 only
             </p>
           </div>
         </section>
