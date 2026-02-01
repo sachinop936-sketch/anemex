@@ -23,7 +23,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host1,
     rating: 5,
-    description: 'Calm and professional session host with a friendly communication style. Age group: 20–24. Sessions usually start within 1 minute after confirmation. Designed for smooth and comfortable online interaction.'
+    description: 'Friendly and confident. Known for clear communication and positive interactions. Age 21. Services usually start within 1 minute. Popular choice for first-time users.'
   },
   {
     id: 'meera',
@@ -31,7 +31,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host2,
     rating: 5,
-    description: 'Experienced session host known for clear and structured communication. Age group: 22–26. Quick response time and reliable session delivery. Focused on creating a productive session environment.'
+    description: 'Energetic and polite personality with a calm approach. Age 23. Fast response time and smooth experience. Highly appreciated by returning users.'
   },
   {
     id: 'kavya',
@@ -39,7 +39,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host3,
     rating: 4,
-    description: 'Warm and approachable session host with excellent listening skills. Age group: 21–25. Sessions are well-organized and start promptly. Creates a welcoming atmosphere for all participants.'
+    description: 'Soft-spoken and attentive. Focused on user comfort and quality interaction. Age 20. Quick availability with minimal waiting time.'
   },
   {
     id: 'divya',
@@ -47,7 +47,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host4,
     rating: 5,
-    description: 'Detail-oriented session host with a methodical approach. Age group: 23–27. Known for punctuality and efficient session management. Ensures clear communication throughout the session.'
+    description: 'Cheerful and engaging communication style. Age 24. Reliable service flow and prompt connection after booking.'
   },
   {
     id: 'shruti',
@@ -55,7 +55,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host5,
     rating: 4,
-    description: 'Energetic and engaging session host with a positive attitude. Age group: 20–24. Sessions are interactive and well-paced. Brings enthusiasm to every online interaction.'
+    description: 'Warm and respectful conversations. Age 22. Service usually begins within one minute after confirmation.'
   },
   {
     id: 'nisha',
@@ -63,7 +63,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host6,
     rating: 5,
-    description: 'Thoughtful and patient session host with a calm demeanor. Age group: 24–28. Focuses on understanding participant needs. Maintains a professional and supportive session environment.'
+    description: 'Balanced, friendly, and easy to talk to. Age 19. Known for timely responses and consistent availability.'
   },
   {
     id: 'priyanka',
@@ -71,7 +71,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host7,
     rating: 4,
-    description: 'Articulate and composed session host with strong communication skills. Age group: 25–29. Sessions are structured and goal-oriented. Brings clarity and professionalism to every session.'
+    description: 'Calm and confident presence. Age 23. Smooth onboarding and fast service initiation.'
   },
   {
     id: 'aisha',
@@ -79,7 +79,7 @@ export const profiles: Profile[] = [
     tagline: 'Session Host',
     image: host8,
     rating: 5,
-    description: 'Dynamic and adaptable session host with a versatile approach. Age group: 22–26. Quick to respond and flexible with session formats. Committed to delivering quality online experiences.'
+    description: 'Professional and well-mannered interaction style. Age 21. Designed for a simple and hassle-free experience.'
   }
 ];
 
