@@ -12,19 +12,22 @@ const PaymentPage = () => {
   const serviceName = searchParams.get("service") || "Call";
   const amount = searchParams.get("amount") || "99";
 
-  const RAZORPAY_UPI_LINK = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&tr=RZPRsGPnHaLN972U4qrv2&cu=INR&mc=5732&qrMedium=04&tn=PaymenttoBUZZCART";
+  const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tn=PaymenttoBUZZCART";
   const TELEGRAM_URL = "https://t.me/SUNITA_OKK";
 
+  // Build UPI link with dynamic amount from service price
+  const getUPILink = () => `${RAZORPAY_UPI_BASE}&am=${amount}`;
+
   const handlePayNow = () => {
-    // Open UPI app with Razorpay link
-    window.location.href = RAZORPAY_UPI_LINK;
+    // Open UPI app with Razorpay link including service amount
+    window.location.href = getUPILink();
     
     // Show verification screen
     setShowVerification(true);
   };
 
   const handleOpenUPI = () => {
-    window.location.href = RAZORPAY_UPI_LINK;
+    window.location.href = getUPILink();
   };
 
   const handleOpenTelegram = () => {
@@ -209,8 +212,8 @@ const PaymentPage = () => {
           <div className="mt-4 text-center text-xs text-muted-foreground space-y-1">
             <p>Selected Profile: {profileName}</p>
             <p>Selected Service: {serviceName}</p>
-            <p className="pt-2">Payments are securely processed via Razorpay UPI.</p>
-            <p>Please complete the payment in your UPI app to proceed.</p>
+            <p>Service Price: ₹{amount}</p>
+            <p className="pt-2">Please complete the payment of the exact service amount shown above via Razorpay UPI.</p>
           </div>
         </div>
       </main>
