@@ -110,7 +110,7 @@ const ProfilePage = () => {
         <section className="container mt-6">
           <h2 className="mb-4 text-lg font-bold text-foreground">Select Service</h2>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             {services.map((svc) => (
               <ServiceCard
                 key={svc.id}

@@ -13,6 +13,7 @@ export interface Profile {
   tagline: string;
   image: string;
   rating: number;
+  age: number;
   description: string;
 }
 
@@ -23,8 +24,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host1,
     rating: 5,
-    description:
-      "Friendly and confident. Known for clear communication and positive interactions. Age 21. Services usually start within 1 minute. Popular choice for first-time users.",
+    age: 23,
+    description: "Warm, sweet, and caring personality. Gentle talks with a romantic and comforting vibe.",
   },
   {
     id: "meera",
@@ -32,8 +33,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host2,
     rating: 5,
-    description:
-      "Energetic and polite personality with a calm approach. Age 23. Fast response time and smooth experience. Highly appreciated by returning users.",
+    age: 25,
+    description: "Confident and affectionate nature. Smooth conversations that feel natural and close.",
   },
   {
     id: "kavya",
@@ -41,8 +42,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host3,
     rating: 4,
-    description:
-      "Soft-spoken and attentive. Focused on user comfort and quality interaction. Age 20. Quick availability with minimal waiting time.",
+    age: 22,
+    description: "Playful and cheerful. Cute romantic talks full of positive energy.",
   },
   {
     id: "divya",
@@ -50,8 +51,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host4,
     rating: 5,
-    description:
-      "Cheerful and engaging communication style. Age 24. Reliable service flow and prompt connection after booking.",
+    age: 26,
+    description: "Mature and understanding. Calm, deep conversations with a soft romantic tone.",
   },
   {
     id: "shruti",
@@ -59,8 +60,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host5,
     rating: 4,
-    description:
-      "Warm and respectful conversations. Age 22. Service usually begins within one minute after confirmation.",
+    age: 24,
+    description: "Soft-spoken and loving. Friendly chats with sweetness and care.",
   },
   {
     id: "nisha",
@@ -68,8 +69,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host6,
     rating: 5,
-    description:
-      "Balanced, friendly, and easy to talk to. Age 19. Known for timely responses and consistent availability.",
+    age: 21,
+    description: "Lively and charming. Fun, flirty, and engaging conversations.",
   },
   {
     id: "priya",
@@ -77,7 +78,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host7,
     rating: 4,
-    description: "Calm and confident presence. Age 23. Smooth onboarding and fast service initiation.",
+    age: 27,
+    description: "Classy and composed. Romantic but respectful communication style.",
   },
   {
     id: "aisha",
@@ -85,8 +87,8 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host8,
     rating: 5,
-    description:
-      "Professional and well-mannered interaction style. Age 21. Designed for a simple and hassle-free experience.",
+    age: 28,
+    description: "Warm-hearted and trustworthy. Smooth, comforting, and romantic talks.",
   },
 ];
 
