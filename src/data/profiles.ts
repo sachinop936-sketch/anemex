@@ -24,7 +24,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host1,
     rating: 5,
-    age: 23,
+    age: 20,
     description: "Warm, sweet, and caring personality. Gentle talks with a romantic and comforting vibe.",
   },
   {
@@ -33,7 +33,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host2,
     rating: 5,
-    age: 25,
+    age: 21,
     description: "Confident and affectionate nature. Smooth conversations that feel natural and close.",
   },
   {
@@ -60,7 +60,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host5,
     rating: 4,
-    age: 24,
+    age: 23,
     description: "Soft-spoken and loving. Friendly chats with sweetness and care.",
   },
   {
@@ -69,7 +69,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host6,
     rating: 5,
-    age: 21,
+    age: 22,
     description: "Lively and charming. Fun, flirty, and engaging conversations.",
   },
   {
@@ -78,7 +78,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host7,
     rating: 4,
-    age: 27,
+    age: 20,
     description: "Classy and composed. Romantic but respectful communication style.",
   },
   {
@@ -87,7 +87,7 @@ export const profiles: Profile[] = [
     tagline: "Session Host",
     image: host8,
     rating: 5,
-    age: 28,
+    age: 23,
     description: "Warm-hearted and trustworthy. Smooth, comforting, and romantic talks.",
   },
 ];
