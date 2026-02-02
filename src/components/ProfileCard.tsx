@@ -51,7 +51,15 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
         </div>
       </div>
 
-      <div className="p-3">
+      <div className="p-3 space-y-2">
+        {/* Age and Description */}
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-foreground">Age: {profile.age}</p>
+          <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-3">
+            {profile.description}
+          </p>
+        </div>
+        
         <Button variant="book" size="sm" className="w-full" onClick={handleBookNow}>
           View Services & Pay
         </Button>
