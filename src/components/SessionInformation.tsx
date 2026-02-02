@@ -23,7 +23,7 @@ const infoItems = [
   },
 ];
 
-const callingInformation = () => {
+const SessionInformation = () => {
   return (
     <section className="py-8">
       <div className="container">
