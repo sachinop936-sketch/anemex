@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+import { Star, CheckCircle, MessageCircle } from "lucide-react";
 import type { Profile } from "@/data/profiles";
 
 interface ProfileCardProps {
@@ -25,13 +25,15 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
 
-        <Badge className="absolute left-2 top-2 gradient-primary border-0 text-primary-foreground">
-          {profile.tagline}
-        </Badge>
+        {/* Verified Badge */}
+        <div className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-green-500/90 px-2 py-1">
+          <CheckCircle className="h-3 w-3 text-white" />
+          <span className="text-[10px] font-medium text-white">Verified</span>
+        </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-3">
           <h3 className="text-lg font-bold text-primary-foreground">{profile.name}</h3>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mb-1">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
@@ -41,12 +43,17 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
               />
             ))}
           </div>
+          {/* Telegram response text */}
+          <div className="flex items-center gap-1">
+            <MessageCircle className="h-2.5 w-2.5 text-primary-foreground/80" />
+            <span className="text-[10px] text-primary-foreground/80">Fast response on Telegram</span>
+          </div>
         </div>
       </div>
 
       <div className="p-3">
         <Button variant="book" size="sm" className="w-full" onClick={handleBookNow}>
-          Book Service
+          View Services & Pay
         </Button>
       </div>
     </div>
