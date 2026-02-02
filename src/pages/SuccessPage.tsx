@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Clock, ExternalLink, MessageCircle } from 'lucide-react';
+import { Clock, ExternalLink, MessageCircle, AlertCircle } from 'lucide-react';
 
 const SuccessPage = () => {
   const TELEGRAM_URL = 'https://t.me/SUNITA_OKK';
@@ -27,9 +27,19 @@ const SuccessPage = () => {
         <h1 className="text-2xl font-bold text-foreground mb-2">
           Payment Under Verification
         </h1>
-        <p className="text-sm text-muted-foreground mb-6">
-          Thank you. Your payment is under verification. Our team will connect shortly.
+        <p className="text-sm text-muted-foreground mb-4">
+          Thank you for your payment.
         </p>
+
+        {/* Important Notice */}
+        <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-6 text-left">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm font-medium text-amber-800">
+              Your service will start only after payment screenshot verification on Telegram.
+            </p>
+          </div>
+        </div>
 
         {/* Info Box */}
         <div className="rounded-xl bg-muted p-4 mb-6">
@@ -49,7 +59,7 @@ const SuccessPage = () => {
           onClick={handleOpenTelegram}
         >
           <ExternalLink className="h-5 w-5" />
-          Contact on Telegram
+          Open Telegram for Verification
         </Button>
 
         <p className="mt-4 text-xs text-muted-foreground">

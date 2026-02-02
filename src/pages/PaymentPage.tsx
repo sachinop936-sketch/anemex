@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { CreditCard, ArrowLeft, ShieldCheck, MessageCircle, ExternalLink, AlertTriangle } from "lucide-react";
+import { CreditCard, ArrowLeft, ShieldCheck, MessageCircle, ExternalLink, AlertTriangle, Info } from "lucide-react";
 
 const PaymentPage = () => {
   const [searchParams] = useSearchParams();
@@ -58,6 +58,17 @@ const PaymentPage = () => {
             Back
           </button>
 
+          {/* Important Notice Box at Top */}
+          <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-6 animate-fade-in">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-amber-800">Payment is completed only after UPI confirmation.</p>
+                <p className="text-xs text-amber-700 mt-1">Please verify your payment on Telegram.</p>
+              </div>
+            </div>
+          </div>
+
           {/* Verification Card */}
           <div className="rounded-2xl bg-card card-shadow p-6 animate-scale-in">
             <div className="flex items-center justify-center mb-6">
@@ -69,20 +80,10 @@ const PaymentPage = () => {
             <h1 className="text-center text-xl font-bold text-foreground mb-2">Complete Your Payment</h1>
             
             <p className="text-center text-sm text-muted-foreground mb-4">
-              Please complete the payment using your UPI app.
+              Pay the exact service amount using your UPI app.
               <br />
-              After successful payment, send a screenshot on Telegram to verify your order.
+              After payment, send screenshot on Telegram to activate service.
             </p>
-
-            {/* Important Notice */}
-            <div className="rounded-xl bg-primary/10 border border-primary/20 p-4 mb-6">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                <p className="text-sm font-medium text-foreground">
-                  Access will be provided only after payment screenshot verification.
-                </p>
-              </div>
-            </div>
 
             {/* Order Summary */}
             <div className="rounded-xl bg-muted p-4 mb-6">
@@ -155,6 +156,17 @@ const PaymentPage = () => {
           Back
         </button>
 
+        {/* Important Notice Box at Top */}
+        <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <Info className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-semibold text-amber-800">Payment is completed only after UPI confirmation.</p>
+              <p className="text-xs text-amber-700 mt-1">Please verify your payment on Telegram.</p>
+            </div>
+          </div>
+        </div>
+
         {/* Payment Card */}
         <div className="rounded-2xl bg-card card-shadow p-6 animate-scale-in">
           <div className="flex items-center justify-center mb-6">
@@ -206,14 +218,19 @@ const PaymentPage = () => {
 
           {/* Pay Button */}
           <Button variant="gradient" size="xl" className="w-full" onClick={handlePayNow}>
-            Pay ₹{amount} via UPI
+            Open UPI App
           </Button>
 
+          {/* Payment Instructions */}
           <div className="mt-4 text-center text-xs text-muted-foreground space-y-1">
-            <p>Selected Profile: {profileName}</p>
-            <p>Selected Service: {serviceName}</p>
-            <p>Service Price: ₹{amount}</p>
-            <p className="pt-2">Please complete the payment of the exact service amount shown above via Razorpay UPI.</p>
+            <p className="font-medium">Selected Profile: {profileName}</p>
+            <p className="font-medium">Selected Service: {serviceName}</p>
+            <p className="font-medium">Service Price: ₹{amount}</p>
+            <p className="pt-2">
+              Pay the exact service amount using your UPI app.
+              <br />
+              After payment, send screenshot on Telegram to activate service.
+            </p>
           </div>
         </div>
       </main>

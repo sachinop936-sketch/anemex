@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import ServiceCard from '@/components/ServiceCard';
 import { Button } from '@/components/ui/button';
 import { profiles, services } from '@/data/profiles';
-import { ArrowLeft, Star, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Star, CheckCircle, AlertCircle } from 'lucide-react';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -35,7 +35,7 @@ const ProfilePage = () => {
     <div className="min-h-screen gradient-hero">
       <Header />
       
-      <main className="pb-32">
+      <main className="pb-36">
         {/* Back Button */}
         <div className="container py-4">
           <button 
@@ -43,11 +43,11 @@ const ProfilePage = () => {
             className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to profiles
+            Back to hosts
           </button>
         </div>
 
-        {/* Profile Header */}
+        {/* Profile Header - Photo, Name, Rating */}
         <section className="container">
           <div className="overflow-hidden rounded-2xl bg-card card-shadow animate-scale-in">
             <div className="aspect-[4/3] overflow-hidden">
@@ -64,9 +64,9 @@ const ProfilePage = () => {
                   <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
                   <span className="text-sm text-muted-foreground">Session Host</span>
                 </div>
-                <div className="flex items-center gap-1 rounded-full bg-muted px-2 py-1">
+                <div className="flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-1">
                   <CheckCircle className="h-3 w-3 text-green-500" />
-                  <span className="text-xs font-medium text-foreground">Verified</span>
+                  <span className="text-xs font-medium text-green-600">Verified</span>
                 </div>
               </div>
               
@@ -85,8 +85,23 @@ const ProfilePage = () => {
                   ({profile.rating}.0)
                 </span>
               </div>
-              
-              <p className="text-sm text-muted-foreground">{profile.description}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Important Info Box */}
+        <section className="container mt-4">
+          <div className="rounded-xl bg-amber-50 border border-amber-200 p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-amber-800">Important Information</p>
+                <ul className="text-xs text-amber-700 space-y-1">
+                  <li>• Payment screenshot is mandatory</li>
+                  <li>• Service starts after verification on Telegram</li>
+                  <li>• No refund after service starts</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -108,12 +123,18 @@ const ProfilePage = () => {
         </section>
       </main>
 
-      {/* Fixed Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 border-t border-border/50 bg-card/95 backdrop-blur-lg p-4">
+      {/* Fixed Bottom CTA - Sticky Bar */}
+      <div className="fixed bottom-0 left-0 right-0 border-t border-border/50 bg-card/95 backdrop-blur-lg p-4 shadow-lg">
         <div className="container">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-muted-foreground">Total Amount</span>
-            <span className="text-2xl font-bold gradient-text">₹{service?.price}</span>
+            <div>
+              <span className="text-xs text-muted-foreground">Selected Service</span>
+              <p className="text-sm font-medium text-foreground">{service?.name}</p>
+            </div>
+            <div className="text-right">
+              <span className="text-xs text-muted-foreground">Price</span>
+              <p className="text-2xl font-bold gradient-text">₹{service?.price}</p>
+            </div>
           </div>
           <Button 
             variant="gradient" 
@@ -121,7 +142,7 @@ const ProfilePage = () => {
             className="w-full"
             onClick={handleProceedToPay}
           >
-            Proceed to Pay
+            Proceed to Payment
           </Button>
         </div>
       </div>
