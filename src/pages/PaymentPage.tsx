@@ -12,24 +12,19 @@ const PaymentPage = () => {
   const serviceName = searchParams.get("service") || "Call";
   const amount = searchParams.get("amount") || "99";
 
-  const UPI_ID = "sunitaupadhayay@naviaxis";
-  const PAYMENT_NOTE = "Service Booking – QuickCall";
+  const RAZORPAY_UPI_LINK = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&tr=RZPRsGPnHaLN972U4qrv2&cu=INR&mc=5732&qrMedium=04&tn=PaymenttoBUZZCART";
   const TELEGRAM_URL = "https://t.me/SUNITA_OKK";
 
   const handlePayNow = () => {
-    // Create UPI payment intent URL
-    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=QuickCall&am=${amount}&cu=INR&tn=${encodeURIComponent(PAYMENT_NOTE)}`;
-    
-    // Try to open UPI app
-    window.location.href = upiUrl;
+    // Open UPI app with Razorpay link
+    window.location.href = RAZORPAY_UPI_LINK;
     
     // Show verification screen
     setShowVerification(true);
   };
 
   const handleOpenUPI = () => {
-    const upiUrl = `upi://pay?pa=${UPI_ID}&pn=QuickCall&am=${amount}&cu=INR&tn=${encodeURIComponent(PAYMENT_NOTE)}`;
-    window.location.href = upiUrl;
+    window.location.href = RAZORPAY_UPI_LINK;
   };
 
   const handleOpenTelegram = () => {
@@ -195,7 +190,7 @@ const PaymentPage = () => {
               </div>
               <div>
                 <p className="font-semibold text-foreground">UPI Payment</p>
-                <p className="text-xs text-muted-foreground">{UPI_ID}</p>
+                <p className="text-xs text-muted-foreground">Razorpay Secure UPI</p>
               </div>
             </div>
           </div>
@@ -211,9 +206,12 @@ const PaymentPage = () => {
             Pay ₹{amount} via UPI
           </Button>
 
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            You will need to verify your payment via Telegram.
-          </p>
+          <div className="mt-4 text-center text-xs text-muted-foreground space-y-1">
+            <p>Selected Profile: {profileName}</p>
+            <p>Selected Service: {serviceName}</p>
+            <p className="pt-2">Payments are securely processed via Razorpay UPI.</p>
+            <p>Please complete the payment in your UPI app to proceed.</p>
+          </div>
         </div>
       </main>
     </div>
