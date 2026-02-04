@@ -4,6 +4,7 @@ import ShopFooter from '@/components/shop/ShopFooter';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
+import heroBanner from '@/assets/hero-banner.webp';
 
 const categories = [
   { name: 'All', icon: Sparkles },
@@ -26,39 +27,13 @@ const ShopHome = () => {
       <ShopHeader />
 
       <main className="pb-20">
-        {/* Hero Banner - Meesho Style */}
-        <section className="relative overflow-hidden">
-          <div className="gradient-hero p-6 text-center relative">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-4 left-6 w-3 h-3 bg-yellow-300 rounded-full animate-pulse" />
-              <div className="absolute top-10 right-10 w-2 h-2 bg-white rounded-full animate-pulse" />
-              <div className="absolute bottom-6 left-16 w-2 h-2 bg-yellow-200 rounded-full animate-pulse" />
-              <div className="absolute bottom-10 right-6 w-3 h-3 bg-white/50 rounded-full animate-pulse" />
-            </div>
-            
-            {/* Sale Content */}
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium mb-3">
-                <Percent className="h-3 w-3" />
-                MEGA SALE LIVE
-              </div>
-              
-              <h1 className="text-2xl font-bold text-white mb-1">
-                Lowest Prices
-              </h1>
-              <p className="text-3xl font-extrabold text-yellow-300 mb-3">
-                Up to 80% OFF
-              </p>
-              <p className="text-white/90 text-sm mb-4">
-                On Lakhs of Products
-              </p>
-              <button className="inline-flex items-center gap-1 bg-white text-primary px-5 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow">
-                Shop Now
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+        {/* Hero Banner */}
+        <section>
+          <img 
+            src={heroBanner} 
+            alt="Big End of Season Sale - Live Now" 
+            className="w-full h-auto"
+          />
         </section>
 
         {/* Category Pills */}
