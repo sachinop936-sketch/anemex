@@ -1,95 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out forwards;
-}
-
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 210 40% 10%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 210 40% 10%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 10%;
-
-    --primary: 217 91% 50%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 25 95% 53%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 210 20% 94%;
-    --muted-foreground: 210 20% 40%;
-
-    --accent: 217 91% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 217 91% 50%;
-
-    --radius: 0.75rem;
-
-    /* Custom gradient tokens - Blue theme */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(199 89% 48%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(210 20% 99%) 0%, hsl(210 15% 96%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(199 89% 48%) 100%);
+    /* Meesho-inspired Pink/Magenta Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
     
-    /* Shadow tokens */
-    --shadow-card: 0 2px 8px -2px hsl(210 40% 10% / 0.1);
-    --shadow-card-hover: 0 8px 20px -4px hsl(210 40% 10% / 0.15);
-    --shadow-button: 0 4px 14px -2px hsl(217 91% 50% / 0.4);
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    /* Meesho Pink/Magenta Primary */
+    --primary: 328 85% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 328 90% 60%;
+    
+    /* Warm Secondary */
+    --secondary: 25 95% 55%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    
+    /* Accent Pink */
+    --accent: 328 85% 95%;
+    --accent-foreground: 328 85% 40%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 328 85% 50%;
+    
+    --radius: 0.75rem;
+    
+    /* Custom Gradients - Meesho Style */
+    --gradient-primary: linear-gradient(135deg, hsl(328, 85%, 50%) 0%, hsl(340, 90%, 55%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(25, 95%, 55%) 0%, hsl(35, 100%, 60%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(328, 85%, 55%) 0%, hsl(280, 70%, 50%) 50%, hsl(328, 85%, 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(328, 30%, 98%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.04);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -2px rgb(0 0 0 / 0.03);
+    --shadow-glow: 0 0 20px hsl(328 85% 50% / 0.15);
   }
 
   .dark {
-    --background: 210 40% 5%;
-    --foreground: 210 20% 95%;
-
-    --card: 210 30% 10%;
-    --card-foreground: 210 20% 95%;
-
-    --popover: 210 30% 10%;
-    --popover-foreground: 210 20% 95%;
-
-    --primary: 217 91% 50%;
+    --background: 240 10% 4%;
+    --foreground: 0 0% 95%;
+    
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 95%;
+    
+    --primary: 328 85% 55%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 25 95% 53%;
+    --primary-glow: 328 90% 65%;
+    
+    --secondary: 25 95% 55%;
     --secondary-foreground: 0 0% 100%;
-
-    --muted: 210 20% 15%;
-    --muted-foreground: 210 20% 60%;
-
-    --accent: 217 91% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 20% 20%;
-    --input: 210 20% 20%;
-    --ring: 217 91% 50%;
+    
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    
+    --accent: 328 85% 15%;
+    --accent-foreground: 328 85% 75%;
+    
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 328 85% 55%;
   }
 }
 
@@ -97,84 +90,185 @@
   * {
     @apply border-border;
   }
-
+  
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
+  /* Gradient backgrounds */
   .gradient-primary {
     background: var(--gradient-primary);
   }
-
-  .gradient-card {
-    background: var(--gradient-card);
+  
+  .gradient-secondary {
+    background: var(--gradient-secondary);
   }
-
+  
   .gradient-hero {
     background: var(--gradient-hero);
   }
-
+  
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  /* Text gradients */
   .gradient-text {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
+  
+  /* Card styles */
   .card-shadow {
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-md);
   }
-
-  .card-shadow-hover {
-    box-shadow: var(--shadow-card-hover);
+  
+  .card-shadow-lg {
+    box-shadow: var(--shadow-lg);
   }
-
-  .button-shadow {
-    box-shadow: var(--shadow-button);
+  
+  .card-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* Glassmorphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Container */
+  .container {
+    @apply px-4 mx-auto max-w-md;
+  }
+  
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounceSlight 2s ease-in-out infinite;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+  
+  @keyframes scaleIn {
+    from { 
+      opacity: 0; 
+      transform: scale(0.95); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+  
+  @keyframes bounceSlight {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+  
+  /* Meesho-style price tag */
+  .meesho-price {
+    @apply text-lg font-bold text-foreground;
+  }
+  
+  .meesho-original-price {
+    @apply text-sm text-muted-foreground line-through;
+  }
+  
+  .meesho-discount {
+    @apply text-sm font-semibold text-green-600;
+  }
+  
+  /* Trust badge */
+  .trust-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium;
+    background: linear-gradient(135deg, hsl(328, 85%, 50%) 0%, hsl(280, 70%, 50%) 100%);
+    color: white;
   }
 }
 
 @layer utilities {
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  /* Safe area padding for mobile devices */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
-
-  .animate-pulse-soft {
-    animation: pulse-soft 2s ease-in-out infinite;
+  
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
   }
-
-  .animate-shimmer {
-    animation: shimmer 2s linear infinite;
-    background-size: 200% 100%;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
+  
+  /* Touch feedback */
+  .touch-feedback {
+    @apply active:scale-[0.98] transition-transform duration-100;
   }
 }
