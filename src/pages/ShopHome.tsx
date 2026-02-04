@@ -1,93 +1,98 @@
+import { useState, useEffect } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopFooter from '@/components/shop/ShopFooter';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
-import { Sparkles, Truck, Shield, RotateCcw } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
-const features = [
-  { icon: Truck, label: 'Free Delivery' },
-  { icon: Shield, label: 'Secure Pay' },
-  { icon: RotateCcw, label: 'Easy Returns' },
-  { icon: Sparkles, label: 'Best Deals' },
-];
+const categories = ['Categories', 'Fashion', 'Electronics', 'Home', 'Beauty'];
 
 const ShopHome = () => {
+  const [timeLeft, setTimeLeft] = useState(8 * 60 + 13); // 8:13 like in the reference
+
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 8 * 60)); // Reset when reaches 0
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <ShopHeader />
 
-      <main className="pb-8">
-        {/* Hero Banner */}
-        <section className="py-6">
-          <div className="container">
-            <div className="rounded-2xl gradient-primary p-6 text-center">
-              <h1 className="text-2xl font-bold text-primary-foreground mb-2">
-                Fashion Sale Up to 70% Off
-              </h1>
-              <p className="text-sm text-primary-foreground/90 mb-4">
-                Shop the latest trends at unbeatable prices
-              </p>
-              <div className="flex items-center justify-center gap-2">
-                <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white">
-                  Use Code: STYLE50
-                </span>
+      <main>
+        {/* Category Tabs */}
+        <div className="overflow-x-auto border-b border-border/50 bg-gradient-to-r from-purple-600 via-purple-500 to-pink-500">
+          <div className="flex">
+            {categories.map((category, index) => (
+              <button
+                key={index}
+                className="flex-shrink-0 px-4 py-2.5 text-xs font-medium text-white/90 hover:text-white transition-colors whitespace-nowrap"
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Hero Sale Banner */}
+        <section className="relative overflow-hidden">
+          <div className="bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 p-6 text-center relative">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-2 left-4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse" />
+              <div className="absolute top-8 right-8 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              <div className="absolute bottom-4 left-12 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" />
+              <div className="absolute bottom-8 right-4 w-2 h-2 bg-white/50 rounded-full animate-pulse" />
+            </div>
+            
+            {/* Sale Badge */}
+            <div className="inline-block mb-3">
+              <div className="bg-yellow-400 text-purple-900 px-3 py-1 rounded text-xs font-bold">
+                THE BIG BILLION DAYS
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Feature Badges */}
-        <section className="py-4">
-          <div className="container">
-            <div className="grid grid-cols-4 gap-2">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center text-center p-2 rounded-xl bg-card card-shadow"
-                >
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
-                    <feature.icon className="h-4 w-4 text-primary" />
-                  </div>
-                  <span className="text-[10px] font-medium text-foreground">{feature.label}</span>
-                </div>
-              ))}
+            
+            <h1 className="text-2xl font-bold text-white mb-1">
+              Biggest Sale
+            </h1>
+            <p className="text-3xl font-extrabold text-yellow-300 mb-3">
+              of 2024
+            </p>
+            <div className="inline-block bg-yellow-400 text-purple-900 px-4 py-1.5 rounded-full text-sm font-semibold">
+              Take a Sneak Peek
             </div>
           </div>
         </section>
 
-        {/* Category Pills */}
-        <section className="py-4 overflow-x-auto">
-          <div className="container">
-            <div className="flex gap-2 pb-2">
-              {['All', 'Ethnic Wear', 'Western', 'Footwear', 'Bags', 'Electronics', 'Beauty'].map(
-                (category, index) => (
-                  <button
-                    key={index}
-                    className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                      index === 0
-                        ? 'gradient-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                )
-              )}
+        {/* Deals of the Day Header */}
+        <section className="flex items-center justify-between px-4 py-3 bg-white border-b border-border/50">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-blue-600">Deals of the Day</span>
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              <span className="text-xs font-medium">{formatTime(timeLeft)}</span>
             </div>
+          </div>
+          <div className="border border-red-500 rounded px-2 py-0.5">
+            <span className="text-[10px] font-semibold text-red-500">SALE IS LIVE</span>
           </div>
         </section>
 
-        {/* Products Grid */}
-        <section className="py-4">
-          <div className="container">
-            <h2 className="text-lg font-bold text-foreground mb-4">
-              Trending Products
-            </h2>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {products.map((product, index) => (
-                <ShopProductCard key={product.id} product={product} index={index} />
-              ))}
-            </div>
+        {/* Products Grid - Flipkart Style */}
+        <section className="border-t border-l border-border/40">
+          <div className="grid grid-cols-2">
+            {products.map((product, index) => (
+              <ShopProductCard key={product.id} product={product} index={index} />
+            ))}
           </div>
         </section>
       </main>
