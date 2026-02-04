@@ -5,16 +5,16 @@ const ShopHeader = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-50 bg-card border-b border-border/50 shadow-sm">
+    <header className="sticky top-0 z-50 bg-blue-600 shadow-sm">
       {/* Main Header */}
       <div className="flex items-center justify-between px-4 py-3">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
-            <Menu className="h-5 w-5 text-foreground" />
+          <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-blue-500 transition-colors">
+            <Menu className="h-5 w-5 text-white" />
           </button>
           <h1 
-            className="text-xl font-bold gradient-text cursor-pointer"
+            className="text-xl font-bold text-white cursor-pointer"
             onClick={() => navigate('/')}
           >
             QuickShop
@@ -23,17 +23,17 @@ const ShopHeader = () => {
 
         {/* Action Icons */}
         <div className="flex items-center gap-1">
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors">
-            <Search className="h-5 w-5 text-foreground" />
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors">
+            <Search className="h-5 w-5 text-white" />
           </button>
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors relative">
-            <ShoppingCart className="h-5 w-5 text-foreground" />
-            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors relative">
+            <ShoppingCart className="h-5 w-5 text-white" />
+            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-orange-500 text-[10px] font-bold text-white flex items-center justify-center">
               0
             </span>
           </button>
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors">
-            <User className="h-5 w-5 text-foreground" />
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors">
+            <User className="h-5 w-5 text-white" />
           </button>
         </div>
       </div>
@@ -45,7 +45,7 @@ const ShopHeader = () => {
           <input
             type="text"
             placeholder="Search for products, brands and more"
-            className="w-full h-10 pl-10 pr-4 rounded-lg bg-muted text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full h-10 pl-10 pr-4 rounded-lg bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
           />
         </div>
       </div>
