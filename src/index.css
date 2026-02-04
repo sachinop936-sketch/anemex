@@ -21,75 +21,75 @@
 
 @layer base {
   :root {
-    --background: 270 50% 98%;
-    --foreground: 270 50% 10%;
+    --background: 210 20% 98%;
+    --foreground: 210 40% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 270 50% 10%;
+    --card-foreground: 210 40% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 270 50% 10%;
+    --popover-foreground: 210 40% 10%;
 
-    --primary: 271 91% 65%;
+    --primary: 217 91% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 330 81% 60%;
+    --secondary: 25 95% 53%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 270 20% 94%;
-    --muted-foreground: 270 20% 40%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 20% 40%;
 
-    --accent: 330 81% 60%;
+    --accent: 217 91% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 20% 90%;
-    --input: 270 20% 90%;
-    --ring: 271 91% 65%;
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 217 91% 50%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
-    /* Custom gradient tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%) 0%, hsl(330 81% 60%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(270 50% 99%) 0%, hsl(270 30% 96%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(270 50% 97%) 0%, hsl(330 50% 95%) 50%, hsl(270 50% 97%) 100%);
+    /* Custom gradient tokens - Blue theme */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(199 89% 48%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(210 20% 99%) 0%, hsl(210 15% 96%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(199 89% 48%) 100%);
     
     /* Shadow tokens */
-    --shadow-card: 0 4px 20px -4px hsl(271 91% 65% / 0.15);
-    --shadow-card-hover: 0 8px 30px -4px hsl(271 91% 65% / 0.25);
-    --shadow-button: 0 4px 14px -2px hsl(271 91% 65% / 0.4);
+    --shadow-card: 0 2px 8px -2px hsl(210 40% 10% / 0.1);
+    --shadow-card-hover: 0 8px 20px -4px hsl(210 40% 10% / 0.15);
+    --shadow-button: 0 4px 14px -2px hsl(217 91% 50% / 0.4);
   }
 
   .dark {
-    --background: 270 50% 5%;
-    --foreground: 270 20% 95%;
+    --background: 210 40% 5%;
+    --foreground: 210 20% 95%;
 
-    --card: 270 30% 10%;
-    --card-foreground: 270 20% 95%;
+    --card: 210 30% 10%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 270 30% 10%;
-    --popover-foreground: 270 20% 95%;
+    --popover: 210 30% 10%;
+    --popover-foreground: 210 20% 95%;
 
-    --primary: 271 91% 65%;
+    --primary: 217 91% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 330 81% 60%;
+    --secondary: 25 95% 53%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 270 20% 15%;
-    --muted-foreground: 270 20% 60%;
+    --muted: 210 20% 15%;
+    --muted-foreground: 210 20% 60%;
 
-    --accent: 330 81% 60%;
+    --accent: 217 91% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 20% 20%;
-    --input: 270 20% 20%;
-    --ring: 271 91% 65%;
+    --border: 210 20% 20%;
+    --input: 210 20% 20%;
+    --ring: 217 91% 50%;
   }
 }
 

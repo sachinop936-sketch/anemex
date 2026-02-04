@@ -29,8 +29,8 @@ const ShopHome = () => {
       <ShopHeader />
 
       <main>
-        {/* Category Tabs */}
-        <div className="overflow-x-auto border-b border-border/50 bg-gradient-to-r from-purple-600 via-purple-500 to-pink-500">
+        {/* Category Tabs - Flipkart Blue */}
+        <div className="overflow-x-auto border-b border-border/50 bg-primary">
           <div className="flex">
             {categories.map((category, index) => (
               <button
@@ -43,11 +43,11 @@ const ShopHome = () => {
           </div>
         </div>
 
-        {/* Hero Sale Banner */}
+        {/* Hero Sale Banner - Flipkart Blue Style */}
         <section className="relative overflow-hidden">
-          <div className="bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 p-6 text-center relative">
+          <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 p-6 text-center relative">
             {/* Decorative elements */}
-            <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 opacity-30">
               <div className="absolute top-2 left-4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse" />
               <div className="absolute top-8 right-8 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
               <div className="absolute bottom-4 left-12 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" />
@@ -56,7 +56,7 @@ const ShopHome = () => {
             
             {/* Sale Badge */}
             <div className="inline-block mb-3">
-              <div className="bg-yellow-400 text-purple-900 px-3 py-1 rounded text-xs font-bold">
+              <div className="bg-yellow-400 text-blue-900 px-3 py-1 rounded text-xs font-bold">
                 THE BIG BILLION DAYS
               </div>
             </div>
@@ -67,7 +67,7 @@ const ShopHome = () => {
             <p className="text-3xl font-extrabold text-yellow-300 mb-3">
               of 2024
             </p>
-            <div className="inline-block bg-yellow-400 text-purple-900 px-4 py-1.5 rounded-full text-sm font-semibold">
+            <div className="inline-block bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full text-sm font-semibold">
               Take a Sneak Peek
             </div>
           </div>
