@@ -2,14 +2,10 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProfileCard from "@/components/ProfileCard";
-import CustomerFeedback from "@/components/CustomerFeedback";
-import ServiceProof from "@/components/ServiceProof";
-import SessionInformation from "@/components/SessionInformation";
 import FloatingHelpButton from "@/components/FloatingHelpButton";
 import AgeVerificationModal from "@/components/AgeVerificationModal";
 import NotificationPrompt from "@/components/NotificationPrompt";
 import HeroSection from "@/components/HeroSection";
-import HowItWorks from "@/components/HowItWorks";
 import { profiles } from "@/data/profiles";
 
 const Index = () => {
@@ -25,9 +21,6 @@ const Index = () => {
         {/* Hero Section */}
         <HeroSection />
 
-        {/* How It Works */}
-        <HowItWorks />
-
         {/* Host Listings */}
         <section id="host-listings" className="py-6">
           <div className="container">
@@ -42,14 +35,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Customer Feedback Section */}
-        <CustomerFeedback />
-
-        {/* Service Proof Section */}
-        <ServiceProof />
-
-        {/* Session Information Section */}
-        <SessionInformation />
       </main>
 
       <NotificationPrompt />
