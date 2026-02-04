@@ -1,99 +1,54 @@
-import { useState } from 'react';
-import { Search, Menu, X, ShoppingBag, Heart } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Link } from 'react-router-dom';
+import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ShopHeader = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/95 backdrop-blur-lg">
-      <div className="container flex h-14 items-center justify-between gap-2">
+    <header className="sticky top-0 z-50 bg-card border-b border-border/50 shadow-sm">
+      {/* Main Header */}
+      <div className="flex items-center justify-between px-4 py-3">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-            <ShoppingBag className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold gradient-text">StyleBazaar</span>
-        </Link>
-
-        {/* Search Bar - Desktop */}
-        <div className="hidden sm:flex flex-1 max-w-md mx-4">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products..."
-              className="pl-10 bg-muted/50 border-0 focus-visible:ring-primary/50"
-            />
-          </div>
+        <div className="flex items-center gap-3">
+          <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
+            <Menu className="h-5 w-5 text-foreground" />
+          </button>
+          <h1 
+            className="text-xl font-bold gradient-text cursor-pointer"
+            onClick={() => navigate('/')}
+          >
+            QuickShop
+          </h1>
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-2">
-          {/* Mobile Search Toggle */}
-          <button
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="sm:hidden p-2 rounded-full hover:bg-muted transition-colors"
-          >
-            {isSearchOpen ? (
-              <X className="h-5 w-5 text-foreground" />
-            ) : (
-              <Search className="h-5 w-5 text-foreground" />
-            )}
+        {/* Action Icons */}
+        <div className="flex items-center gap-1">
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors">
+            <Search className="h-5 w-5 text-foreground" />
           </button>
-
-          {/* Wishlist */}
-          <button className="p-2 rounded-full hover:bg-muted transition-colors relative">
-            <Heart className="h-5 w-5 text-foreground" />
-            <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-secondary-foreground flex items-center justify-center">
-              3
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors relative">
+            <ShoppingCart className="h-5 w-5 text-foreground" />
+            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+              0
             </span>
           </button>
-
-          {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <button className="p-2 rounded-full hover:bg-muted transition-colors">
-                <Menu className="h-5 w-5 text-foreground" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-72">
-              <nav className="flex flex-col gap-4 mt-8">
-                <Link to="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">
-                  Home
-                </Link>
-                <Link to="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">
-                  Categories
-                </Link>
-                <Link to="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">
-                  Offers
-                </Link>
-                <Link to="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">
-                  My Orders
-                </Link>
-                <Link to="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">
-                  My Account
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors">
+            <User className="h-5 w-5 text-foreground" />
+          </button>
         </div>
       </div>
 
-      {/* Mobile Search Bar */}
-      {isSearchOpen && (
-        <div className="sm:hidden px-4 pb-3 animate-slide-up">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products..."
-              className="pl-10 bg-muted/50 border-0 focus-visible:ring-primary/50"
-              autoFocus
-            />
-          </div>
+      {/* Search Bar */}
+      <div className="px-4 pb-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search for products, brands and more"
+            className="w-full h-10 pl-10 pr-4 rounded-lg bg-muted text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+          />
         </div>
-      )}
+      </div>
     </header>
   );
 };
