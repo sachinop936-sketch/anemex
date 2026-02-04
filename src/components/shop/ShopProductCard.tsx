@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Star, TrendingUp, Award, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Star, TrendingUp, Award, Clock, ShieldCheck, Truck } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ShopProductCardProps {
@@ -35,77 +34,59 @@ const ShopProductCard = ({ product, index }: ShopProductCardProps) => {
       className="group block animate-fade-in"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <div className="overflow-hidden rounded-2xl bg-card card-shadow transition-all duration-300 group-hover:card-shadow-hover group-hover:-translate-y-1">
+      <div className="overflow-hidden rounded-xl bg-card border border-border/50 transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-muted/30">
+        <div className="relative aspect-square overflow-hidden bg-white">
           <img
             src={product.image}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
           
-          {/* Discount Badge */}
-          <div className="absolute top-2 left-2 rounded-full bg-secondary px-2 py-0.5">
-            <span className="text-xs font-bold text-secondary-foreground">
-              {product.discountPercent}% OFF
-            </span>
-          </div>
-
           {/* Tag Badge */}
           {tag && (
-            <div className={`absolute top-2 right-2 rounded-full px-2 py-0.5 flex items-center gap-1 ${tag.className}`}>
+            <div className={`absolute top-2 left-2 rounded-sm px-2 py-0.5 flex items-center gap-1 ${tag.className}`}>
               <tag.icon className="h-3 w-3 text-white" />
-              <span className="text-xs font-semibold text-white">{tag.label}</span>
+              <span className="text-[10px] font-semibold text-white">{tag.label}</span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-3">
+        <div className="p-3 border-t border-border/30">
           {/* Product Name */}
-          <h3 className="text-sm font-semibold text-foreground line-clamp-2 mb-1 min-h-[2.5rem]">
+          <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 min-h-[2.5rem]">
             {product.name}
           </h3>
 
-          {/* Short Description */}
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
-            {product.shortDescription}
-          </p>
+          {/* Discount & Price Row */}
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-semibold text-green-600">
+              {product.discountPercent}% Off
+            </span>
+            <span className="text-xs text-muted-foreground line-through">
+              ₹{product.originalPrice.toLocaleString()}
+            </span>
+          </div>
 
-          {/* Rating */}
-          <div className="flex items-center gap-1 mb-2">
-            <div className="flex items-center gap-0.5 rounded-full bg-green-500/10 px-1.5 py-0.5">
-              <Star className="h-3 w-3 fill-green-500 text-green-500" />
-              <span className="text-xs font-semibold text-green-600">{product.rating}</span>
+          {/* Final Price */}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-lg font-bold text-foreground">
+              ₹{product.discountPrice.toLocaleString()}
+            </span>
+            {/* Assured Badge */}
+            <div className="flex items-center gap-1 rounded-sm bg-blue-600 px-1.5 py-0.5">
+              <ShieldCheck className="h-3 w-3 text-white" />
+              <span className="text-[10px] font-semibold text-white">Assured</span>
             </div>
-            <span className="text-xs text-muted-foreground">
-              ({product.reviewCount})
-            </span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-lg font-bold gradient-text">
-              ₹{product.discountPrice}
-            </span>
-            <span className="text-sm text-muted-foreground line-through">
-              ₹{product.originalPrice}
-            </span>
+          {/* Free Delivery */}
+          <div className="flex items-center gap-1 text-muted-foreground">
+            <Truck className="h-3 w-3" />
+            <span className="text-[10px]">Free Delivery in Two Days</span>
           </div>
-
-          {/* Buy Button */}
-          <Button
-            variant="gradient"
-            size="sm"
-            className="w-full"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = `/product/${product.id}`;
-            }}
-          >
-            Buy Now
-          </Button>
         </div>
       </div>
     </Link>

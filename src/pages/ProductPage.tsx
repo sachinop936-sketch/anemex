@@ -269,17 +269,25 @@ const ProductPage = () => {
         </section>
       </main>
 
-      {/* Sticky Buy Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-lg border-t border-border/50 p-4 shadow-lg">
-        <div className="container">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <span className="text-xs text-muted-foreground">Total Price</span>
-              <p className="text-xl font-bold gradient-text">₹{product.discountPrice}</p>
-            </div>
-            <Button variant="gradient" size="xl" className="flex-1 max-w-[200px]">
+      {/* Sticky Buy Buttons - Flipkart Style */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg">
+        <div className="container p-0">
+          <div className="grid grid-cols-2 divide-x divide-border">
+            <button
+              className="flex items-center justify-center gap-2 py-4 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+              onClick={() => {
+                // Add to cart functionality
+                alert('Added to cart!');
+              }}
+            >
+              Add to Cart
+            </button>
+            <button
+              className="flex items-center justify-center gap-2 py-4 text-sm font-semibold text-white gradient-primary hover:opacity-90 transition-opacity"
+              onClick={() => navigate(`/address?productId=${product.id}`)}
+            >
               Buy Now
-            </Button>
+            </button>
           </div>
         </div>
       </div>
