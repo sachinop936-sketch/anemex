@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
-import ShopFooter from '@/components/shop/ShopFooter';
 import { Button } from '@/components/ui/button';
 import { products } from '@/data/products';
 import {
@@ -344,8 +343,6 @@ const ProductPage = () => {
           </button>
         </div>
       </div>
-
-      <ShopFooter />
     </div>
   );
 };
