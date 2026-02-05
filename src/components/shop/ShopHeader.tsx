@@ -1,7 +1,7 @@
 import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
-import flipkartLogo from '@/assets/flipkart-logo.jpg';
+import flipkartLogo from '@/assets/flipkart-logo.png';
 
 const ShopHeader = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const ShopHeader = () => {
           <img 
             src={flipkartLogo}
             alt="Flipkart"
-            className="h-7 cursor-pointer object-contain"
+            className="h-10 cursor-pointer object-contain"
             onClick={() => navigate('/')}
           />
         </div>
