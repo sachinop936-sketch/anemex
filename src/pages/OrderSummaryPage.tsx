@@ -2,34 +2,34 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
-import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 
 const OrderSummaryPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const productId = searchParams.get('productId');
   const addressParam = searchParams.get('address');
+  const { items, removeFromCart } = useCart();
 
-  const product = products.find((p) => p.id === productId);
   const address = addressParam ? JSON.parse(decodeURIComponent(addressParam)) : null;
 
-  if (!product) {
+  if (items.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-xl font-bold text-foreground mb-2">Product not found</h1>
-          <Button onClick={() => navigate('/')}>Go Back</Button>
+          <h1 className="text-xl font-bold text-foreground mb-2">Your cart is empty</h1>
+          <Button onClick={() => navigate('/')}>Continue Shopping</Button>
         </div>
       </div>
     );
   }
 
-  const savings = product.originalPrice - product.discountPrice;
-  const discountPercent = product.discountPercent;
+  const totalOriginalPrice = items.reduce((sum, item) => sum + item.price * 1.4 * item.quantity, 0);
+  const totalDiscountPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const savings = totalOriginalPrice - totalDiscountPrice;
 
   const handleContinue = () => {
-    navigate(`/payment?productId=${productId}&address=${encodeURIComponent(addressParam || '')}`);
+    navigate(`/payment?address=${encodeURIComponent(addressParam || '')}`);
   };
 
   return (
@@ -60,40 +60,50 @@ const OrderSummaryPage = () => {
           </div>
         </div>
 
-        {/* Product Card */}
-        <div className="container">
-          <div className="rounded-xl bg-card p-4 border border-border">
-            <div className="flex gap-4">
-              <div className="h-20 w-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-contain p-1"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-foreground line-clamp-2">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-1 mt-1">
-                  <div className="flex items-center gap-1 rounded-sm bg-blue-600 px-1.5 py-0.5">
-                    <ShieldCheck className="h-3 w-3 text-white" />
-                    <span className="text-[10px] font-semibold text-white">Assured</span>
-                  </div>
+        {/* Cart Items */}
+        <div className="container space-y-3">
+          <h2 className="text-base font-semibold text-foreground">Cart Items ({items.length})</h2>
+          {items.map((item) => (
+            <div key={item.id} className="rounded-xl bg-card p-4 border border-border">
+              <div className="flex gap-4">
+                <div className="h-20 w-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0 relative">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-full w-full object-contain p-1"
+                  />
                 </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-xs text-muted-foreground">Qty: 1</span>
-                  <span className="text-xs font-semibold text-green-600">{discountPercent}%</span>
-                  <span className="text-xs text-muted-foreground line-through">
-                    ₹{product.originalPrice.toLocaleString()}
-                  </span>
-                  <span className="text-sm font-bold text-foreground">
-                    ₹{product.discountPrice.toLocaleString()}
-                  </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-medium text-foreground line-clamp-2">
+                      {item.name}
+                    </h3>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <div className="flex items-center gap-1 rounded-sm bg-blue-600 px-1.5 py-0.5">
+                      <ShieldCheck className="h-3 w-3 text-white" />
+                      <span className="text-[10px] font-semibold text-white">Assured</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-xs text-muted-foreground">Qty: {item.quantity}</span>
+                    <span className="text-xs text-muted-foreground line-through">
+                      ₹{Math.round(item.price * 1.4).toLocaleString()}
+                    </span>
+                    <span className="text-sm font-bold text-foreground">
+                      ₹{item.price.toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
         {/* Price Details */}
@@ -103,12 +113,12 @@ const OrderSummaryPage = () => {
             
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Price (1 item)</span>
-                <span className="text-foreground">₹{product.originalPrice.toLocaleString()}</span>
+                <span className="text-muted-foreground">Price ({items.length} items)</span>
+                <span className="text-foreground">₹{Math.round(totalOriginalPrice).toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
-                <span className="text-green-600">-₹{savings.toLocaleString()}</span>
+                <span className="text-green-600">-₹{Math.round(savings).toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Delivery Charges</span>
@@ -118,14 +128,14 @@ const OrderSummaryPage = () => {
               <div className="border-t border-border pt-3">
                 <div className="flex justify-between">
                   <span className="font-semibold text-foreground">Total Amount</span>
-                  <span className="font-bold text-foreground">₹{product.discountPrice.toLocaleString()}</span>
+                  <span className="font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
             <div className="mt-4 p-3 rounded-lg bg-green-50 border border-green-200">
               <p className="text-sm font-medium text-green-700">
-                You will save ₹{savings.toLocaleString()} on this order
+                You will save ₹{Math.round(savings).toLocaleString()} on this order
               </p>
             </div>
           </div>
@@ -149,8 +159,8 @@ const OrderSummaryPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="container flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</p>
-            <p className="text-xl font-bold text-foreground">₹{product.discountPrice.toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground line-through">₹{Math.round(totalOriginalPrice).toLocaleString()}</p>
+            <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</p>
           </div>
           <Button
             variant="gradient"
