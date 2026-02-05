@@ -20,7 +20,7 @@ const ShopHeader = () => {
           <img 
             src={flipkartLogo}
             alt="Flipkart"
-            className="h-10 cursor-pointer object-contain"
+            className="h-14 cursor-pointer object-contain"
             onClick={() => navigate('/')}
           />
         </div>
