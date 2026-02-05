@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Meesho-inspired Pink/Magenta Theme */
+    /* Blue Theme */
     --background: 0 0% 100%;
     --foreground: 0 0% 10%;
     
@@ -16,42 +16,42 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
     
-    /* Meesho Pink/Magenta Primary */
-    --primary: 328 85% 50%;
+    /* Blue Primary */
+    --primary: 217 91% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 328 90% 60%;
+    --primary-glow: 217 91% 60%;
     
-    /* Warm Secondary */
-    --secondary: 25 95% 55%;
-    --secondary-foreground: 0 0% 100%;
+    /* Yellow Secondary (for Buy Now buttons) */
+    --secondary: 45 100% 50%;
+    --secondary-foreground: 0 0% 10%;
     
     --muted: 240 5% 96%;
     --muted-foreground: 240 4% 46%;
     
-    /* Accent Pink */
-    --accent: 328 85% 95%;
-    --accent-foreground: 328 85% 40%;
+    /* Accent Blue */
+    --accent: 217 91% 95%;
+    --accent-foreground: 217 91% 40%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
     --border: 240 6% 90%;
     --input: 240 6% 90%;
-    --ring: 328 85% 50%;
+    --ring: 217 91% 50%;
     
     --radius: 0.75rem;
     
-    /* Custom Gradients - Meesho Style */
-    --gradient-primary: linear-gradient(135deg, hsl(328, 85%, 50%) 0%, hsl(340, 90%, 55%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(25, 95%, 55%) 0%, hsl(35, 100%, 60%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(328, 85%, 55%) 0%, hsl(280, 70%, 50%) 50%, hsl(328, 85%, 45%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(328, 30%, 98%) 100%);
+    /* Custom Gradients - Blue Style */
+    --gradient-primary: linear-gradient(135deg, hsl(217, 91%, 50%) 0%, hsl(217, 91%, 60%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45, 100%, 50%) 0%, hsl(45, 100%, 55%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(217, 91%, 55%) 0%, hsl(210, 80%, 50%) 50%, hsl(217, 91%, 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(217, 30%, 98%) 100%);
     
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.04);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -2px rgb(0 0 0 / 0.03);
-    --shadow-glow: 0 0 20px hsl(328 85% 50% / 0.15);
+    --shadow-glow: 0 0 20px hsl(217 91% 50% / 0.15);
   }
 
   .dark {
@@ -64,25 +64,25 @@
     --popover: 240 10% 6%;
     --popover-foreground: 0 0% 95%;
     
-    --primary: 328 85% 55%;
+    --primary: 217 91% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 328 90% 65%;
+    --primary-glow: 217 91% 65%;
     
-    --secondary: 25 95% 55%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 45 100% 50%;
+    --secondary-foreground: 0 0% 10%;
     
     --muted: 240 4% 16%;
     --muted-foreground: 240 5% 65%;
     
-    --accent: 328 85% 15%;
-    --accent-foreground: 328 85% 75%;
+    --accent: 217 91% 15%;
+    --accent-foreground: 217 91% 75%;
     
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
     
     --border: 240 4% 16%;
     --input: 240 4% 16%;
-    --ring: 328 85% 55%;
+    --ring: 217 91% 55%;
   }
 }
 
@@ -252,7 +252,7 @@
   /* Trust badge */
   .trust-badge {
     @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium;
-    background: linear-gradient(135deg, hsl(328, 85%, 50%) 0%, hsl(280, 70%, 50%) 100%);
+    background: linear-gradient(135deg, hsl(217, 91%, 50%) 0%, hsl(210, 80%, 50%) 100%);
     color: white;
   }
 }
