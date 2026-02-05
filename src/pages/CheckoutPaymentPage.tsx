@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
-import { ArrowLeft, Smartphone, CreditCard, Wallet, QrCode } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { ArrowLeft, QrCode } from 'lucide-react';
 
 const paymentMethods = [
   {
@@ -31,13 +31,12 @@ const paymentMethods = [
 
 const CheckoutPaymentPage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const productId = searchParams.get('productId');
+  const { items } = useCart();
 
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(6 * 60 + 20); // 6min 20sec
 
-  const product = products.find((p) => p.id === productId);
+  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   // Countdown timer
   useEffect(() => {
@@ -53,12 +52,12 @@ const CheckoutPaymentPage = () => {
     return `${mins.toString().padStart(2, '0')}min ${secs.toString().padStart(2, '0')}sec`;
   };
 
-  if (!product) {
+  if (items.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-xl font-bold text-foreground mb-2">Product not found</h1>
-          <Button onClick={() => navigate('/')}>Go Back</Button>
+          <h1 className="text-xl font-bold text-foreground mb-2">Your cart is empty</h1>
+          <Button onClick={() => navigate('/')}>Continue Shopping</Button>
         </div>
       </div>
     );
@@ -67,8 +66,8 @@ const CheckoutPaymentPage = () => {
   const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tr=RZPRCT7AZij7GITsaqrv2";
 
   const handlePay = () => {
-    if (!product) return;
-    const upiLink = `${RAZORPAY_UPI_BASE}&am=${product.discountPrice}&tn=${encodeURIComponent(product.name)}`;
+    const itemNames = items.map(item => item.name).join(', ');
+    const upiLink = `${RAZORPAY_UPI_BASE}&am=${totalPrice}&tn=${encodeURIComponent(itemNames)}`;
     window.location.href = upiLink;
   };
 
@@ -118,8 +117,8 @@ const CheckoutPaymentPage = () => {
                     <img src={method.logo} alt={method.name} className="h-8 w-auto object-contain" />
                   </div>
                 ) : (
-                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-gray-100">
-                    {method.icon && <method.icon className="h-6 w-6 text-gray-600" />}
+                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-muted">
+                    {method.icon && <method.icon className="h-6 w-6 text-muted-foreground" />}
                   </div>
                 )}
                 <span className="text-base font-medium text-foreground">{method.name}</span>
@@ -139,7 +138,7 @@ const CheckoutPaymentPage = () => {
             disabled={!selectedMethod}
             onClick={handlePay}
           >
-            PAY ₹{product.discountPrice.toLocaleString()}
+            PAY ₹{totalPrice.toLocaleString()}
           </Button>
         </div>
       </div>
