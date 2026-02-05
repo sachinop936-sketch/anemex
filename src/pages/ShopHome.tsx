@@ -94,17 +94,6 @@ const ShopHome = () => {
           </p>
         </section>
 
-        {/* Products Header */}
-        <section className="bg-background px-4 py-3 flex items-center justify-between border-b border-border/50">
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Products For You</h2>
-            <p className="text-xs text-muted-foreground">{products.length} items</p>
-          </div>
-          <button className="text-xs font-medium text-primary flex items-center gap-0.5">
-            View All
-            <ChevronRight className="h-3 w-3" />
-          </button>
-        </section>
 
         {/* Products Grid - Meesho 2-column Style */}
         <section className="bg-background">
