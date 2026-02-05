@@ -347,7 +347,7 @@ const ProductPage = () => {
             Add to Cart
           </button>
           <button
-            className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FB641B] text-white text-base font-medium hover:bg-[#E85A17] transition-colors uppercase tracking-wide"
+            className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FFE500] text-gray-900 text-base font-medium hover:bg-[#F5DC00] transition-colors uppercase tracking-wide"
             onClick={() => {
               addToCart({
                 id: product.id,
