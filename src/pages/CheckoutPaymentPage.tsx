@@ -8,28 +8,24 @@ import { ArrowLeft, Smartphone, CreditCard, Wallet, QrCode } from 'lucide-react'
 
 const paymentMethods = [
   {
+    id: 'gpay',
+    name: 'Google Pay',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png',
+  },
+  {
     id: 'phonepe',
     name: 'PhonePe',
-    icon: Smartphone,
-    color: 'bg-purple-100 text-purple-600 border-purple-300',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png',
   },
   {
     id: 'paytm',
     name: 'Paytm',
-    icon: Wallet,
-    color: 'bg-blue-100 text-blue-600 border-blue-300',
-  },
-  {
-    id: 'gpay',
-    name: 'Google Pay',
-    icon: CreditCard,
-    color: 'bg-green-100 text-green-600 border-green-300',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png',
   },
   {
     id: 'upi',
     name: 'Other UPI APP',
     icon: QrCode,
-    color: 'bg-gray-100 text-gray-600 border-gray-300',
   },
 ];
 
@@ -117,9 +113,15 @@ const CheckoutPaymentPage = () => {
                     : 'border-border bg-card hover:border-primary/50'
                 }`}
               >
-                <div className={`h-12 w-12 rounded-full flex items-center justify-center ${method.color}`}>
-                  <method.icon className="h-6 w-6" />
-                </div>
+                {method.logo ? (
+                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-white p-1">
+                    <img src={method.logo} alt={method.name} className="h-8 w-auto object-contain" />
+                  </div>
+                ) : (
+                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-gray-100">
+                    {method.icon && <method.icon className="h-6 w-6 text-gray-600" />}
+                  </div>
+                )}
                 <span className="text-base font-medium text-foreground">{method.name}</span>
               </button>
             ))}
