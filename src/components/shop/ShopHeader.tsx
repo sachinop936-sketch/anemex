@@ -17,7 +17,7 @@ const ShopHeader = () => {
             className="text-xl font-bold text-white cursor-pointer"
             onClick={() => navigate('/')}
           >
-            QuickShop
+            Flipkart
           </h1>
         </div>
 
