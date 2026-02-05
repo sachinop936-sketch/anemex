@@ -1,6 +1,7 @@
 import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
+import flipkartLogo from '@/assets/flipkart-logo.jpg';
 
 const ShopHeader = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const ShopHeader = () => {
   const itemCount = getItemCount();
 
   return (
-    <header className="sticky top-0 z-50 bg-blue-600 shadow-sm">
+    <header className="sticky top-0 z-50 bg-[#2874f0] shadow-sm">
       {/* Main Header */}
       <div className="flex items-center justify-between px-4 py-3">
         {/* Logo */}
@@ -16,12 +17,12 @@ const ShopHeader = () => {
           <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-blue-500 transition-colors">
             <Menu className="h-5 w-5 text-white" />
           </button>
-          <h1 
-            className="text-xl font-bold text-white cursor-pointer"
+          <img 
+            src={flipkartLogo}
+            alt="Flipkart"
+            className="h-7 cursor-pointer object-contain"
             onClick={() => navigate('/')}
-          >
-            Flipkart
-          </h1>
+          />
         </div>
 
         {/* Action Icons */}

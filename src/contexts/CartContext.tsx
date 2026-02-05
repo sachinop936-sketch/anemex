@@ -34,7 +34,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeFromCart = (id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+    setItems((prev) => {
+      const existing = prev.find((i) => i.id === id);
+      if (existing && existing.quantity > 1) {
+        return prev.map((i) =>
+          i.id === id ? { ...i, quantity: i.quantity - 1 } : i
+        );
+      }
+      return prev.filter((i) => i.id !== id);
+    });
   };
 
   const getItemCount = () => {
