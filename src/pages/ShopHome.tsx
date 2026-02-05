@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
-import ShopFooter from '@/components/shop/ShopFooter';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
@@ -116,8 +115,6 @@ const ShopHome = () => {
           </div>
         </section>
       </main>
-
-      <ShopFooter />
     </div>
   );
 };
