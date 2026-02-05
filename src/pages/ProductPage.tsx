@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
 import { products } from '@/data/products';
+import { useCart } from '@/contexts/CartContext';
+import { toast } from 'sonner';
 import {
   ArrowLeft,
   Star,
@@ -23,8 +25,21 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addToCart } = useCart();
 
   const product = products.find((p) => p.id === id);
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.discountPrice,
+        image: product.images[0],
+      });
+      toast.success('Added to cart!');
+    }
+  };
 
   if (!product) {
     return (
@@ -327,9 +342,7 @@ const ProductPage = () => {
         <div className="flex gap-3 p-3 max-w-md mx-auto">
           <button
             className="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-primary rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
-            onClick={() => {
-              alert('Added to cart!');
-            }}
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="h-4 w-4" />
             Add to Cart

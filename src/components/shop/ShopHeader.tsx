@@ -1,8 +1,11 @@
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '@/contexts/CartContext';
 
 const ShopHeader = () => {
   const navigate = useNavigate();
+  const { getItemCount } = useCart();
+  const itemCount = getItemCount();
 
   return (
     <header className="sticky top-0 z-50 bg-blue-600 shadow-sm">
@@ -28,12 +31,11 @@ const ShopHeader = () => {
           </button>
           <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors relative">
             <ShoppingCart className="h-5 w-5 text-white" />
-            <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-orange-500 text-[10px] font-bold text-white flex items-center justify-center">
-              0
-            </span>
-          </button>
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors">
-            <User className="h-5 w-5 text-white" />
+            {itemCount > 0 && (
+              <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-orange-500 text-[10px] font-bold text-white flex items-center justify-center">
+                {itemCount > 99 ? '99+' : itemCount}
+              </span>
+            )}
           </button>
         </div>
       </div>
