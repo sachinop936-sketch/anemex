@@ -337,18 +337,17 @@ const ProductPage = () => {
         </section>
       </main>
 
-      {/* Sticky Buy Buttons - Meesho Style */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border shadow-lg safe-bottom">
-        <div className="flex gap-3 p-3 max-w-md mx-auto">
+      {/* Sticky Buy Buttons - Flipkart Style */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg safe-bottom">
+        <div className="flex gap-0 max-w-md mx-auto">
           <button
-            className="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-primary rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-4 bg-white text-gray-800 text-base font-medium border-r border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide"
             onClick={handleAddToCart}
           >
-            <ShoppingCart className="h-4 w-4" />
             Add to Cart
           </button>
           <button
-            className="flex-1 flex items-center justify-center gap-2 py-3 gradient-primary rounded-lg text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+            className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FB641B] text-white text-base font-medium hover:bg-[#E85A17] transition-colors uppercase tracking-wide"
             onClick={() => {
               addToCart({
                 id: product.id,
@@ -359,7 +358,6 @@ const ProductPage = () => {
               navigate(`/address?productId=${product.id}`);
             }}
           >
-            <Zap className="h-4 w-4" />
             Buy Now
           </button>
         </div>
