@@ -12,7 +12,7 @@ const PaymentPage = () => {
   const serviceName = searchParams.get("service") || "Call";
   const amount = searchParams.get("amount") || "99";
 
-  const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04";
+  const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tr=RZPRCT7AZij7GITsaqrv2";
   const TELEGRAM_URL = "https://t.me/SUNITA_OKK";
 
   // Build UPI link with dynamic amount and service name as transaction note
