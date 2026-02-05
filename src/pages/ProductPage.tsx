@@ -349,7 +349,15 @@ const ProductPage = () => {
           </button>
           <button
             className="flex-1 flex items-center justify-center gap-2 py-3 gradient-primary rounded-lg text-sm font-semibold text-white hover:opacity-90 transition-opacity"
-            onClick={() => navigate(`/address?productId=${product.id}`)}
+            onClick={() => {
+              addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.discountPrice,
+                image: product.images[0],
+              });
+              navigate(`/address?productId=${product.id}`);
+            }}
           >
             <Zap className="h-4 w-4" />
             Buy Now
