@@ -68,10 +68,12 @@ const CheckoutPaymentPage = () => {
     );
   }
 
+  const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tr=RZPRCT7AZij7GITsaqrv2";
+
   const handlePay = () => {
-    // In a real app, this would integrate with payment gateway
-    alert('Payment integration would go here. Redirecting to success page...');
-    navigate('/');
+    if (!product) return;
+    const upiLink = `${RAZORPAY_UPI_BASE}&am=${product.discountPrice}&tn=${encodeURIComponent(product.name)}`;
+    window.location.href = upiLink;
   };
 
   return (
