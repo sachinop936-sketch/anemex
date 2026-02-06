@@ -37,6 +37,7 @@ const ProductPage = () => {
           id: product.id,
           name: product.name,
           price: product.discountPrice,
+          originalPrice: product.originalPrice,
           image: product.images[0],
         });
       }
@@ -384,6 +385,7 @@ const ProductPage = () => {
                   id: product.id,
                   name: product.name,
                   price: product.discountPrice,
+                  originalPrice: product.originalPrice,
                   image: product.images[0],
                 });
               }

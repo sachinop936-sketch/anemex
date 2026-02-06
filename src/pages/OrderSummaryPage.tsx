@@ -47,7 +47,7 @@ const OrderSummaryPage = () => {
     );
   }
 
-  const totalOriginalPrice = items.reduce((sum, item) => sum + item.price * 1.4 * item.quantity, 0);
+  const totalOriginalPrice = items.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
   const totalDiscountPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const savings = totalOriginalPrice - totalDiscountPrice;
 
@@ -134,7 +134,7 @@ const OrderSummaryPage = () => {
                       </button>
                     </div>
                     <span className="text-xs text-muted-foreground line-through">
-                      ₹{Math.round(item.price * 1.4 * item.quantity).toLocaleString()}
+                      ₹{(item.originalPrice * item.quantity).toLocaleString()}
                     </span>
                     <span className="text-sm font-bold text-foreground">
                       ₹{(item.price * item.quantity).toLocaleString()}
