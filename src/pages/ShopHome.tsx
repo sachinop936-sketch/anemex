@@ -9,6 +9,16 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 const ShopHome = () => {
+  // Shuffle product positions on each page load (prices stay fixed per product)
+  const shuffledProducts = useMemo(() => {
+    const arr = [...products];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
