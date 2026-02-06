@@ -126,6 +126,7 @@ export interface Product {
   images: string[];
   category: string;
   tag?: "trending" | "bestseller" | "limited" | "new";
+  stockTag?: string;
   rating: number;
   reviewCount: number;
   features: string[];
@@ -779,5 +780,30 @@ products.forEach((p) => {
     p.discountPercent = Math.round(
       ((fixed.originalPrice - fixed.discountPrice) / fixed.originalPrice) * 100
     );
+  }
+});
+
+// Assign stock urgency tags to various products
+const STOCK_TAGS: Record<string, string> = {
+  "product-1": "Few items left",
+  "product-3": "Limited stock available",
+  "product-5": "Last 5 items left",
+  "product-7": "Last 1 piece left",
+  "product-9": "Only 7 pieces left",
+  "product-11": "Few items left",
+  "product-13": "Limited stock available",
+  "product-15": "Last 5 items left",
+  "product-17": "Last 1 piece left",
+  "product-19": "Only 7 pieces left",
+  "product-21": "Few items left",
+  "product-24": "Limited stock available",
+  "product-26": "Last 5 items left",
+  "product-28": "Last 1 piece left",
+  "product-30": "Only 7 pieces left",
+};
+
+products.forEach((p) => {
+  if (STOCK_TAGS[p.id]) {
+    p.stockTag = STOCK_TAGS[p.id];
   }
 });
