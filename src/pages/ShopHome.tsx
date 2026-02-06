@@ -22,23 +22,25 @@ const ShopHome = () => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
-    // Check if timer end time exists in localStorage
-    let endTime = localStorage.getItem(TIMER_KEY);
-    
-    if (!endTime || parseInt(endTime) <= Date.now()) {
-      // Set new end time if not exists or expired
-      endTime = (Date.now() + TIMER_DURATION).toString();
-      localStorage.setItem(TIMER_KEY, endTime);
-    }
+    const getEndTime = (): number => {
+      const stored = localStorage.getItem(TIMER_KEY);
+      if (stored && parseInt(stored) > Date.now()) {
+        return parseInt(stored);
+      }
+      const newEnd = Date.now() + TIMER_DURATION;
+      localStorage.setItem(TIMER_KEY, newEnd.toString());
+      return newEnd;
+    };
+
+    let endTime = getEndTime();
 
     const updateTimer = () => {
-      const remaining = Math.max(0, parseInt(endTime!) - Date.now());
+      const remaining = Math.max(0, endTime - Date.now());
       setTimeLeft(remaining);
       
       if (remaining <= 0) {
-        // Reset timer when it reaches 0
-        const newEndTime = (Date.now() + TIMER_DURATION).toString();
-        localStorage.setItem(TIMER_KEY, newEndTime);
+        endTime = Date.now() + TIMER_DURATION;
+        localStorage.setItem(TIMER_KEY, endTime.toString());
       }
     };
 
