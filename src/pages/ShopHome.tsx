@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
