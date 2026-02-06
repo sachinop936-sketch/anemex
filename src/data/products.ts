@@ -29,7 +29,7 @@ export const products: Product[] = [
     originalPrice: 1999,
     discountPrice: 1,
     discountPercent: 75,
-    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=500&fit=crop",
+    image: "https://earbud-1.1.jpeg",
     images: [
       "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&h=750&fit=crop",
       "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=750&fit=crop",
