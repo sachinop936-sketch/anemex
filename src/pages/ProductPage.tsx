@@ -209,6 +209,30 @@ const ProductPage = () => {
             <Check className="h-4 w-4" />
             You save ₹{(product.originalPrice - product.discountPrice).toLocaleString()}
           </div>
+
+          {/* Quantity Selector */}
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-sm font-medium text-foreground">Quantity:</span>
+            <div className="flex items-center">
+              <button
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="h-9 w-9 flex items-center justify-center rounded-l-lg border border-border bg-muted text-lg font-bold text-foreground hover:bg-muted/80 transition-colors"
+                disabled={quantity <= 1}
+              >
+                −
+              </button>
+              <span className="h-9 w-11 flex items-center justify-center border-t border-b border-border text-sm font-semibold text-foreground bg-card">
+                {quantity}
+              </span>
+              <button
+                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                className="h-9 w-9 flex items-center justify-center rounded-r-lg border border-border bg-muted text-lg font-bold text-foreground hover:bg-muted/80 transition-colors"
+                disabled={quantity >= 10}
+              >
+                +
+              </button>
+            </div>
+          </div>
         </section>
 
         {/* Delivery Info */}
@@ -342,27 +366,7 @@ const ProductPage = () => {
 
       {/* Sticky Buy Buttons - Flipkart Style */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg safe-bottom">
-        <div className="flex items-center gap-0 max-w-md mx-auto">
-          {/* Quantity Selector */}
-          <div className="flex items-center border-r border-gray-200 px-3 py-2">
-            <button
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="h-8 w-8 flex items-center justify-center rounded-l-lg border border-gray-300 bg-gray-50 text-lg font-bold text-foreground hover:bg-gray-100 transition-colors"
-              disabled={quantity <= 1}
-            >
-              −
-            </button>
-            <span className="h-8 w-10 flex items-center justify-center border-t border-b border-gray-300 text-sm font-semibold text-foreground bg-white">
-              {quantity}
-            </span>
-            <button
-              onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-              className="h-8 w-8 flex items-center justify-center rounded-r-lg border border-gray-300 bg-gray-50 text-lg font-bold text-foreground hover:bg-gray-100 transition-colors"
-              disabled={quantity >= 10}
-            >
-              +
-            </button>
-          </div>
+        <div className="flex gap-0 max-w-md mx-auto">
           <button
             className="flex-1 flex items-center justify-center gap-2 py-4 bg-white text-gray-800 text-sm font-medium border-r border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide"
             onClick={handleAddToCart}
