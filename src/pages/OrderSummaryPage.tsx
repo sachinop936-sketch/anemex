@@ -23,7 +23,7 @@ const OrderSummaryPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const addressParam = searchParams.get('address');
-  const { items, removeFromCart } = useCart();
+  const { items, removeFromCart, updateQuantity } = useCart();
 
   const address: Address | null = useMemo(() => {
     if (!addressParam) return null;
@@ -114,13 +114,30 @@ const OrderSummaryPage = () => {
                       <span className="text-[10px] font-semibold text-white">Assured</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs text-muted-foreground">Qty: {item.quantity}</span>
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        className="h-7 w-7 flex items-center justify-center rounded-l-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
+                      >
+                        −
+                      </button>
+                      <span className="h-7 w-8 flex items-center justify-center border-t border-b border-border text-xs font-semibold bg-card">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="h-7 w-7 flex items-center justify-center rounded-r-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
+                        disabled={item.quantity >= 10}
+                      >
+                        +
+                      </button>
+                    </div>
                     <span className="text-xs text-muted-foreground line-through">
-                      ₹{Math.round(item.price * 1.4).toLocaleString()}
+                      ₹{Math.round(item.price * 1.4 * item.quantity).toLocaleString()}
                     </span>
                     <span className="text-sm font-bold text-foreground">
-                      ₹{item.price.toLocaleString()}
+                      ₹{(item.price * item.quantity).toLocaleString()}
                     </span>
                   </div>
                 </div>
