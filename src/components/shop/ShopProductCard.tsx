@@ -59,11 +59,11 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
       )}
 
       {/* Product Image */}
-      <div className="aspect-[3/4] overflow-hidden bg-muted">
+      <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+          className="h-full w-full object-contain hover:scale-105 transition-transform duration-300"
           loading="lazy"
         />
       </div>

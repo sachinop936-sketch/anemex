@@ -87,11 +87,11 @@ const ProductPage = () => {
         {/* Image Gallery */}
         <section className="bg-white animate-fade-in">
           <div className="relative">
-            <div className="aspect-[3/4] overflow-hidden">
+            <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center">
               <img
                 src={product.images[currentImage]}
                 alt={product.name}
-                className="h-full w-full object-cover transition-opacity duration-300"
+                className="h-full w-full object-contain transition-opacity duration-300"
               />
             </div>
 
