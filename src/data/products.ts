@@ -735,3 +735,49 @@ export const products: Product[] = [
     freeDelivery: true,
   },
 ];
+
+// Fixed pricing map — each product gets a deterministic discounted price from the allowed list
+const FIXED_PRICES: Record<string, { discountPrice: number; originalPrice: number }> = {
+  "product-1": { discountPrice: 99, originalPrice: 1999 },
+  "product-2": { discountPrice: 89, originalPrice: 1499 },
+  "product-3": { discountPrice: 129, originalPrice: 2499 },
+  "product-4": { discountPrice: 119, originalPrice: 1899 },
+  "product-5": { discountPrice: 137, originalPrice: 2999 },
+  "product-6": { discountPrice: 139, originalPrice: 3499 },
+  "product-7": { discountPrice: 356, originalPrice: 2999 },
+  "product-8": { discountPrice: 248, originalPrice: 2499 },
+  "product-9": { discountPrice: 162, originalPrice: 14999 },
+  "product-10": { discountPrice: 128, originalPrice: 2799 },
+  "product-11": { discountPrice: 99, originalPrice: 3299 },
+  "product-12": { discountPrice: 89, originalPrice: 5499 },
+  "product-13": { discountPrice: 129, originalPrice: 1999 },
+  "product-14": { discountPrice: 119, originalPrice: 1499 },
+  "product-15": { discountPrice: 137, originalPrice: 4490 },
+  "product-16": { discountPrice: 139, originalPrice: 2999 },
+  "product-17": { discountPrice: 356, originalPrice: 1999 },
+  "product-18": { discountPrice: 248, originalPrice: 3499 },
+  "product-19": { discountPrice: 162, originalPrice: 2499 },
+  "product-20": { discountPrice: 128, originalPrice: 3999 },
+  "product-21": { discountPrice: 99, originalPrice: 2999 },
+  "product-23": { discountPrice: 89, originalPrice: 2499 },
+  "product-24": { discountPrice: 129, originalPrice: 3999 },
+  "product-25": { discountPrice: 119, originalPrice: 2999 },
+  "product-26": { discountPrice: 137, originalPrice: 1499 },
+  "product-27": { discountPrice: 139, originalPrice: 18999 },
+  "product-28": { discountPrice: 356, originalPrice: 3499 },
+  "product-29": { discountPrice: 248, originalPrice: 1999 },
+  "product-30": { discountPrice: 162, originalPrice: 2999 },
+  "product-31": { discountPrice: 128, originalPrice: 2499 },
+};
+
+// Apply fixed prices and calculate discount percentages
+products.forEach((p) => {
+  const fixed = FIXED_PRICES[p.id];
+  if (fixed) {
+    p.discountPrice = fixed.discountPrice;
+    p.originalPrice = fixed.originalPrice;
+    p.discountPercent = Math.round(
+      ((fixed.originalPrice - fixed.discountPrice) / fixed.originalPrice) * 100
+    );
+  }
+});

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
@@ -9,6 +9,16 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 const ShopHome = () => {
+  // Shuffle product positions on each page load (prices stay fixed per product)
+  const shuffledProducts = useMemo(() => {
+    const arr = [...products];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
@@ -98,7 +108,7 @@ const ShopHome = () => {
         {/* Products Grid - Meesho 2-column Style */}
         <section className="bg-background">
           <div className="grid grid-cols-2">
-            {products.map((product, index) => (
+            {shuffledProducts.map((product, index) => (
               <ShopProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
