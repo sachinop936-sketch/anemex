@@ -108,7 +108,7 @@ const ShopHome = () => {
         {/* Products Grid - Meesho 2-column Style */}
         <section className="bg-background">
           <div className="grid grid-cols-2">
-            {products.map((product, index) => (
+            {shuffledProducts.map((product, index) => (
               <ShopProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
