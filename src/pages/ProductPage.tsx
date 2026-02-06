@@ -194,20 +194,23 @@ const ProductPage = () => {
           </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-3 mb-4">
-            <span className="text-2xl font-bold text-foreground">₹{product.discountPrice}</span>
+          <div className="flex items-baseline gap-3 mb-1">
+            <span className="text-2xl font-bold text-foreground">₹{(product.discountPrice * quantity).toLocaleString()}</span>
             <span className="text-base text-muted-foreground line-through">
-              ₹{product.originalPrice}
+              ₹{(product.originalPrice * quantity).toLocaleString()}
             </span>
             <span className="text-sm font-semibold text-green-600">
               {product.discountPercent}% off
             </span>
           </div>
+          {quantity > 1 && (
+            <p className="text-xs text-muted-foreground mb-3">₹{product.discountPrice.toLocaleString()} × {quantity} items</p>
+          )}
 
           {/* Savings Tag */}
           <div className="inline-flex items-center gap-1 bg-green-50 border border-green-200 text-green-700 px-3 py-1.5 rounded-lg text-sm font-medium mb-4">
             <Check className="h-4 w-4" />
-            You save ₹{(product.originalPrice - product.discountPrice).toLocaleString()}
+            You save ₹{((product.originalPrice - product.discountPrice) * quantity).toLocaleString()}
           </div>
 
           {/* Quantity Selector */}
