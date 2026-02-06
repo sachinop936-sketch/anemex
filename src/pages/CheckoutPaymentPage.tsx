@@ -5,6 +5,8 @@ import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { ArrowLeft, QrCode } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const paymentMethods = [
   {
@@ -34,11 +36,11 @@ const CheckoutPaymentPage = () => {
   const { items } = useCart();
 
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(6 * 60 + 20); // 6min 20sec
+  const [timeLeft, setTimeLeft] = useState(6 * 60 + 20);
+  const [payLoading, setPayLoading] = useState(false);
 
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
@@ -63,12 +65,29 @@ const CheckoutPaymentPage = () => {
     );
   }
 
-  const RAZORPAY_UPI_BASE = "upi://pay?ver=01&mode=19&pa=buzzcart989562.rzp@icici&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tr=RZPRCT7AZij7GITsaqrv2";
+  const handlePay = async () => {
+    setPayLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment-link', {
+        body: {
+          items: items.map(item => ({ name: item.name })),
+          totalAmount: totalPrice,
+        },
+      });
 
-  const handlePay = () => {
-    const itemNames = items.map(item => item.name).join(', ');
-    const upiLink = `${RAZORPAY_UPI_BASE}&am=${totalPrice}&tn=${encodeURIComponent(itemNames)}`;
-    window.location.href = upiLink;
+      if (error || !data?.paymentUrl) {
+        toast.error('Payment failed. Please try again.');
+        console.error('Payment error:', error);
+        return;
+      }
+
+      window.location.href = data.paymentUrl;
+    } catch (err) {
+      toast.error('Payment failed. Please try again.');
+      console.error('Payment error:', err);
+    } finally {
+      setPayLoading(false);
+    }
   };
 
   return (
@@ -135,7 +154,7 @@ const CheckoutPaymentPage = () => {
             variant="gradient"
             size="xl"
             className="w-full"
-            disabled={!selectedMethod}
+            disabled={!selectedMethod || payLoading}
             onClick={handlePay}
           >
             PAY ₹{totalPrice.toLocaleString()}
