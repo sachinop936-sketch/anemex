@@ -98,13 +98,13 @@ const ProductPage = () => {
             {/* Navigation Arrows */}
             <button
               onClick={prevImage}
-              className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
             >
               <ChevronLeft className="h-6 w-6 text-foreground" />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
             >
               <ChevronRight className="h-6 w-6 text-foreground" />
             </button>
