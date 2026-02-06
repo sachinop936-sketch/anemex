@@ -4,6 +4,20 @@ import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
+import { z } from 'zod';
+import { useMemo } from 'react';
+
+const AddressSchema = z.object({
+  fullName: z.string().min(1).max(100),
+  mobile: z.string().regex(/^\d{10}$/),
+  pincode: z.string().regex(/^\d{6}$/),
+  city: z.string().min(1).max(100),
+  state: z.string().min(1).max(100),
+  houseNo: z.string().min(1).max(200),
+  roadArea: z.string().max(200).optional().default(''),
+});
+
+type Address = z.infer<typeof AddressSchema>;
 
 const OrderSummaryPage = () => {
   const navigate = useNavigate();
@@ -11,7 +25,16 @@ const OrderSummaryPage = () => {
   const addressParam = searchParams.get('address');
   const { items, removeFromCart } = useCart();
 
-  const address = addressParam ? JSON.parse(decodeURIComponent(addressParam)) : null;
+  const address: Address | null = useMemo(() => {
+    if (!addressParam) return null;
+    try {
+      const parsed = JSON.parse(decodeURIComponent(addressParam));
+      return AddressSchema.parse(parsed);
+    } catch {
+      navigate('/address', { replace: true });
+      return null;
+    }
+  }, [addressParam, navigate]);
 
   if (items.length === 0) {
     return (
