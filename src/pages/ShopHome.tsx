@@ -6,7 +6,7 @@ import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
 
 const TIMER_KEY = 'flipkart_sale_timer_end';
-const TIMER_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+const TIMER_DURATION = 7 * 60 * 1000; // 7 minutes in milliseconds
 
 const ShopHome = () => {
   // Shuffle product positions on each page load (prices stay fixed per product)
