@@ -100,7 +100,7 @@ const ShopHome = () => {
         {/* Live Sale Timer */}
         <section className="bg-background py-4 text-center">
           <p className="text-lg font-semibold text-foreground">
-            Live Sale : <span className="text-orange-500">{formatTime(timeLeft)}</span>
+            Sale Ends In : <span className="text-orange-500">{formatTime(timeLeft)}</span>
           </p>
         </section>
 

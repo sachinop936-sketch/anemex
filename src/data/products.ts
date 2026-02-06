@@ -126,6 +126,7 @@ export interface Product {
   images: string[];
   category: string;
   tag?: "trending" | "bestseller" | "limited" | "new";
+  stockTag?: string;
   rating: number;
   reviewCount: number;
   features: string[];
