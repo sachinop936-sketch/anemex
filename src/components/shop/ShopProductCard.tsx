@@ -25,7 +25,7 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
     <div
       onClick={handleClick}
       className="relative bg-card border-r border-b border-border/40 cursor-pointer touch-feedback animate-fade-in"
-      style={{ animationDelay: `${index * 50}ms` }}
+      style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}
     >
       {/* Wishlist Button */}
       <button
