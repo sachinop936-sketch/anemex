@@ -98,6 +98,13 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
             <span className="text-[10px]">Free Delivery</span>
           </div>
         )}
+
+        {/* Stock Urgency Tag */}
+        {product.stockTag && (
+          <div className="mt-1">
+            <span className="text-[10px] font-semibold text-red-600">{product.stockTag}</span>
+          </div>
+        )}
       </div>
     </div>
   );
