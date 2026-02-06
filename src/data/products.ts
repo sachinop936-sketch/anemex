@@ -52,6 +52,67 @@ import earbud134 from '@/assets/earbud-13.4.jpg';
 import earbud141 from '@/assets/earbud-14.1.jpg';
 import earbud142 from '@/assets/earbud-14.2.jpg';
 import earbud143 from '@/assets/earbud-14.3.jpg';
+import earbud151 from '@/assets/earbud-15.1.jpg';
+import earbud152 from '@/assets/earbud-15.2.jpg';
+import earbud153 from '@/assets/earbud-15.3.jpg';
+import earbud161 from '@/assets/earbud-16.1.jpg';
+import earbud162 from '@/assets/earbud-16.2.jpg';
+import earbud163 from '@/assets/earbud-16.3.jpg';
+import earbud164 from '@/assets/earbud-16.4.jpg';
+import earbud171 from '@/assets/earbud-17.1.jpg';
+import earbud172 from '@/assets/earbud-17.2.jpg';
+import earbud173 from '@/assets/earbud-17.3.jpg';
+import earbud174 from '@/assets/earbud-17.4.jpg';
+import earbud181 from '@/assets/earbud-18.1.jpg';
+import earbud182 from '@/assets/earbud-18.2.jpg';
+import earbud183 from '@/assets/earbud-18.3.jpg';
+import earbud184 from '@/assets/earbud-18.4.jpg';
+import earbud191 from '@/assets/earbud-19.1.jpg';
+import earbud192 from '@/assets/earbud-19.2.jpg';
+import earbud193 from '@/assets/earbud-19.3.jpg';
+import earbud194 from '@/assets/earbud-19.4.jpg';
+import earbud201 from '@/assets/earbud-20.1.jpg';
+import earbud202 from '@/assets/earbud-20.2.jpg';
+import earbud203 from '@/assets/earbud-20.3.jpg';
+import earbud204 from '@/assets/earbud-20.4.jpg';
+import earbud211 from '@/assets/earbud-21.1.jpg';
+import earbud212 from '@/assets/earbud-21.2.jpg';
+import earbud213 from '@/assets/earbud-21.3.jpg';
+import earbud231 from '@/assets/earbud-23.1.jpg';
+import earbud232 from '@/assets/earbud-23.2.jpg';
+import earbud233 from '@/assets/earbud-23.3.jpg';
+import earbud241 from '@/assets/earbud-24.1.jpg';
+import earbud242 from '@/assets/earbud-24.2.jpg';
+import earbud243 from '@/assets/earbud-24.3.jpg';
+import earbud244 from '@/assets/earbud-24.4.jpg';
+import earbud251 from '@/assets/earbud-25.1.jpg';
+import earbud252 from '@/assets/earbud-25.2.jpg';
+import earbud253 from '@/assets/earbud-25.3.jpg';
+import earbud254 from '@/assets/earbud-25.4.jpg';
+import earbud261 from '@/assets/earbud-26.1.jpg';
+import earbud262 from '@/assets/earbud-26.2.jpg';
+import earbud263 from '@/assets/earbud-26.3.jpg';
+import earbud264 from '@/assets/earbud-26.4.jpg';
+import earbud271 from '@/assets/earbud-27.1.jpg';
+import earbud272 from '@/assets/earbud-27.2.jpg';
+import earbud273 from '@/assets/earbud-27.3.jpg';
+import earbud274 from '@/assets/earbud-27.4.jpg';
+import earbud281 from '@/assets/earbud-28.1.jpg';
+import earbud282 from '@/assets/earbud-28.2.jpg';
+import earbud283 from '@/assets/earbud-28.3.jpg';
+import earbud284 from '@/assets/earbud-28.4.jpg';
+import earbud291 from '@/assets/earbud-29.1.jpg';
+import earbud292 from '@/assets/earbud-29.2.jpg';
+import earbud293 from '@/assets/earbud-29.3.jpg';
+import earbud294 from '@/assets/earbud-29.4.jpg';
+import earbud301 from '@/assets/earbud-30.1.jpg';
+import earbud302 from '@/assets/earbud-30.2.jpg';
+import earbud303 from '@/assets/earbud-30.3.jpg';
+import earbud304 from '@/assets/earbud-30.4.jpg';
+import earbud311 from '@/assets/earbud-31.1.jpg';
+import earbud312 from '@/assets/earbud-31.2.jpg';
+import earbud313 from '@/assets/earbud-31.3.jpg';
+import earbud314 from '@/assets/earbud-31.4.jpg';
 
 export interface Product {
   id: string;
@@ -351,6 +412,310 @@ export const products: Product[] = [
     reviewCount: 5432,
     features: ["Bluetooth Wireless", "Padded Ear Cushions", "Foldable Design", "Built-in Mic"],
     seller: "Zebronics Official",
+    freeDelivery: true,
+  },
+  // Product 15
+  {
+    id: "product-15",
+    name: "Product 15",
+    description: "Product 15 description.",
+    shortDescription: "Product 15",
+    originalPrice: 2499,
+    discountPrice: 649,
+    discountPercent: 74,
+    image: earbud151,
+    images: [earbud151, earbud152, earbud153],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.3,
+    reviewCount: 1200,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 16
+  {
+    id: "product-16",
+    name: "Product 16",
+    description: "Product 16 description.",
+    shortDescription: "Product 16",
+    originalPrice: 2999,
+    discountPrice: 799,
+    discountPercent: 73,
+    image: earbud161,
+    images: [earbud161, earbud162, earbud163, earbud164],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.4,
+    reviewCount: 1340,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 17
+  {
+    id: "product-17",
+    name: "Product 17",
+    description: "Product 17 description.",
+    shortDescription: "Product 17",
+    originalPrice: 1999,
+    discountPrice: 549,
+    discountPercent: 73,
+    image: earbud171,
+    images: [earbud171, earbud172, earbud173, earbud174],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.5,
+    reviewCount: 2100,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 18
+  {
+    id: "product-18",
+    name: "Product 18",
+    description: "Product 18 description.",
+    shortDescription: "Product 18",
+    originalPrice: 3499,
+    discountPrice: 899,
+    discountPercent: 74,
+    image: earbud181,
+    images: [earbud181, earbud182, earbud183, earbud184],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.6,
+    reviewCount: 980,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 19
+  {
+    id: "product-19",
+    name: "Product 19",
+    description: "Product 19 description.",
+    shortDescription: "Product 19",
+    originalPrice: 2499,
+    discountPrice: 699,
+    discountPercent: 72,
+    image: earbud191,
+    images: [earbud191, earbud192, earbud193, earbud194],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.3,
+    reviewCount: 1560,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 20
+  {
+    id: "product-20",
+    name: "Product 20",
+    description: "Product 20 description.",
+    shortDescription: "Product 20",
+    originalPrice: 1999,
+    discountPrice: 499,
+    discountPercent: 75,
+    image: earbud201,
+    images: [earbud201, earbud202, earbud203, earbud204],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.4,
+    reviewCount: 2340,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 21
+  {
+    id: "product-21",
+    name: "Product 21",
+    description: "Product 21 description.",
+    shortDescription: "Product 21",
+    originalPrice: 2999,
+    discountPrice: 749,
+    discountPercent: 75,
+    image: earbud211,
+    images: [earbud211, earbud212, earbud213],
+    category: "Electronics",
+    tag: "limited",
+    rating: 4.7,
+    reviewCount: 870,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 23 (no product 22 — no images available)
+  {
+    id: "product-23",
+    name: "Product 23",
+    description: "Product 23 description.",
+    shortDescription: "Product 23",
+    originalPrice: 2499,
+    discountPrice: 649,
+    discountPercent: 74,
+    image: earbud231,
+    images: [earbud231, earbud232, earbud233],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.5,
+    reviewCount: 1100,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 24
+  {
+    id: "product-24",
+    name: "Product 24",
+    description: "Product 24 description.",
+    shortDescription: "Product 24",
+    originalPrice: 3999,
+    discountPrice: 999,
+    discountPercent: 75,
+    image: earbud241,
+    images: [earbud241, earbud242, earbud243, earbud244],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.6,
+    reviewCount: 1450,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 25
+  {
+    id: "product-25",
+    name: "Product 25",
+    description: "Product 25 description.",
+    shortDescription: "Product 25",
+    originalPrice: 2999,
+    discountPrice: 799,
+    discountPercent: 73,
+    image: earbud251,
+    images: [earbud251, earbud252, earbud253, earbud254],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.4,
+    reviewCount: 1890,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 26
+  {
+    id: "product-26",
+    name: "Product 26",
+    description: "Product 26 description.",
+    shortDescription: "Product 26",
+    originalPrice: 1499,
+    discountPrice: 399,
+    discountPercent: 73,
+    image: earbud261,
+    images: [earbud261, earbud262, earbud263, earbud264],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.2,
+    reviewCount: 2200,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 27
+  {
+    id: "product-27",
+    name: "Product 27",
+    description: "Product 27 description.",
+    shortDescription: "Product 27",
+    originalPrice: 2499,
+    discountPrice: 649,
+    discountPercent: 74,
+    image: earbud271,
+    images: [earbud271, earbud272, earbud273, earbud274],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.5,
+    reviewCount: 1670,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 28
+  {
+    id: "product-28",
+    name: "Product 28",
+    description: "Product 28 description.",
+    shortDescription: "Product 28",
+    originalPrice: 3499,
+    discountPrice: 899,
+    discountPercent: 74,
+    image: earbud281,
+    images: [earbud281, earbud282, earbud283, earbud284],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.6,
+    reviewCount: 1340,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 29
+  {
+    id: "product-29",
+    name: "Product 29",
+    description: "Product 29 description.",
+    shortDescription: "Product 29",
+    originalPrice: 1999,
+    discountPrice: 549,
+    discountPercent: 73,
+    image: earbud291,
+    images: [earbud291, earbud292, earbud293, earbud294],
+    category: "Electronics",
+    tag: "limited",
+    rating: 4.3,
+    reviewCount: 990,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 30
+  {
+    id: "product-30",
+    name: "Product 30",
+    description: "Product 30 description.",
+    shortDescription: "Product 30",
+    originalPrice: 2999,
+    discountPrice: 749,
+    discountPercent: 75,
+    image: earbud301,
+    images: [earbud301, earbud302, earbud303, earbud304],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.4,
+    reviewCount: 1120,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
+    freeDelivery: true,
+  },
+  // Product 31
+  {
+    id: "product-31",
+    name: "Product 31",
+    description: "Product 31 description.",
+    shortDescription: "Product 31",
+    originalPrice: 2499,
+    discountPrice: 699,
+    discountPercent: 72,
+    image: earbud311,
+    images: [earbud311, earbud312, earbud313, earbud314],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.5,
+    reviewCount: 1560,
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+    seller: "Official Store",
     freeDelivery: true,
   },
 ];
