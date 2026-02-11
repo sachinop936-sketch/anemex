@@ -30,12 +30,12 @@ const ProductPage = () => {
 
   const product = products.find((p) => p.id === id);
 
-  // Auto-slide images every 2 seconds
+  // Auto-slide images every 4 seconds
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % product.images.length);
-    }, 2000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [product]);
 
@@ -100,12 +100,21 @@ const ProductPage = () => {
         {/* Image Gallery */}
         <section className="bg-white animate-fade-in">
           <div className="relative">
-            <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center">
-              <img
-                src={product.images[currentImage]}
-                alt={product.name}
-                className="h-full w-full object-contain transition-opacity duration-300"
-              />
+            <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center relative">
+              {product.images.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={product.name}
+                  className={`absolute inset-0 h-full w-full object-contain transition-all duration-700 ease-in-out ${
+                    index === currentImage
+                      ? 'opacity-100 translate-x-0'
+                      : index < currentImage || (currentImage === 0 && index === product.images.length - 1 && index !== 0)
+                        ? 'opacity-0 -translate-x-full'
+                        : 'opacity-0 translate-x-full'
+                  }`}
+                />
+              ))}
             </div>
 
             {/* Navigation Arrows */}
