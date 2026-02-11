@@ -7,7 +7,6 @@ import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
 import {
   ArrowLeft,
-  Star,
   Heart,
   Share2,
   Truck,
@@ -16,9 +15,38 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  ShoppingCart,
-  Zap,
 } from 'lucide-react';
+
+const GoldStar = ({ filled = 'full' }: { filled?: 'full' | 'half' | 'empty' }) => (
+  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5">
+    <path
+      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+      fill={filled === 'full' ? '#FFD700' : filled === 'half' ? 'url(#halfStarPDP)' : '#E0E0E0'}
+      stroke={filled !== 'empty' ? '#FFC107' : '#D0D0D0'}
+      strokeWidth="0.5"
+    />
+    {filled === 'half' && (
+      <defs>
+        <linearGradient id="halfStarPDP">
+          <stop offset="50%" stopColor="#FFD700" />
+          <stop offset="50%" stopColor="#E0E0E0" />
+        </linearGradient>
+      </defs>
+    )}
+  </svg>
+);
+
+const AssuredBadge = () => (
+  <div className="inline-flex items-center gap-0.5 rounded-full px-2 py-0.5"
+    style={{ background: 'linear-gradient(90deg, #e8f5e9 0%, #c8e6c9 100%)', border: '1px solid #a5d6a7' }}
+  >
+    <svg viewBox="0 0 20 20" className="h-3.5 w-3.5">
+      <circle cx="10" cy="10" r="9" fill="#4CAF50" stroke="#388E3C" strokeWidth="0.5"/>
+      <path d="M6 10l3 3 5-5" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+    <span className="text-[11px] font-bold" style={{ color: '#2E7D32' }}>Assured</span>
+  </div>
+);
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -205,11 +233,14 @@ const ProductPage = () => {
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center gap-1 rounded bg-green-600 px-2 py-1">
               <span className="text-sm font-bold text-white">{product.rating}</span>
-              <Star className="h-3 w-3 fill-white text-white" />
+              <svg viewBox="0 0 24 24" className="h-3 w-3">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="white" stroke="white" strokeWidth="0.5"/>
+              </svg>
             </div>
             <span className="text-sm text-muted-foreground">
               {product.reviewCount.toLocaleString()} Reviews
             </span>
+            <AssuredBadge />
           </div>
 
           {/* Price */}
@@ -325,13 +356,9 @@ const ProductPage = () => {
               <div className="text-3xl font-bold text-foreground">{product.rating}</div>
               <div className="flex items-center gap-0.5 justify-center mt-1">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
+                  <GoldStar
                     key={i}
-                    className={`h-3 w-3 ${
-                      i < Math.round(product.rating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'fill-gray-200 text-gray-200'
-                    }`}
+                    filled={i < Math.floor(product.rating) ? 'full' : i < product.rating ? 'half' : 'empty'}
                   />
                 ))}
               </div>
@@ -365,13 +392,9 @@ const ProductPage = () => {
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-0.5">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
+                          <GoldStar
                             key={i}
-                            className={`h-2.5 w-2.5 ${
-                              i < review.rating
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'fill-gray-200 text-gray-200'
-                            }`}
+                            filled={i < review.rating ? 'full' : 'empty'}
                           />
                         ))}
                       </div>
