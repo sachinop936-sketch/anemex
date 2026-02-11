@@ -40,6 +40,9 @@ const CheckoutPaymentPage = () => {
   const [payLoading, setPayLoading] = useState(false);
 
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalOriginalPrice = items.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const discount = totalOriginalPrice - totalPrice;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -114,50 +117,84 @@ const CheckoutPaymentPage = () => {
           </div>
         </div>
 
-        {/* Payment Methods */}
+        {/* Select Payment Method */}
         <div className="container">
-          <p className="text-xs text-muted-foreground mb-4">
-            PAY ONLINE (PhonePe/Paytm/Scan)
-          </p>
+          <div className="bg-card border border-border rounded-xl p-4 mb-4">
+            <h3 className="text-sm font-bold text-foreground mb-3">Select Your Payment Method</h3>
+            <div className="space-y-3">
+              {paymentMethods.map((method) => (
+                <button
+                  key={method.id}
+                  onClick={() => setSelectedMethod(method.id)}
+                  className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
+                    selectedMethod === method.id
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border bg-card hover:border-primary/50'
+                  }`}
+                >
+                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                    selectedMethod === method.id ? 'border-primary' : 'border-muted-foreground/40'
+                  }`}>
+                    {selectedMethod === method.id && (
+                      <div className="h-2.5 w-2.5 rounded-full bg-primary" />
+                    )}
+                  </div>
+                  <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
+                  {method.logo ? (
+                    <div className="h-8 w-8 rounded flex items-center justify-center bg-white p-0.5">
+                      <img src={method.logo} alt={method.name} className="h-6 w-auto object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-8 w-8 rounded flex items-center justify-center bg-muted">
+                      {method.icon && <method.icon className="h-4 w-4 text-muted-foreground" />}
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <div className="space-y-3">
-            {paymentMethods.map((method) => (
-              <button
-                key={method.id}
-                onClick={() => setSelectedMethod(method.id)}
-                className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
-                  selectedMethod === method.id
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border bg-card hover:border-primary/50'
-                }`}
-              >
-                {method.logo ? (
-                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-white p-1">
-                    <img src={method.logo} alt={method.name} className="h-8 w-auto object-contain" />
-                  </div>
-                ) : (
-                  <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-muted">
-                    {method.icon && <method.icon className="h-6 w-6 text-muted-foreground" />}
-                  </div>
-                )}
-                <span className="text-base font-medium text-foreground">{method.name}</span>
-              </button>
-            ))}
+          {/* Price Details */}
+          <div className="bg-card border border-border rounded-xl p-4">
+            <h3 className="text-base font-bold text-foreground mb-3">Price Details</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Price ({totalItems} {totalItems === 1 ? 'item' : 'items'})</span>
+                <span className="text-foreground">₹{totalOriginalPrice.toLocaleString()}.00</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Discount</span>
+                <span className="text-green-600 font-medium">-₹{discount.toLocaleString()}.00</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Delivery Charges</span>
+                <span className="text-green-600 font-semibold">FREE</span>
+              </div>
+              <div className="border-t border-dashed border-border my-2" />
+              <div className="flex justify-between text-sm font-bold">
+                <span className="text-foreground">Amount Payable</span>
+                <span className="text-foreground">₹{totalPrice.toLocaleString()}.00</span>
+              </div>
+            </div>
           </div>
         </div>
       </main>
 
       {/* Sticky Pay Button */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
-        <div className="container">
+        <div className="container flex items-center gap-4">
+          <div className="flex flex-col">
+            <span className="text-xs text-muted-foreground line-through">₹{totalOriginalPrice.toLocaleString()}.00</span>
+            <span className="text-base font-bold text-foreground">₹{totalPrice.toLocaleString()}.00</span>
+          </div>
           <Button
             variant="gradient"
             size="xl"
-            className="w-full"
+            className="flex-1"
             disabled={!selectedMethod || payLoading}
             onClick={handlePay}
           >
-            PAY ₹{totalPrice.toLocaleString()}
+            Continue
           </Button>
         </div>
       </div>
