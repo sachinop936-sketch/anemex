@@ -57,7 +57,7 @@ const OrderSummaryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader />
+      <ShopHeader showCategories={false} />
       <CheckoutSteps currentStep={2} />
 
       <main className="pb-32">
