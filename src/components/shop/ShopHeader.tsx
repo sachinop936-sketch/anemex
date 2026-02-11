@@ -8,7 +8,7 @@ const ShopHeader = () => {
   const itemCount = getItemCount();
 
   return (
-    <header className="sticky top-0 z-50 bg-sky-400 shadow-sm">
+    <header className="sticky top-0 z-50 bg-[#2874f0] shadow-sm">
       {/* Main Header */}
       <div className="flex items-center justify-between px-4 py-3">
         {/* Logo */}
