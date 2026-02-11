@@ -82,7 +82,7 @@ const ProductPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ShopHeader />
+      <ShopHeader showCategories={false} />
 
       <main className="pb-28">
         {/* Back Button */}
