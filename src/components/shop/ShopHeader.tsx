@@ -21,51 +21,53 @@ const ShopHeader = () => {
   const itemCount = getItemCount();
 
   return (
-    <header className="sticky top-0 z-50 bg-[#2874f0] shadow-sm">
-      {/* Main Header */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
-          <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-blue-500 transition-colors">
-            <Menu className="h-5 w-5 text-white" />
-          </button>
-          <div className="cursor-pointer flex flex-col items-start" onClick={() => navigate('/')}>
-            <span className="text-2xl font-bold text-white italic tracking-tight">Flipkart</span>
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] text-white/90 italic">Explore</span>
-              <span className="text-[10px] text-yellow-400 font-semibold">Plus</span>
-              <span className="text-yellow-400 text-[8px]">+</span>
+    <>
+      <header className="sticky top-0 z-50 bg-[#2874f0] shadow-sm">
+        {/* Main Header */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-3">
+            <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-blue-500 transition-colors">
+              <Menu className="h-5 w-5 text-white" />
+            </button>
+            <div className="cursor-pointer flex flex-col items-start" onClick={() => navigate('/')}>
+              <span className="text-2xl font-bold text-white italic tracking-tight">Flipkart</span>
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] text-white/90 italic">Explore</span>
+                <span className="text-[10px] text-yellow-400 font-semibold">Plus</span>
+                <span className="text-yellow-400 text-[8px]">+</span>
+              </div>
             </div>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors">
+              <Search className="h-5 w-5 text-white" />
+            </button>
+            <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors relative">
+              <ShoppingCart className="h-5 w-5 text-white" />
+              {itemCount > 0 && (
+                <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-orange-500 text-[10px] font-bold text-white flex items-center justify-center">
+                  {itemCount > 99 ? '99+' : itemCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors">
-            <Search className="h-5 w-5 text-white" />
-          </button>
-          <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors relative">
-            <ShoppingCart className="h-5 w-5 text-white" />
-            {itemCount > 0 && (
-              <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-orange-500 text-[10px] font-bold text-white flex items-center justify-center">
-                {itemCount > 99 ? '99+' : itemCount}
-              </span>
-            )}
-          </button>
+        {/* Search Bar */}
+        <div className="px-4 pb-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search for products, brands and more"
+              className="w-full h-10 pl-10 pr-4 rounded-lg bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
+            />
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Search Bar */}
-      <div className="px-4 pb-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search for products, brands and more"
-            className="w-full h-10 pl-10 pr-4 rounded-lg bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
-          />
-        </div>
-      </div>
-
-      {/* Category Bar */}
+      {/* Category Bar - scrolls with page */}
       <div className="bg-white px-2 py-2 overflow-x-auto border-b border-border/30">
         <div className="flex items-start justify-around gap-2">
           {categories.map((cat) => (
@@ -83,7 +85,7 @@ const ShopHeader = () => {
           ))}
         </div>
       </div>
-    </header>
+    </>
   );
 };
 
