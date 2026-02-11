@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -27,6 +27,7 @@ const AddressPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const productId = searchParams.get('productId');
+  const [pincodeLoading, setPincodeLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -42,8 +43,34 @@ const AddressPage = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handlePincodeChange = async (value: string) => {
+    // Only allow digits, max 6
+    const cleaned = value.replace(/\D/g, '').slice(0, 6);
+    handleInputChange('pincode', cleaned);
+
+    if (cleaned.length === 6) {
+      setPincodeLoading(true);
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${cleaned}`);
+        const data = await res.json();
+        if (data?.[0]?.Status === 'Success' && data[0].PostOffice?.length > 0) {
+          const po = data[0].PostOffice[0];
+          setFormData((prev) => ({
+            ...prev,
+            pincode: cleaned,
+            city: po.District || po.Name || '',
+            state: po.State || '',
+          }));
+        }
+      } catch {
+        // silently fail, user can fill manually
+      } finally {
+        setPincodeLoading(false);
+      }
+    }
+  };
+
   const handleSaveAddress = () => {
-    // Navigate to order summary with product and address info
     const addressQuery = encodeURIComponent(JSON.stringify(formData));
     navigate(`/order-summary?productId=${productId}&address=${addressQuery}`);
   };
@@ -101,13 +128,20 @@ const AddressPage = () => {
 
             <div>
               <Label htmlFor="pincode" className="text-sm text-muted-foreground">Pincode</Label>
-              <Input
-                id="pincode"
-                placeholder="Pincode"
-                value={formData.pincode}
-                onChange={(e) => handleInputChange('pincode', e.target.value)}
-                className="mt-1"
-              />
+              <div className="relative">
+                <Input
+                  id="pincode"
+                  placeholder="Pincode"
+                  value={formData.pincode}
+                  onChange={(e) => handlePincodeChange(e.target.value)}
+                  className="mt-1"
+                  inputMode="numeric"
+                  maxLength={6}
+                />
+                {pincodeLoading && (
+                  <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground mt-0.5" />
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
