@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Product } from '@/data/products';
 import assuredBadge from '@/assets/assured-badge.png';
-import wowBadge from '@/assets/wow-badge.jpg';
+import wowBadge from '@/assets/wow-badge.png';
 import greenStars from '@/assets/green-stars.png';
 
 interface ShopProductCardProps {
