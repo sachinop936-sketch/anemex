@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '@/data/products';
 import assuredBadge from '@/assets/assured-badge.png';
 import wowBadge from '@/assets/wow-badge.png';
-import greenStars from '@/assets/green-stars.png';
+import StarRating from '@/components/shop/StarRating';
 
 interface ShopProductCardProps {
   product: Product;
@@ -49,7 +49,7 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
         {/* Wow Price + Limited Stock row */}
         <div className="flex items-center justify-between mt-1.5">
           <div className="flex items-center gap-1.5">
-            <img src={wowBadge} alt="WOW! DEAL" className="h-7 object-contain" />
+            <img src={wowBadge} alt="WOW! DEAL" className="h-8 object-contain" />
             <span className="text-xs font-semibold text-foreground">₹{product.discountPrice.toLocaleString()}</span>
           </div>
           <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Limited Stock</span>
@@ -57,7 +57,7 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
 
         {/* Star Rating + Assured */}
         <div className="flex items-center gap-1.5 mt-2">
-          <img src={greenStars} alt={`${product.rating} stars`} className="h-4 object-contain" />
+          <StarRating rating={product.rating} className="h-3.5" />
           {/* Assured Badge */}
           <div className="ml-auto">
             <img src={assuredBadge} alt="Assured" className="h-5 object-contain" />

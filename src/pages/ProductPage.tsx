@@ -17,7 +17,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import assuredBadge from '@/assets/assured-badge.png';
-import greenStars from '@/assets/green-stars.png';
+import StarRating from '@/components/shop/StarRating';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -326,7 +326,7 @@ const ProductPage = () => {
             <div className="text-center">
               <div className="text-3xl font-bold text-foreground">{product.rating}</div>
               <div className="flex items-center justify-center mt-1">
-                <img src={greenStars} alt={`${product.rating} stars`} className="h-4 object-contain" />
+                <StarRating rating={product.rating} className="h-3.5" />
               </div>
               <span className="text-xs text-muted-foreground">{product.reviewCount.toLocaleString()} reviews</span>
             </div>
@@ -357,7 +357,7 @@ const ProductPage = () => {
                     <span className="text-sm font-medium text-foreground">{review.name}</span>
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <img src={greenStars} alt={`${review.rating} stars`} className="h-3 object-contain" />
+                        <StarRating rating={review.rating} className="h-3" />
                       </div>
                       <span className="text-[10px] text-muted-foreground">{review.date}</span>
                     </div>
