@@ -99,7 +99,7 @@ const ProductPage = () => {
         {/* Image Gallery */}
         <section className="bg-white animate-fade-in">
           <div className="relative">
-            <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center relative">
+            <div className="aspect-[4/3] overflow-hidden bg-muted flex items-center justify-center relative">
               {product.images.map((img, index) => (
                 <img
                   key={index}
