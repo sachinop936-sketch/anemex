@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,15 @@ const ProductPage = () => {
   const { addToCart } = useCart();
 
   const product = products.find((p) => p.id === id);
+
+  // Auto-slide images every 2 seconds
+  useEffect(() => {
+    if (!product || product.images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % product.images.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [product]);
 
   const handleAddToCart = () => {
     if (product) {
