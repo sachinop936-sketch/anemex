@@ -85,7 +85,7 @@ const AddressPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader showCategories={false} />
+      <ShopHeader />
       <CheckoutSteps currentStep={1} />
 
       <main className="pb-28">
