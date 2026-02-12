@@ -95,7 +95,7 @@ const CheckoutPaymentPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader showCategories={false} />
+      <ShopHeader />
       <CheckoutSteps currentStep={3} />
 
       <main className="pb-28">

@@ -1,25 +1,7 @@
 import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
-import catCategories from '@/assets/cat-categories.png';
-import catOfferZone from '@/assets/cat-offerzone.png';
-import catMobiles from '@/assets/cat-mobiles.png';
-import catFashion from '@/assets/cat-fashion.png';
-import catElectronics from '@/assets/cat-electronics.png';
-
-const categories = [
-  { name: 'Categories', image: catCategories },
-  { name: 'Offer Zone', image: catOfferZone, badge: 'NEW' },
-  { name: 'Mobiles', image: catMobiles },
-  { name: 'Fashion', image: catFashion },
-  { name: 'Electronics', image: catElectronics },
-];
-
-interface ShopHeaderProps {
-  showCategories?: boolean;
-}
-
-const ShopHeader = ({ showCategories = true }: ShopHeaderProps) => {
+const ShopHeader = () => {
   const navigate = useNavigate();
   const { getItemCount } = useCart();
   const itemCount = getItemCount();
@@ -71,25 +53,6 @@ const ShopHeader = ({ showCategories = true }: ShopHeaderProps) => {
         </div>
       </header>
 
-      {showCategories && (
-        <div className="bg-white px-2 py-2 overflow-x-auto border-b border-border/30">
-          <div className="flex items-start justify-around gap-2">
-            {categories.map((cat) => (
-              <div key={cat.name} className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="relative">
-                  <img src={cat.image} alt={cat.name} className="h-12 w-12 object-contain" />
-                  {cat.badge && (
-                    <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 rounded">
-                      {cat.badge}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] text-foreground font-medium text-center leading-tight">{cat.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </>
   );
 };
