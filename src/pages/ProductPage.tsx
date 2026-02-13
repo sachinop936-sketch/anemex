@@ -13,8 +13,6 @@ import {
   RotateCcw,
   Shield,
   Check,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import assuredBadge from '@/assets/assured-badge.png';
 import StarRating from '@/components/shop/StarRating';
@@ -25,6 +23,8 @@ const ProductPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { addToCart } = useCart();
 
   const product = products.find((p) => p.id === id);
@@ -64,12 +64,27 @@ const ProductPage = () => {
     );
   }
 
-  const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % product.images.length);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (Math.abs(distance) >= minSwipeDistance) {
+      if (distance > 0) {
+        setCurrentImage((prev) => (prev + 1) % product.images.length);
+      } else {
+        setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+      }
+    }
   };
 
   // Demo reviews
@@ -99,7 +114,12 @@ const ProductPage = () => {
         {/* Image Gallery */}
         <section className="bg-white animate-fade-in">
           <div className="relative">
-            <div className="aspect-[4/3] overflow-hidden bg-muted flex items-center justify-center relative">
+            <div
+              className="aspect-[4/3] overflow-hidden bg-muted flex items-center justify-center relative"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               {product.images.map((img, index) => (
                 <img
                   key={index}
@@ -114,35 +134,18 @@ const ProductPage = () => {
                   }`}
                 />
               ))}
-            </div>
 
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevImage}
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
-            >
-              <ChevronLeft className="h-6 w-6 text-foreground" />
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
-            >
-              <ChevronRight className="h-6 w-6 text-foreground" />
-            </button>
-
-            {/* Image Indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-              {product.images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImage(index)}
-                  className={`h-2 rounded-full transition-all ${
-                    index === currentImage
-                      ? 'bg-primary w-6'
-                      : 'bg-black/30 w-2 hover:bg-black/50'
-                  }`}
-                />
-              ))}
+              {/* Small dot indicators */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+                {product.images.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-1.5 rounded-full transition-all ${
+                      index === currentImage ? 'bg-primary w-4' : 'bg-black/25 w-1.5'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Discount Badge */}
