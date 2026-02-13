@@ -3,6 +3,7 @@ import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
+import RecommendedProducts from '@/components/shop/RecommendedProducts';
 import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 import { z } from 'zod';
 import { useMemo } from 'react';
@@ -205,6 +206,11 @@ const OrderSummaryPage = () => {
               <p className="text-xs text-muted-foreground">100% Authentic products.</p>
             </div>
           </div>
+        </div>
+
+        {/* Recommended Products Slider */}
+        <div className="container mt-4">
+          <RecommendedProducts />
         </div>
       </main>
 
