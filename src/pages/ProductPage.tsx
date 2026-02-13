@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
+import { products, Product } from '@/data/products';
+import ShopProductCard from '@/components/shop/ShopProductCard';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
 import {
@@ -28,6 +29,14 @@ const ProductPage = () => {
   const { addToCart } = useCart();
 
   const product = products.find((p) => p.id === id);
+
+  // Related products: same category, excluding current product
+  const relatedProducts = product
+    ? products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 6)
+    : [];
+
+  const totalPrice = product ? product.discountPrice * quantity : 0;
+  const deliveryCharge = totalPrice < 100 ? 40 : 0;
 
   // Auto-slide images every 4 seconds
   useEffect(() => {
@@ -271,8 +280,17 @@ const ProductPage = () => {
                 <Truck className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Free Delivery</p>
-                <p className="text-xs text-muted-foreground">Estimated delivery in 5-7 days</p>
+                {deliveryCharge > 0 ? (
+                  <>
+                    <p className="text-sm font-medium text-foreground">Delivery Charge: ₹{deliveryCharge}</p>
+                    <p className="text-xs text-muted-foreground">Free delivery on orders above ₹100</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-medium text-green-600">FREE Delivery</p>
+                    <p className="text-xs text-muted-foreground">Estimated delivery in 5-7 days</p>
+                  </>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -294,6 +312,13 @@ const ProductPage = () => {
               </div>
             </div>
           </div>
+          {deliveryCharge > 0 && (
+            <div className="mt-3 p-2.5 rounded-lg bg-amber-50 border border-amber-200">
+              <p className="text-xs text-amber-700">
+                💡 Add items worth ₹{(100 - totalPrice).toLocaleString()} more to get <span className="font-semibold">FREE delivery</span>
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Description */}
@@ -371,6 +396,20 @@ const ProductPage = () => {
             ))}
           </div>
         </section>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <section className="mt-2">
+            <div className="bg-white p-4 pb-2">
+              <h3 className="text-sm font-semibold text-foreground">Related Products</h3>
+            </div>
+            <div className="bg-white grid grid-cols-2">
+              {relatedProducts.map((rp, idx) => (
+                <ShopProductCard key={rp.id} product={rp} index={idx} />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
       {/* Sticky Buy Buttons - Flipkart Style */}
