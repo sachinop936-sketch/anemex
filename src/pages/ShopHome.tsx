@@ -4,7 +4,7 @@ import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
-import heroBanner2 from '@/assets/hero-banner-2.jpg';
+import heroBanner2 from '@/assets/feedback-6.jpg';
 
 const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000; // 7 minutes in milliseconds
