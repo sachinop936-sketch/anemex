@@ -113,6 +113,45 @@ import earbud311 from '@/assets/earbud-31.1.jpg';
 import earbud312 from '@/assets/earbud-31.2.jpg';
 import earbud313 from '@/assets/earbud-31.3.jpg';
 import earbud314 from '@/assets/earbud-31.4.jpg';
+import earbud321 from '@/assets/eurbud-32.1.jpg';
+import earbud322 from '@/assets/eurbud-32.2.jpg';
+import earbud323 from '@/assets/eurbud-32.3.jpg';
+import earbud324 from '@/assets/eurbud-32.4.jpg';
+import earbud331 from '@/assets/eurbud-33.1.jpg';
+import earbud332 from '@/assets/eurbud-33.2.jpg';
+import earbud333 from '@/assets/eurbud-33.3.jpg';
+import earbud334 from '@/assets/eurbud-33.4.jpg';
+import earbud341 from '@/assets/eurbud-34.1.jpg';
+import earbud342 from '@/assets/eurbud-34.2.jpg';
+import earbud343 from '@/assets/eurbud-34.3.jpg';
+import earbud344 from '@/assets/eurbud-34.4.jpg';
+import earbud351 from '@/assets/earbud-35.1.jpg';
+import earbud352 from '@/assets/earbud-35.2.jpg';
+import earbud353 from '@/assets/earbud-35.3.jpg';
+import earbud354 from '@/assets/earbud-35.4.jpg';
+import earbud361 from '@/assets/earbud-36.1.jpg';
+import earbud362 from '@/assets/earbud-36.2.jpg';
+import earbud363 from '@/assets/earbud-36.3.jpg';
+import earbud364 from '@/assets/earbud-36.4.jpg';
+import earbud371 from '@/assets/earbud-37.1.jpg';
+import earbud372 from '@/assets/earbud-37.2.jpg';
+import earbud373 from '@/assets/earbud-37.3.jpg';
+import earbud374 from '@/assets/earbud-37.4.jpg';
+import earbud381 from '@/assets/earbud-38.1.jpg';
+import earbud382 from '@/assets/earbud-38.2.jpg';
+import earbud383 from '@/assets/earbud-38.3.jpg';
+import earbud384 from '@/assets/earbud-38.4.jpg';
+import earbud391 from '@/assets/earbud-39.1.jpg';
+import earbud392 from '@/assets/earbud-39.2.jpg';
+import earbud393 from '@/assets/earbud-39.3.jpg';
+import earbud401 from '@/assets/earbud-40.1.jpg';
+import earbud402 from '@/assets/earbud-40.2.jpg';
+import earbud403 from '@/assets/earbud-40.3.jpg';
+import earbud404 from '@/assets/earbud-40.4.jpg';
+import earbud411 from '@/assets/earbud-41.1.jpg';
+import earbud412 from '@/assets/earbud-41.2.jpg';
+import earbud413 from '@/assets/earbud-41.3.jpg';
+import earbud414 from '@/assets/earbud-41.4.jpg';
 
 export interface Product {
   id: string;
@@ -735,6 +774,206 @@ export const products: Product[] = [
     seller: "pTron Official",
     freeDelivery: true,
   },
+  // Product 32 — Mivi DuoPods A25 TWS Earbuds
+  {
+    id: "product-32",
+    name: "Mivi DuoPods A25 TWS Earbuds",
+    description:
+      "The Mivi DuoPods A25 delivers studio-quality audio in a compact form factor. Equipped with 13mm electroplated drivers, these earbuds produce rich bass and detailed highs. With 40 hours of total playtime and Type-C fast charging, you stay powered all day. Bluetooth 5.3 ensures seamless connectivity while the AI-ENC microphones deliver crystal-clear calls. The lightweight 3.5g per earbud design ensures fatigue-free extended listening sessions.",
+    shortDescription: "Mivi DuoPods A25 with 13mm drivers & 40H playtime",
+    originalPrice: 1299,
+    discountPrice: 39,
+    discountPercent: 97,
+    image: earbud321,
+    images: [earbud321, earbud322, earbud323, earbud324],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.3,
+    reviewCount: 12340,
+    features: ["13mm Drivers", "40H Playtime", "AI-ENC Mic", "Bluetooth 5.3"],
+    seller: "Mivi Official",
+    freeDelivery: true,
+  },
+  // Product 33 — Noise Buds VS104 TWS Earbuds
+  {
+    id: "product-33",
+    name: "Noise Buds VS104 TWS Earbuds",
+    description:
+      "The Noise Buds VS104 offers an impressive audio experience with Hyper Sync technology for instant pairing and a stable Bluetooth 5.2 connection. Featuring 8mm drivers tuned for punchy bass and clear vocals, these earbuds are perfect for everyday listening. With 30 hours of total battery life, IPX5 water resistance, and touch controls, the VS104 is built for active lifestyles. The ultra-compact charging case slips easily into your pocket.",
+    shortDescription: "Noise Buds VS104 with Hyper Sync & 30H battery",
+    originalPrice: 1499,
+    discountPrice: 48,
+    discountPercent: 97,
+    image: earbud331,
+    images: [earbud331, earbud332, earbud333, earbud334],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.1,
+    reviewCount: 8976,
+    features: ["Hyper Sync", "30H Battery", "IPX5 Waterproof", "8mm Drivers"],
+    seller: "Noise Official",
+    freeDelivery: true,
+  },
+  // Product 34 — Realme Buds T110 TWS Earbuds
+  {
+    id: "product-34",
+    name: "Realme Buds T110 TWS Earbuds",
+    description:
+      "The Realme Buds T110 combines style and performance with AI-powered ENC for noise-free calls and 10mm dynamic bass drivers for immersive audio. Enjoy 38 hours of massive playback on a single charge cycle. Bluetooth 5.4 delivers lightning-fast connectivity with ultra-low latency for gaming. The Google Fast Pair feature enables instant connection with Android devices. The sleek, ergonomic design ensures a secure fit for workouts and daily commute.",
+    shortDescription: "Realme Buds T110 with AI ENC & 38H playtime",
+    originalPrice: 1799,
+    discountPrice: 89,
+    discountPercent: 95,
+    image: earbud341,
+    images: [earbud341, earbud342, earbud343, earbud344],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.4,
+    reviewCount: 15230,
+    features: ["AI ENC", "38H Playtime", "Bluetooth 5.4", "Google Fast Pair"],
+    seller: "Realme Official",
+    freeDelivery: true,
+  },
+  // Product 35 — boAt Airdopes 131 TWS Earbuds
+  {
+    id: "product-35",
+    name: "boAt Airdopes 131 TWS Earbuds",
+    description:
+      "The boAt Airdopes 131 is a crowd favourite offering exceptional value with powerful 10mm drivers, IWP technology for instant pairing, and up to 60 hours of total playback. The BEAST mode delivers ultra-low latency for mobile gaming. With IPX4 sweat and water resistance, these earbuds are built for active users. The Type-C charging ensures quick top-ups while ENx dual mic technology keeps your calls crisp and clear.",
+    shortDescription: "boAt Airdopes 131 with 60H playtime & BEAST mode",
+    originalPrice: 2499,
+    discountPrice: 76,
+    discountPercent: 97,
+    image: earbud351,
+    images: [earbud351, earbud352, earbud353, earbud354],
+    category: "Electronics",
+    tag: "limited",
+    rating: 4.5,
+    reviewCount: 34567,
+    features: ["60H Playtime", "BEAST Mode", "IPX4 Rated", "ENx Dual Mic"],
+    seller: "boAt Official",
+    freeDelivery: true,
+  },
+  // Product 36 — JBL Wave Beam TWS Earbuds
+  {
+    id: "product-36",
+    name: "JBL Wave Beam TWS Earbuds",
+    description:
+      "Experience the legendary JBL Deep Bass Sound with the Wave Beam TWS Earbuds. Powered by 8mm drivers and JBL's signature tuning, these earbuds deliver rich, powerful audio that makes every genre shine. With 32 hours of combined playtime, Bluetooth 5.2, and Smart Ambient technology, you stay connected to your surroundings when needed. VoiceAware lets you control how much of your own voice you hear during calls. IP54 dust and water resistance adds durability for everyday use.",
+    shortDescription: "JBL Wave Beam with Deep Bass & 32H playtime",
+    originalPrice: 2999,
+    discountPrice: 89,
+    discountPercent: 97,
+    image: earbud361,
+    images: [earbud361, earbud362, earbud363, earbud364],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.6,
+    reviewCount: 21098,
+    features: ["JBL Deep Bass", "32H Playtime", "Smart Ambient", "IP54 Rated"],
+    seller: "JBL Official",
+    freeDelivery: true,
+  },
+  // Product 37 — OnePlus Nord Buds 2r TWS Earbuds
+  {
+    id: "product-37",
+    name: "OnePlus Nord Buds 2r TWS Earbuds",
+    description:
+      "The OnePlus Nord Buds 2r brings flagship-level audio to an accessible price point. Featuring 12.4mm titanium drivers for detailed, balanced sound and up to 38 hours of battery life with fast charging support. Bluetooth 5.3 ensures stable connectivity while the AI noise cancellation during calls filters out background noise effectively. The IP55 water and dust resistance rating makes them ideal for workouts. The BassWave enhancement algorithm delivers deep, impactful bass across all music genres.",
+    shortDescription: "OnePlus Nord Buds 2r with 12.4mm titanium drivers",
+    originalPrice: 2299,
+    discountPrice: 99,
+    discountPercent: 96,
+    image: earbud371,
+    images: [earbud371, earbud372, earbud373, earbud374],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.5,
+    reviewCount: 18765,
+    features: ["12.4mm Titanium Drivers", "38H Battery", "AI Noise Cancellation", "IP55 Rated"],
+    seller: "OnePlus Official",
+    freeDelivery: true,
+  },
+  // Product 38 — Zebronics Zeb-Pods 2 TWS Earbuds
+  {
+    id: "product-38",
+    name: "Zebronics Zeb-Pods 2 TWS Earbuds",
+    description:
+      "The Zebronics Zeb-Pods 2 offers reliable audio performance with 10mm neodymium drivers for clear, balanced sound. With 24 hours of total playback, Bluetooth 5.1 connectivity, and ENC-enabled calling, these earbuds handle music and calls with ease. The splash-proof design withstands light rain and sweat during workouts. Touch controls on both earbuds allow seamless media and call management. The compact charging case with LED indicators keeps you informed about battery status.",
+    shortDescription: "Zebronics Zeb-Pods 2 with ENC & 24H playtime",
+    originalPrice: 1499,
+    discountPrice: 47,
+    discountPercent: 97,
+    image: earbud381,
+    images: [earbud381, earbud382, earbud383, earbud384],
+    category: "Electronics",
+    tag: "bestseller",
+    rating: 4.0,
+    reviewCount: 9876,
+    features: ["10mm Drivers", "24H Playtime", "ENC Calling", "Splash Proof"],
+    seller: "Zebronics Official",
+    freeDelivery: true,
+  },
+  // Product 39 — Portronics Harmonics Twins S16 TWS Earbuds
+  {
+    id: "product-39",
+    name: "Portronics Harmonics Twins S16 TWS Earbuds",
+    description:
+      "The Portronics Harmonics Twins S16 delivers immersive stereo sound with 10mm dynamic drivers tuned for rich bass and crisp treble. With 28 hours of total playtime and Type-C fast charging, you stay powered through long days. Bluetooth 5.3 provides a stable, low-latency connection for music and gaming. The dual-mic ENC system ensures clear voice calls in noisy environments. IPX4 water resistance and an ergonomic half-in-ear design make them comfortable for all-day wear.",
+    shortDescription: "Portronics Twins S16 with 28H playtime & dual ENC",
+    originalPrice: 1799,
+    discountPrice: 58,
+    discountPercent: 97,
+    image: earbud391,
+    images: [earbud391, earbud392, earbud393],
+    category: "Electronics",
+    tag: "limited",
+    rating: 4.2,
+    reviewCount: 6543,
+    features: ["10mm Drivers", "28H Playtime", "Dual ENC Mic", "IPX4 Rated"],
+    seller: "Portronics Official",
+    freeDelivery: true,
+  },
+  // Product 40 — Ambrane Dots 38 TWS Earbuds
+  {
+    id: "product-40",
+    name: "Ambrane Dots 38 TWS Earbuds",
+    description:
+      "The Ambrane Dots 38 offers premium audio quality with 10mm powerful drivers and a rich bass profile. Enjoy 38 hours of non-stop music with the compact charging case. Bluetooth 5.1 ensures quick pairing and stable wireless connectivity up to 10 meters. The built-in ENC microphones filter ambient noise for clear calls. With IPX4 sweat resistance and a lightweight in-ear design, these earbuds are your perfect companion for workouts, commutes, and everyday listening.",
+    shortDescription: "Ambrane Dots 38 with 38H battery & ENC mic",
+    originalPrice: 1999,
+    discountPrice: 59,
+    discountPercent: 97,
+    image: earbud401,
+    images: [earbud401, earbud402, earbud403, earbud404],
+    category: "Electronics",
+    tag: "trending",
+    rating: 4.1,
+    reviewCount: 7654,
+    features: ["10mm Drivers", "38H Playtime", "ENC Microphones", "IPX4 Rated"],
+    seller: "Ambrane Official",
+    freeDelivery: true,
+  },
+  // Product 41 — CrossBeats Aero TWS Earbuds
+  {
+    id: "product-41",
+    name: "CrossBeats Aero TWS Earbuds",
+    description:
+      "The CrossBeats Aero delivers audiophile-grade sound with custom-tuned 13mm composite drivers for detailed lows, mids, and highs. With hybrid ANC blocking up to 30dB of ambient noise, you get distraction-free listening anywhere. The 45-hour total battery life with fast charging means a 10-minute charge gives 2 hours of playback. Bluetooth 5.3 with multipoint connectivity lets you switch seamlessly between two devices. The premium metallic finish and ergonomic design ensure both style and comfort.",
+    shortDescription: "CrossBeats Aero with hybrid ANC & 45H battery",
+    originalPrice: 3499,
+    discountPrice: 89,
+    discountPercent: 97,
+    image: earbud411,
+    images: [earbud411, earbud412, earbud413, earbud414],
+    category: "Electronics",
+    tag: "new",
+    rating: 4.6,
+    reviewCount: 4321,
+    features: ["Hybrid ANC", "45H Battery", "13mm Composite Drivers", "Multipoint Connect"],
+    seller: "CrossBeats Official",
+    freeDelivery: true,
+  },
 ];
 
 // Fixed pricing map — each product gets a deterministic discounted price from the allowed list
@@ -769,6 +1008,16 @@ const FIXED_PRICES: Record<string, { discountPrice: number; originalPrice: numbe
   "product-29": { discountPrice: 99, originalPrice: 1999 },
   "product-30": { discountPrice: 99, originalPrice: 2999 },
   "product-31": { discountPrice: 99, originalPrice: 2499 },
+  "product-32": { discountPrice: 39, originalPrice: 1299 },
+  "product-33": { discountPrice: 48, originalPrice: 1499 },
+  "product-34": { discountPrice: 89, originalPrice: 1799 },
+  "product-35": { discountPrice: 76, originalPrice: 2499 },
+  "product-36": { discountPrice: 89, originalPrice: 2999 },
+  "product-37": { discountPrice: 99, originalPrice: 2299 },
+  "product-38": { discountPrice: 47, originalPrice: 1499 },
+  "product-39": { discountPrice: 58, originalPrice: 1799 },
+  "product-40": { discountPrice: 59, originalPrice: 1999 },
+  "product-41": { discountPrice: 89, originalPrice: 3499 },
 };
 
 // Apply fixed prices and calculate discount percentages
@@ -800,6 +1049,11 @@ const STOCK_TAGS: Record<string, string> = {
   "product-26": "Last 5 items left",
   "product-28": "Last 1 piece left",
   "product-30": "Only 7 pieces left",
+  "product-32": "Few items left",
+  "product-34": "Limited stock available",
+  "product-36": "Last 5 items left",
+  "product-38": "Last 1 piece left",
+  "product-40": "Only 3 pieces left",
 };
 
 products.forEach((p) => {
