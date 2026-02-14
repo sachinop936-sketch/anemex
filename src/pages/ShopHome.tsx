@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { products } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
-import heroBanner2 from '@/assets/hero-banner-2.jpg';
 
 const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000; // 7 minutes in milliseconds
@@ -21,15 +20,6 @@ const ShopHome = () => {
   }, []);
 
   const [timeLeft, setTimeLeft] = useState(0);
-  const banners = [heroBanner2, heroBanner];
-  const [currentBanner, setCurrentBanner] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [banners.length]);
 
   useEffect(() => {
     const getEndTime = (): number => {
@@ -70,33 +60,13 @@ const ShopHome = () => {
       <ShopHeader />
 
       <main className="pb-20">
-        {/* Hero Banner Slider */}
-        <section className="relative overflow-hidden">
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentBanner * 100}%)` }}
-          >
-            {banners.map((banner, i) => (
-              <img
-                key={i}
-                src={banner}
-                alt={`Sale Banner ${i + 1}`}
-                className="w-full h-auto flex-shrink-0"
-              />
-            ))}
-          </div>
-          {/* Dots */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {banners.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentBanner(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === currentBanner ? 'w-4 bg-primary' : 'w-1.5 bg-white/60'
-                }`}
-              />
-            ))}
-          </div>
+        {/* Hero Banner */}
+        <section>
+          <img 
+            src={heroBanner} 
+            alt="Big End of Season Sale - Live Now" 
+            className="w-full h-auto"
+          />
         </section>
 
         {/* Trust Badges */}

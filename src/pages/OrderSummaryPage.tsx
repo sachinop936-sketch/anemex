@@ -3,7 +3,6 @@ import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import RecommendedProducts from '@/components/shop/RecommendedProducts';
 import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 import { z } from 'zod';
 import { useMemo } from 'react';
@@ -51,8 +50,6 @@ const OrderSummaryPage = () => {
   const totalOriginalPrice = items.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
   const totalDiscountPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const savings = totalOriginalPrice - totalDiscountPrice;
-  const deliveryCharge = totalDiscountPrice < 100 ? 40 : 0;
-  const finalTotal = totalDiscountPrice + deliveryCharge;
 
   const handleContinue = () => {
     navigate(`/payment?address=${encodeURIComponent(addressParam || '')}`);
@@ -165,24 +162,13 @@ const OrderSummaryPage = () => {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Delivery Charges</span>
-                {deliveryCharge > 0 ? (
-                  <span className="text-foreground">₹{deliveryCharge}</span>
-                ) : (
-                  <span className="text-green-600">FREE Delivery</span>
-                )}
+                <span className="text-green-600">FREE Delivery</span>
               </div>
-              {deliveryCharge > 0 && (
-                <div className="p-2 rounded-lg bg-amber-50 border border-amber-200">
-                  <p className="text-xs text-amber-700">
-                    💡 Add items worth ₹{(100 - totalDiscountPrice).toLocaleString()} more to get <span className="font-semibold">FREE delivery</span>
-                  </p>
-                </div>
-              )}
               
               <div className="border-t border-border pt-3">
                 <div className="flex justify-between">
                   <span className="font-semibold text-foreground">Total Amount</span>
-                  <span className="font-bold text-foreground">₹{finalTotal.toLocaleString()}</span>
+                  <span className="font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -207,11 +193,6 @@ const OrderSummaryPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Recommended Products Slider */}
-        <div className="container mt-4">
-          <RecommendedProducts />
-        </div>
       </main>
 
       {/* Sticky Continue Button */}
@@ -219,7 +200,7 @@ const OrderSummaryPage = () => {
         <div className="container flex items-center justify-between gap-4">
           <div>
             <p className="text-xs text-muted-foreground line-through">₹{Math.round(totalOriginalPrice).toLocaleString()}</p>
-            <p className="text-xl font-bold text-foreground">₹{finalTotal.toLocaleString()}</p>
+            <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</p>
           </div>
           <Button
             variant="gradient"

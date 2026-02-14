@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
-import { products, Product } from '@/data/products';
-import ShopProductCard from '@/components/shop/ShopProductCard';
+import { products } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
 import {
@@ -14,6 +13,8 @@ import {
   RotateCcw,
   Shield,
   Check,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import assuredBadge from '@/assets/assured-badge.png';
 import StarRating from '@/components/shop/StarRating';
@@ -24,19 +25,9 @@ const ProductPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { addToCart } = useCart();
 
   const product = products.find((p) => p.id === id);
-
-  // Related products: same category, excluding current product
-  const relatedProducts = product
-    ? products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 6)
-    : [];
-
-  const totalPrice = product ? product.discountPrice * quantity : 0;
-  const deliveryCharge = totalPrice < 100 ? 40 : 0;
 
   // Auto-slide images every 4 seconds
   useEffect(() => {
@@ -73,27 +64,12 @@ const ProductPage = () => {
     );
   }
 
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % product.images.length);
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (Math.abs(distance) >= minSwipeDistance) {
-      if (distance > 0) {
-        setCurrentImage((prev) => (prev + 1) % product.images.length);
-      } else {
-        setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
-      }
-    }
+  const prevImage = () => {
+    setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
   // Demo reviews
@@ -123,12 +99,7 @@ const ProductPage = () => {
         {/* Image Gallery */}
         <section className="bg-white animate-fade-in">
           <div className="relative">
-            <div
-              className="aspect-[4/3] overflow-hidden bg-muted flex items-center justify-center relative"
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
+            <div className="aspect-[3/4] overflow-hidden bg-muted flex items-center justify-center relative">
               {product.images.map((img, index) => (
                 <img
                   key={index}
@@ -143,18 +114,35 @@ const ProductPage = () => {
                   }`}
                 />
               ))}
+            </div>
 
-              {/* Small dot indicators */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-                {product.images.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`h-1.5 rounded-full transition-all ${
-                      index === currentImage ? 'bg-primary w-4' : 'bg-black/25 w-1.5'
-                    }`}
-                  />
-                ))}
-              </div>
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevImage}
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+            >
+              <ChevronLeft className="h-6 w-6 text-foreground" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+            >
+              <ChevronRight className="h-6 w-6 text-foreground" />
+            </button>
+
+            {/* Image Indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {product.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImage(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === currentImage
+                      ? 'bg-primary w-6'
+                      : 'bg-black/30 w-2 hover:bg-black/50'
+                  }`}
+                />
+              ))}
             </div>
 
             {/* Discount Badge */}
@@ -280,17 +268,8 @@ const ProductPage = () => {
                 <Truck className="h-5 w-5 text-primary" />
               </div>
               <div>
-                {deliveryCharge > 0 ? (
-                  <>
-                    <p className="text-sm font-medium text-foreground">Delivery Charge: ₹{deliveryCharge}</p>
-                    <p className="text-xs text-muted-foreground">Free delivery on orders above ₹100</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm font-medium text-green-600">FREE Delivery</p>
-                    <p className="text-xs text-muted-foreground">Estimated delivery in 5-7 days</p>
-                  </>
-                )}
+                <p className="text-sm font-medium text-foreground">Free Delivery</p>
+                <p className="text-xs text-muted-foreground">Estimated delivery in 5-7 days</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -312,13 +291,6 @@ const ProductPage = () => {
               </div>
             </div>
           </div>
-          {deliveryCharge > 0 && (
-            <div className="mt-3 p-2.5 rounded-lg bg-amber-50 border border-amber-200">
-              <p className="text-xs text-amber-700">
-                💡 Add items worth ₹{(100 - totalPrice).toLocaleString()} more to get <span className="font-semibold">FREE delivery</span>
-              </p>
-            </div>
-          )}
         </section>
 
         {/* Description */}
@@ -396,20 +368,6 @@ const ProductPage = () => {
             ))}
           </div>
         </section>
-
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <section className="mt-2">
-            <div className="bg-white p-4 pb-2">
-              <h3 className="text-sm font-semibold text-foreground">Related Products</h3>
-            </div>
-            <div className="bg-white grid grid-cols-2">
-              {relatedProducts.map((rp, idx) => (
-                <ShopProductCard key={rp.id} product={rp} index={idx} />
-              ))}
-            </div>
-          </section>
-        )}
       </main>
 
       {/* Sticky Buy Buttons - Flipkart Style */}
