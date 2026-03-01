@@ -264,7 +264,7 @@ const CheckoutPaymentPage = () => {
             disabled={!canProceed || payLoading}
             onClick={handlePay}
           >
-            {isCod ? 'Pay Advance & Place Order' : 'Continue'}
+            {isCod ? 'Place Order' : 'Continue'}
           </Button>
         </div>
       </div>
