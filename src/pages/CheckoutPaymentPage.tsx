@@ -255,9 +255,6 @@ const CheckoutPaymentPage = () => {
             {(isOnline && onlineDiscount > 0) && (
               <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>
             )}
-            {isCod && (
-              <span className="text-[10px] text-amber-600 font-medium">50% Advance</span>
-            )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
           <Button
