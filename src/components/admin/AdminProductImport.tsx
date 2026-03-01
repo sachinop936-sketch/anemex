@@ -141,7 +141,6 @@ const AdminProductImport = ({ onClose, onProductSaved }: Props) => {
       description: p.description,
       price: p.price,
       original_price: p.original_price || p.price,
-      discount_percent: p.discount_percent,
       category: p.category,
       rating: p.rating,
       review_count: p.review_count,
