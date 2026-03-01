@@ -19,12 +19,11 @@ const ProductPage = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const { products: dbProducts } = useProducts();
+  const { products: dbProducts, loading: dbLoading } = useProducts();
 
   // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
   const staticProduct = staticProducts.find((p) => p.id === id);
-
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
