@@ -54,6 +54,15 @@ const AdminProducts = () => {
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
 
+  if (showImport) {
+    return (
+      <AdminProductImport
+        onClose={() => { setShowImport(false); fetchProducts(); }}
+        onProductSaved={fetchProducts}
+      />
+    );
+  }
+
   if (showForm || editingProduct) {
     return (
       <AdminProductForm
