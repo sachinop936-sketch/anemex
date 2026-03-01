@@ -13,7 +13,8 @@ const AdminSettings = () => {
   const [saving, setSaving] = useState(false);
   const [settingsId, setSettingsId] = useState('');
   const [form, setForm] = useState({
-    store_name: '', logo_url: '', support_number: '', info_text: '', footer_text: '', is_store_open: true,
+    store_name: '', logo_url: '', support_number: '', info_text: '', footer_text: '',
+    is_store_open: true, delivery_charges: '0', free_delivery_above: '100', tax_percent: '0',
   });
 
   useEffect(() => {
@@ -25,6 +26,9 @@ const AdminSettings = () => {
           store_name: data.store_name || '', logo_url: data.logo_url || '',
           support_number: data.support_number || '', info_text: data.info_text || '',
           footer_text: data.footer_text || '', is_store_open: data.is_store_open ?? true,
+          delivery_charges: String((data as any).delivery_charges ?? 0),
+          free_delivery_above: String((data as any).free_delivery_above ?? 100),
+          tax_percent: String((data as any).tax_percent ?? 0),
         });
       }
       setLoading(false);
@@ -45,8 +49,24 @@ const AdminSettings = () => {
 
   const save = async () => {
     setSaving(true);
-    await supabase.from('store_settings').update(form).eq('id', settingsId);
-    toast.success('Settings saved');
+    const updateData = {
+      store_name: form.store_name,
+      logo_url: form.logo_url,
+      support_number: form.support_number,
+      info_text: form.info_text,
+      footer_text: form.footer_text,
+      is_store_open: form.is_store_open,
+      delivery_charges: Number(form.delivery_charges) || 0,
+      free_delivery_above: Number(form.free_delivery_above) || 100,
+      tax_percent: Number(form.tax_percent) || 0,
+    };
+
+    const { error } = await supabase.from('store_settings').update(updateData as any).eq('id', settingsId);
+    if (error) {
+      toast.error('Failed to save: ' + error.message);
+    } else {
+      toast.success('Settings saved — changes are live!');
+    }
     setSaving(false);
   };
 
@@ -55,40 +75,72 @@ const AdminSettings = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-foreground mb-6">Store Settings</h1>
-      <div className="space-y-4 max-w-lg">
-        <div>
-          <Label>Store Name</Label>
-          <Input value={form.store_name} onChange={(e) => setForm({ ...form, store_name: e.target.value })} />
-        </div>
-        <div>
-          <Label>Logo</Label>
-          <div className="flex items-center gap-3 mt-1">
-            {form.logo_url && <img src={form.logo_url} alt="Logo" className="h-12 rounded" />}
-            <label>
-              <Button size="sm" variant="outline" className="gap-1" asChild>
-                <span><Upload className="h-4 w-4" /> Upload</span>
-              </Button>
-              <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-            </label>
+      <div className="space-y-6 max-w-lg">
+        {/* General */}
+        <div className="bg-card border border-border rounded-xl p-4 space-y-4">
+          <h2 className="text-sm font-bold text-foreground">General</h2>
+          <div>
+            <Label>Store Name</Label>
+            <Input value={form.store_name} onChange={(e) => setForm({ ...form, store_name: e.target.value })} />
+          </div>
+          <div>
+            <Label>Logo</Label>
+            <div className="flex items-center gap-3 mt-1">
+              {form.logo_url && <img src={form.logo_url} alt="Logo" className="h-12 rounded" />}
+              <label>
+                <Button size="sm" variant="outline" className="gap-1" asChild>
+                  <span><Upload className="h-4 w-4" /> Upload</span>
+                </Button>
+                <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+              </label>
+            </div>
+          </div>
+          <div>
+            <Label>Support Number</Label>
+            <Input value={form.support_number} onChange={(e) => setForm({ ...form, support_number: e.target.value })} />
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch checked={form.is_store_open} onCheckedChange={(v) => setForm({ ...form, is_store_open: v })} />
+            <Label>Store is {form.is_store_open ? 'Open' : 'Closed'}</Label>
           </div>
         </div>
-        <div>
-          <Label>Support Number</Label>
-          <Input value={form.support_number} onChange={(e) => setForm({ ...form, support_number: e.target.value })} />
+
+        {/* Delivery & Tax */}
+        <div className="bg-card border border-border rounded-xl p-4 space-y-4">
+          <h2 className="text-sm font-bold text-foreground">Delivery & Tax</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Delivery Charges (₹)</Label>
+              <Input type="number" value={form.delivery_charges} onChange={(e) => setForm({ ...form, delivery_charges: e.target.value })} />
+            </div>
+            <div>
+              <Label>Free Delivery Above (₹)</Label>
+              <Input type="number" value={form.free_delivery_above} onChange={(e) => setForm({ ...form, free_delivery_above: e.target.value })} />
+            </div>
+          </div>
+          <div>
+            <Label>Tax Percentage (%)</Label>
+            <Input type="number" value={form.tax_percent} onChange={(e) => setForm({ ...form, tax_percent: e.target.value })} />
+            <p className="text-[11px] text-muted-foreground mt-1">Applied on top of product price during checkout</p>
+          </div>
         </div>
-        <div>
-          <Label>Info Text</Label>
-          <Textarea value={form.info_text} onChange={(e) => setForm({ ...form, info_text: e.target.value })} rows={2} />
+
+        {/* Text Content */}
+        <div className="bg-card border border-border rounded-xl p-4 space-y-4">
+          <h2 className="text-sm font-bold text-foreground">Content</h2>
+          <div>
+            <Label>Info Text</Label>
+            <Textarea value={form.info_text} onChange={(e) => setForm({ ...form, info_text: e.target.value })} rows={2} />
+          </div>
+          <div>
+            <Label>Footer Text</Label>
+            <Textarea value={form.footer_text} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} rows={2} />
+          </div>
         </div>
-        <div>
-          <Label>Footer Text</Label>
-          <Textarea value={form.footer_text} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} rows={2} />
-        </div>
-        <div className="flex items-center gap-3">
-          <Switch checked={form.is_store_open} onCheckedChange={(v) => setForm({ ...form, is_store_open: v })} />
-          <Label>Store is {form.is_store_open ? 'Open' : 'Closed'}</Label>
-        </div>
-        <Button onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save Settings'}</Button>
+
+        <Button onClick={save} disabled={saving} className="w-full">
+          {saving ? 'Saving...' : 'Save Settings'}
+        </Button>
       </div>
     </div>
   );
