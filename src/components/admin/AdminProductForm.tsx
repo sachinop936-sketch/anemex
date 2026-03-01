@@ -16,6 +16,7 @@ const AdminProductForm = ({ productId, onClose }: Props) => {
   const isEdit = !!productId;
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
   const [form, setForm] = useState({
     name: '', short_description: '', description: '', price: '', original_price: '',
     category: 'Electronics', stock: '100', tag: '', seller: '', features: '',
