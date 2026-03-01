@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.setup-admin]
 verify_jwt = false
+
+[functions.scrape-product]
+verify_jwt = false
+
+[functions.ai-optimize-product]
+verify_jwt = false

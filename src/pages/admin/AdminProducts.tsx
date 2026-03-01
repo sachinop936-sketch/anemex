@@ -3,8 +3,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download } from 'lucide-react';
 import AdminProductForm from '@/components/admin/AdminProductForm';
+import AdminProductImport from '@/components/admin/AdminProductImport';
 
 interface DBProduct {
   id: string;
@@ -24,6 +25,7 @@ const AdminProducts = () => {
   const [search, setSearch] = useState('');
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -52,6 +54,15 @@ const AdminProducts = () => {
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
 
+  if (showImport) {
+    return (
+      <AdminProductImport
+        onClose={() => { setShowImport(false); fetchProducts(); }}
+        onProductSaved={fetchProducts}
+      />
+    );
+  }
+
   if (showForm || editingProduct) {
     return (
       <AdminProductForm
@@ -65,9 +76,14 @@ const AdminProducts = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">Products</h1>
-        <Button onClick={() => setShowForm(true)} size="sm" className="gap-1">
-          <Plus className="h-4 w-4" /> Add Product
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setShowImport(true)} size="sm" variant="outline" className="gap-1">
+            <Download className="h-4 w-4" /> Import
+          </Button>
+          <Button onClick={() => setShowForm(true)} size="sm" className="gap-1">
+            <Plus className="h-4 w-4" /> Add Product
+          </Button>
+        </div>
       </div>
 
       <div className="relative mb-4">
