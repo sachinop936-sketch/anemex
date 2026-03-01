@@ -37,7 +37,6 @@ const CheckoutPaymentPage = () => {
   const navigate = useNavigate();
   const { items } = useCart();
 
-  const [paymentType, setPaymentType] = useState<'online' | 'cod' | null>(null);
   const [selectedUpi, setSelectedUpi] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(6 * 60 + 20);
   const [payLoading, setPayLoading] = useState(false);
