@@ -5,7 +5,6 @@ import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { ArrowLeft, QrCode, Percent } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const ONLINE_DISCOUNT_PERCENT = 3;
@@ -78,27 +77,8 @@ const CheckoutPaymentPage = () => {
 
   const handlePay = async () => {
     setPayLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-payment-link', {
-        body: {
-          items: items.map(item => ({ name: item.name })),
-          totalAmount: payableNow,
-        },
-      });
-
-      if (error || !data?.paymentUrl) {
-        toast.error('Payment failed. Please try again.');
-        console.error('Payment error:', error);
-        return;
-      }
-
-      window.location.href = data.paymentUrl;
-    } catch (err) {
-      toast.error('Payment failed. Please try again.');
-      console.error('Payment error:', err);
-    } finally {
-      setPayLoading(false);
-    }
+    toast.info('Payment processing is not available in static mode.');
+    setPayLoading(false);
   };
 
   return (
@@ -107,7 +87,6 @@ const CheckoutPaymentPage = () => {
       <CheckoutSteps currentStep={3} />
 
       <main className="pb-28">
-        {/* Header */}
         <div className="container py-4">
           <button
             onClick={() => navigate(-1)}
@@ -118,7 +97,6 @@ const CheckoutPaymentPage = () => {
           </button>
         </div>
 
-        {/* Timer */}
         <div className="container">
           <div className="text-center py-4">
             <p className="text-xl font-semibold text-orange-500">{formatTime(timeLeft)}</p>
@@ -126,7 +104,6 @@ const CheckoutPaymentPage = () => {
         </div>
 
         <div className="container space-y-4">
-          {/* Online Discount Banner */}
           <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
             <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
             <div>
@@ -137,7 +114,6 @@ const CheckoutPaymentPage = () => {
             </div>
           </div>
 
-          {/* UPI Method Selection */}
           <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
             <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
             <div className="space-y-3">
@@ -173,7 +149,6 @@ const CheckoutPaymentPage = () => {
             </div>
           </div>
 
-          {/* Price Details */}
           <div className="bg-card border border-border rounded-xl p-4">
             <h3 className="text-base font-bold text-foreground mb-3">Price Details</h3>
             <div className="space-y-2">
@@ -205,7 +180,6 @@ const CheckoutPaymentPage = () => {
         </div>
       </main>
 
-      {/* Sticky Pay Button */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="container flex items-center gap-4">
           <div className="flex flex-col">
