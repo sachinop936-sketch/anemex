@@ -19,12 +19,11 @@ const ProductPage = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const { products: dbProducts } = useProducts();
+  const { products: dbProducts, loading: dbLoading } = useProducts();
 
   // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
   const staticProduct = staticProducts.find((p) => p.id === id);
-
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
@@ -67,6 +66,14 @@ const ProductPage = () => {
       toast.success(`Added ${quantity} item${quantity > 1 ? 's' : ''} to cart!`);
     }
   };
+
+  if (dbLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground text-sm">Loading product...</div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
