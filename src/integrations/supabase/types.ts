@@ -110,21 +110,48 @@ export type Database = {
       orders: {
         Row: {
           created_at: string | null
+          customer_address: string | null
+          customer_city: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          customer_pincode: string | null
+          customer_state: string | null
           id: string
+          items: Json | null
+          payment_method: string | null
           status: string | null
           total_amount: number | null
+          updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_pincode?: string | null
+          customer_state?: string | null
           id?: string
+          items?: Json | null
+          payment_method?: string | null
           status?: string | null
           total_amount?: number | null
+          updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_pincode?: string | null
+          customer_state?: string | null
           id?: string
+          items?: Json | null
+          payment_method?: string | null
           status?: string | null
           total_amount?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -231,33 +258,42 @@ export type Database = {
       }
       store_settings: {
         Row: {
+          delivery_charges: number | null
           footer_text: string | null
+          free_delivery_above: number | null
           id: string
           info_text: string | null
           is_store_open: boolean | null
           logo_url: string | null
           store_name: string | null
           support_number: string | null
+          tax_percent: number | null
           updated_at: string | null
         }
         Insert: {
+          delivery_charges?: number | null
           footer_text?: string | null
+          free_delivery_above?: number | null
           id?: string
           info_text?: string | null
           is_store_open?: boolean | null
           logo_url?: string | null
           store_name?: string | null
           support_number?: string | null
+          tax_percent?: number | null
           updated_at?: string | null
         }
         Update: {
+          delivery_charges?: number | null
           footer_text?: string | null
+          free_delivery_above?: number | null
           id?: string
           info_text?: string | null
           is_store_open?: boolean | null
           logo_url?: string | null
           store_name?: string | null
           support_number?: string | null
+          tax_percent?: number | null
           updated_at?: string | null
         }
         Relationships: []
