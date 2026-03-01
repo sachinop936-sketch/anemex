@@ -47,7 +47,16 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
 
       {/* Product Info */}
       <div className="p-3">
-        <h3 className="text-sm font-medium text-foreground line-clamp-2 leading-tight min-h-[2.5rem]">
+        <h3
+          className="text-sm font-medium text-foreground leading-tight h-[2.5rem] mb-1"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {product.name}
         </h3>
 
