@@ -6,12 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Lock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, isAdmin, loading: authLoading } = useAdminAuth();
+  const { isAdmin, loading: authLoading } = useAdminAuth();
   const navigate = useNavigate();
 
   if (!authLoading && isAdmin) {
@@ -21,12 +22,38 @@ const AdminLogin = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) { toast.error('Please fill all fields'); return; }
+    if (!username || !password) { toast.error('Please fill all fields'); return; }
     setLoading(true);
-    const { error } = await signIn(email, password);
-    if (error) { toast.error(error.message); setLoading(false); return; }
-    // Re-check will happen via useAdminAuth
-    setTimeout(() => { window.location.href = '/admin'; }, 500);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-login', {
+        body: { username, password },
+      });
+
+      if (error || !data?.access_token) {
+        toast.error(data?.error || 'Invalid credentials');
+        setLoading(false);
+        return;
+      }
+
+      // Set the session manually with the returned tokens
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+
+      if (sessionError) {
+        toast.error(sessionError.message);
+        setLoading(false);
+        return;
+      }
+
+      toast.success('Login successful!');
+      setTimeout(() => { window.location.href = '/admin'; }, 500);
+    } catch (err) {
+      toast.error('Login failed. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,8 +69,8 @@ const AdminLogin = () => {
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@example.com" />
+              <Label htmlFor="username">Username</Label>
+              <Input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="admin" />
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
