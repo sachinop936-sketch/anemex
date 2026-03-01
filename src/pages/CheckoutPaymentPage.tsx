@@ -52,10 +52,7 @@ const CheckoutPaymentPage = () => {
 
   const onlineDiscount = isOnline ? Math.round(totalPrice * ONLINE_DISCOUNT_PERCENT / 100) : 0;
   const finalPrice = isOnline ? totalPrice - onlineDiscount : totalPrice;
-  const codAdvance = isCod ? Math.ceil(totalPrice * 0.5) : 0;
-  const codRemaining = isCod ? totalPrice - codAdvance : 0;
-
-  const payableNow = isOnline ? finalPrice : isCod ? codAdvance : totalPrice;
+  const payableNow = isOnline ? finalPrice : totalPrice;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -162,23 +159,11 @@ const CheckoutPaymentPage = () => {
               >
                 <Truck className={`h-6 w-6 ${isCod ? 'text-primary' : 'text-muted-foreground'}`} />
                 <span className="text-xs font-semibold text-foreground">Cash on Delivery</span>
-                <span className="text-[10px] text-amber-600 font-medium">50% advance required</span>
+                <span className="text-[10px] text-muted-foreground font-medium">Pay at delivery</span>
               </button>
             </div>
           </div>
 
-          {/* COD Info Banner */}
-          {isCod && (
-            <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 flex items-start gap-3 animate-fade-in">
-              <Info className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-xs font-semibold text-amber-800">50% Advance Payment Required</p>
-                <p className="text-[11px] text-amber-700 mt-0.5">
-                  Pay ₹{codAdvance.toLocaleString()} now for order confirmation. Remaining ₹{codRemaining.toLocaleString()} at delivery.
-                </p>
-              </div>
-            </div>
-          )}
 
           {/* Online Discount Banner */}
           {isOnline && (
@@ -258,19 +243,6 @@ const CheckoutPaymentPage = () => {
                 <span className="text-foreground">Total Amount</span>
                 <span className="text-foreground">₹{finalPrice.toLocaleString()}.00</span>
               </div>
-              {isCod && (
-                <>
-                  <div className="border-t border-dashed border-border my-2" />
-                  <div className="flex justify-between text-sm">
-                    <span className="text-amber-700 font-semibold">Pay Now (50% Advance)</span>
-                    <span className="text-amber-700 font-bold">₹{codAdvance.toLocaleString()}.00</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Pay at Delivery</span>
-                    <span className="text-foreground">₹{codRemaining.toLocaleString()}.00</span>
-                  </div>
-                </>
-              )}
             </div>
           </div>
         </div>
@@ -283,9 +255,6 @@ const CheckoutPaymentPage = () => {
             {(isOnline && onlineDiscount > 0) && (
               <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>
             )}
-            {isCod && (
-              <span className="text-[10px] text-amber-600 font-medium">50% Advance</span>
-            )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
           <Button
@@ -295,7 +264,7 @@ const CheckoutPaymentPage = () => {
             disabled={!canProceed || payLoading}
             onClick={handlePay}
           >
-            {isCod ? 'Pay Advance & Place Order' : 'Continue'}
+            {isCod ? 'Place Order' : 'Continue'}
           </Button>
         </div>
       </div>
