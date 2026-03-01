@@ -164,18 +164,6 @@ const CheckoutPaymentPage = () => {
             </div>
           </div>
 
-          {/* COD Info Banner */}
-          {isCod && (
-            <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 flex items-start gap-3 animate-fade-in">
-              <Info className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-xs font-semibold text-amber-800">50% Advance Payment Required</p>
-                <p className="text-[11px] text-amber-700 mt-0.5">
-                  Pay ₹{codAdvance.toLocaleString()} now for order confirmation. Remaining ₹{codRemaining.toLocaleString()} at delivery.
-                </p>
-              </div>
-            </div>
-          )}
 
           {/* Online Discount Banner */}
           {isOnline && (
