@@ -46,12 +46,9 @@ const CheckoutPaymentPage = () => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const discount = totalOriginalPrice - totalPrice;
 
-  const isOnline = paymentType === 'online';
-  const isCod = paymentType === 'cod';
-
-  const onlineDiscount = isOnline ? Math.round(totalPrice * ONLINE_DISCOUNT_PERCENT / 100) : 0;
-  const finalPrice = isOnline ? totalPrice - onlineDiscount : totalPrice;
-  const payableNow = isOnline ? finalPrice : totalPrice;
+  const onlineDiscount = Math.round(totalPrice * ONLINE_DISCOUNT_PERCENT / 100);
+  const finalPrice = totalPrice - onlineDiscount;
+  const payableNow = finalPrice;
 
   useEffect(() => {
     const timer = setInterval(() => {
