@@ -196,6 +196,39 @@ const AdminProductForm = ({ productId, onClose }: Props) => {
 
         <div className="flex gap-3 pt-4">
           <Button type="submit" disabled={loading}>{loading ? 'Saving...' : isEdit ? 'Update Product' : 'Add Product'}</Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={optimizing || !form.name}
+            className="gap-2"
+            onClick={async () => {
+              setOptimizing(true);
+              try {
+                const { data, error } = await supabase.functions.invoke('ai-optimize-product', {
+                  body: { product: { name: form.name, description: form.description, category: form.category, price: Number(form.price), features: form.features.split(',').map(f => f.trim()).filter(Boolean) } },
+                });
+                if (error) throw new Error(error.message);
+                if (!data?.success) throw new Error(data?.error || 'AI optimization failed');
+                const o = data.optimized;
+                setForm(prev => ({
+                  ...prev,
+                  name: o.optimized_title || prev.name,
+                  short_description: o.short_description || prev.short_description,
+                  description: o.description || prev.description,
+                  features: (o.features || []).join(', ') || prev.features,
+                  tag: o.tag || prev.tag,
+                }));
+                toast.success('Product optimized with AI!');
+              } catch (err: any) {
+                toast.error(err.message || 'AI optimization failed');
+              } finally {
+                setOptimizing(false);
+              }
+            }}
+          >
+            {optimizing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {optimizing ? 'Optimizing...' : 'AI Optimize'}
+          </Button>
           <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
         </div>
       </form>
