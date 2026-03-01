@@ -50,6 +50,7 @@ const App = () => (
               <Route path="/admin/notifications" element={<AdminLayout><AdminNotifications /></AdminLayout>} />
               <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
 
+              <Route path="/export" element={<ExportData />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
