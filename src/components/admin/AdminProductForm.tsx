@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { ArrowLeft, Upload, X, GripVertical } from 'lucide-react';
+import { ArrowLeft, Upload, X, GripVertical, Sparkles, Loader2 } from 'lucide-react';
 
 interface Props {
   productId: string | null;
