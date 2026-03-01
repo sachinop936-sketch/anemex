@@ -47,20 +47,21 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
 
       {/* Product Info */}
       <div className="p-3 flex flex-col">
-        <div
-          className="text-sm font-medium text-foreground leading-tight mb-2"
+        <p
+          className="text-sm font-medium text-foreground mb-2"
           style={{
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical' as const,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            minHeight: '2.5rem',
-            maxHeight: '2.5rem',
+            lineHeight: '1.25rem',
+            height: '2.5rem',
+            wordBreak: 'break-word',
           }}
         >
           {product.name}
-        </div>
+        </p>
 
         <div className="flex items-center gap-2">
           <span className="text-base font-bold text-foreground">₹{product.discountPrice.toLocaleString()}</span>
