@@ -126,53 +126,16 @@ const CheckoutPaymentPage = () => {
         </div>
 
         <div className="container space-y-4">
-          {/* Payment Type Selection */}
-          <div className="bg-card border border-border rounded-xl p-4">
-            <h3 className="text-sm font-bold text-foreground mb-3">Choose Payment Type</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {/* Online Payment */}
-              <button
-                onClick={() => { setPaymentType('online'); setSelectedUpi(null); }}
-                className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                  isOnline ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/50'
-                }`}
-              >
-                {/* Discount badge */}
-                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                  <Percent className="h-2.5 w-2.5" />{ONLINE_DISCOUNT_PERCENT}% OFF
-                </span>
-                <QrCode className={`h-6 w-6 ${isOnline ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className="text-xs font-semibold text-foreground">Online Payment</span>
-                <span className="text-[10px] text-green-600 font-medium">Extra {ONLINE_DISCOUNT_PERCENT}% discount</span>
-              </button>
-
-              {/* Cash on Delivery */}
-              <button
-                onClick={() => { setPaymentType('cod'); setSelectedUpi(null); }}
-                className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                  isCod ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/50'
-                }`}
-              >
-                <Truck className={`h-6 w-6 ${isCod ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className="text-xs font-semibold text-foreground">Cash on Delivery</span>
-                <span className="text-[10px] text-muted-foreground font-medium">Pay at delivery</span>
-              </button>
+          {/* Online Discount Banner */}
+          <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
+            <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-semibold text-green-800">Extra {ONLINE_DISCOUNT_PERCENT}% Online Discount Applied!</p>
+              <p className="text-[11px] text-green-700 mt-0.5">
+                You save ₹{onlineDiscount.toLocaleString()} extra with online payment.
+              </p>
             </div>
           </div>
-
-
-          {/* Online Discount Banner */}
-          {isOnline && (
-            <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
-              <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-xs font-semibold text-green-800">Extra {ONLINE_DISCOUNT_PERCENT}% Online Discount Applied!</p>
-                <p className="text-[11px] text-green-700 mt-0.5">
-                  You save ₹{onlineDiscount.toLocaleString()} extra with online payment.
-                </p>
-              </div>
-            </div>
-          )}
 
           {/* UPI Method Selection (only for online) */}
           {isOnline && (
