@@ -137,43 +137,41 @@ const CheckoutPaymentPage = () => {
             </div>
           </div>
 
-          {/* UPI Method Selection (only for online) */}
-          {isOnline && (
-            <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
-              <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
-              <div className="space-y-3">
-                {upiMethods.map((method) => (
-                  <button
-                    key={method.id}
-                    onClick={() => setSelectedUpi(method.id)}
-                    className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
-                      selectedUpi === method.id
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border bg-card hover:border-primary/50'
-                    }`}
-                  >
-                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
-                      selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'
-                    }`}>
-                      {selectedUpi === method.id && (
-                        <div className="h-2.5 w-2.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                    <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
-                    {method.logo ? (
-                      <div className="h-8 w-8 rounded flex items-center justify-center bg-white p-0.5">
-                        <img src={method.logo} alt={method.name} className="h-6 w-auto object-contain" />
-                      </div>
-                    ) : (
-                      <div className="h-8 w-8 rounded flex items-center justify-center bg-muted">
-                        {method.icon && <method.icon className="h-4 w-4 text-muted-foreground" />}
-                      </div>
+          {/* UPI Method Selection */}
+          <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
+            <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
+            <div className="space-y-3">
+              {upiMethods.map((method) => (
+                <button
+                  key={method.id}
+                  onClick={() => setSelectedUpi(method.id)}
+                  className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
+                    selectedUpi === method.id
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border bg-card hover:border-primary/50'
+                  }`}
+                >
+                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                    selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'
+                  }`}>
+                    {selectedUpi === method.id && (
+                      <div className="h-2.5 w-2.5 rounded-full bg-primary" />
                     )}
-                  </button>
-                ))}
-              </div>
+                  </div>
+                  <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
+                  {method.logo ? (
+                    <div className="h-8 w-8 rounded flex items-center justify-center bg-white p-0.5">
+                      <img src={method.logo} alt={method.name} className="h-6 w-auto object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-8 w-8 rounded flex items-center justify-center bg-muted">
+                      {method.icon && <method.icon className="h-4 w-4 text-muted-foreground" />}
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Price Details */}
           <div className="bg-card border border-border rounded-xl p-4">
