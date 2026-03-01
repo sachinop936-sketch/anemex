@@ -243,19 +243,6 @@ const CheckoutPaymentPage = () => {
                 <span className="text-foreground">Total Amount</span>
                 <span className="text-foreground">₹{finalPrice.toLocaleString()}.00</span>
               </div>
-              {isCod && (
-                <>
-                  <div className="border-t border-dashed border-border my-2" />
-                  <div className="flex justify-between text-sm">
-                    <span className="text-amber-700 font-semibold">Pay Now (50% Advance)</span>
-                    <span className="text-amber-700 font-bold">₹{codAdvance.toLocaleString()}.00</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Pay at Delivery</span>
-                    <span className="text-foreground">₹{codRemaining.toLocaleString()}.00</span>
-                  </div>
-                </>
-              )}
             </div>
           </div>
         </div>
