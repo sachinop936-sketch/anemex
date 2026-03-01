@@ -209,7 +209,7 @@ const CheckoutPaymentPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="container flex items-center gap-4">
           <div className="flex flex-col">
-            {(isOnline && onlineDiscount > 0) && (
+            {onlineDiscount > 0 && (
               <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>
             )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
