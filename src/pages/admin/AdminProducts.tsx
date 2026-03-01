@@ -3,8 +3,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download } from 'lucide-react';
 import AdminProductForm from '@/components/admin/AdminProductForm';
+import AdminProductImport from '@/components/admin/AdminProductImport';
 
 interface DBProduct {
   id: string;
