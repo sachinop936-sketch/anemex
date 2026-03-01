@@ -13,6 +13,7 @@ import CheckoutPaymentPage from "./pages/CheckoutPaymentPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminBanners from "./pages/admin/AdminBanners";
 import AdminCoupons from "./pages/admin/AdminCoupons";
