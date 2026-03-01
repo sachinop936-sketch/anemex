@@ -159,7 +159,7 @@ const CheckoutPaymentPage = () => {
               >
                 <Truck className={`h-6 w-6 ${isCod ? 'text-primary' : 'text-muted-foreground'}`} />
                 <span className="text-xs font-semibold text-foreground">Cash on Delivery</span>
-                <span className="text-[10px] text-amber-600 font-medium">50% advance required</span>
+                <span className="text-[10px] text-muted-foreground font-medium">Pay at delivery</span>
               </button>
             </div>
           </div>
