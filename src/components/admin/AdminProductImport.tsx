@@ -375,7 +375,7 @@ const AdminProductImport = ({ onClose, onProductSaved }: Props) => {
                 />
               </div>
               {item.status === 'done' && <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />}
-              {item.status === 'error' && <XCircle className="h-5 w-5 text-destructive flex-shrink-0" title={item.error} />}
+              {item.status === 'error' && <span title={item.error}><XCircle className="h-5 w-5 text-destructive flex-shrink-0" /></span>}
               {item.status === 'loading' && <Loader2 className="h-5 w-5 animate-spin text-primary flex-shrink-0" />}
               {bulkUrls.length > 1 && (
                 <Button variant="ghost" size="icon" onClick={() => removeBulkUrl(idx)} disabled={scraping}>
