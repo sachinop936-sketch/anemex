@@ -25,6 +25,7 @@ const AdminProducts = () => {
   const [search, setSearch] = useState('');
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const fetchProducts = async () => {
     setLoading(true);
