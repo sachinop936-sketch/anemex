@@ -4,7 +4,7 @@ import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { ArrowLeft, QrCode, Truck, Percent, Info } from 'lucide-react';
+import { ArrowLeft, QrCode, Percent } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
