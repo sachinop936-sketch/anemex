@@ -5,6 +5,7 @@ import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { ArrowLeft, QrCode, Percent } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const ONLINE_DISCOUNT_PERCENT = 3;
@@ -75,13 +76,29 @@ const CheckoutPaymentPage = () => {
 
   const canProceed = !!selectedUpi;
 
-  const handlePay = () => {
+  const handlePay = async () => {
     setPayLoading(true);
-    toast.success('Order placed successfully! Redirecting to payment...');
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment-link', {
+        body: {
+          items: items.map(item => ({ name: item.name })),
+          totalAmount: payableNow,
+        },
+      });
+
+      if (error || !data?.paymentUrl) {
+        toast.error('Payment failed. Please try again.');
+        console.error('Payment error:', error);
+        return;
+      }
+
+      window.location.href = data.paymentUrl;
+    } catch (err) {
+      toast.error('Payment failed. Please try again.');
+      console.error('Payment error:', err);
+    } finally {
       setPayLoading(false);
-      toast.info('Payment integration is not configured in static mode.');
-    }, 1500);
+    }
   };
 
   return (
