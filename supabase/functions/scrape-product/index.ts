@@ -1,12 +1,10 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -21,7 +19,6 @@ serve(async (req) => {
       );
     }
 
-    // Validate URL
     let formattedUrl = url.trim();
     if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
       formattedUrl = `https://${formattedUrl}`;
@@ -46,7 +43,7 @@ serve(async (req) => {
 
     console.log("Scraping product URL:", formattedUrl);
 
-    // Scrape the page with markdown + structured extraction
+    // Use extract format for structured JSON extraction
     const scrapeResponse = await fetch("https://api.firecrawl.dev/v1/scrape", {
       method: "POST",
       headers: {
@@ -55,43 +52,37 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         url: formattedUrl,
-        formats: [
-          "markdown",
-          {
-            type: "json",
-            schema: {
-              type: "object",
-              properties: {
-                product_title: { type: "string", description: "The main product title/name" },
-                price: { type: "number", description: "Current selling price in INR (number only)" },
-                original_price: { type: "number", description: "MRP or original price before discount in INR (number only)" },
-                discount_percent: { type: "number", description: "Discount percentage (number only)" },
-                description: { type: "string", description: "Full product description text" },
-                short_description: { type: "string", description: "A brief tagline or short description (1-2 sentences)" },
-                category: { type: "string", description: "Product category (e.g. Electronics, Fashion, Home)" },
-                rating: { type: "number", description: "Average product rating (1-5)" },
-                review_count: { type: "number", description: "Total number of reviews" },
-                features: {
-                  type: "array",
-                  items: { type: "string" },
-                  description: "Key product features as bullet points"
-                },
-                seller: { type: "string", description: "Seller or brand name" },
-                images: {
-                  type: "array",
-                  items: { type: "string" },
-                  description: "All product image URLs (full resolution)"
-                },
-                specifications: {
-                  type: "object",
-                  description: "Key product specifications as key-value pairs"
-                }
+        formats: ["markdown", "extract"],
+        extract: {
+          schema: {
+            type: "object",
+            properties: {
+              product_title: { type: "string", description: "The main product title/name" },
+              price: { type: "number", description: "Current selling price in INR (number only)" },
+              original_price: { type: "number", description: "MRP or original price before discount in INR (number only)" },
+              discount_percent: { type: "number", description: "Discount percentage (number only)" },
+              description: { type: "string", description: "Full product description text" },
+              short_description: { type: "string", description: "A brief tagline or short description (1-2 sentences)" },
+              category: { type: "string", description: "Product category (e.g. Electronics, Fashion, Home)" },
+              rating: { type: "number", description: "Average product rating (1-5)" },
+              review_count: { type: "number", description: "Total number of reviews" },
+              features: {
+                type: "array",
+                items: { type: "string" },
+                description: "Key product features as bullet points",
               },
-              required: ["product_title"]
+              seller: { type: "string", description: "Seller or brand name" },
+              images: {
+                type: "array",
+                items: { type: "string" },
+                description: "All product image URLs (full resolution)",
+              },
             },
-            prompt: "Extract complete product information from this ecommerce product page. Get all available images, the current selling price and original MRP in Indian Rupees (INR). Extract all specifications and features."
-          }
-        ],
+            required: ["product_title"],
+          },
+          prompt:
+            "Extract complete product information from this ecommerce product page. Get all available images, the current selling price and original MRP in Indian Rupees (INR). Extract all specifications and features.",
+        },
         onlyMainContent: true,
         waitFor: 3000,
       }),
@@ -107,24 +98,29 @@ serve(async (req) => {
       );
     }
 
-    // Extract the structured JSON data
-    const jsonData = scrapeData.data?.json || scrapeData.json || {};
+    const extracted = scrapeData.data?.extract || scrapeData.extract || {};
     const markdown = scrapeData.data?.markdown || scrapeData.markdown || "";
 
-    // Build product object matching existing DB schema
+    // Also try to get images from metadata/links if extract didn't find them
+    const metadataImg = scrapeData.data?.metadata?.ogImage;
+    let images = (extracted.images || []).filter((img: string) => img && img.startsWith("http"));
+    if (images.length === 0 && metadataImg) {
+      images = [metadataImg];
+    }
+
     const product = {
-      name: jsonData.product_title || "Untitled Product",
-      short_description: jsonData.short_description || "",
-      description: jsonData.description || markdown.slice(0, 2000),
-      price: jsonData.price || 0,
-      original_price: jsonData.original_price || jsonData.price || 0,
-      discount_percent: jsonData.discount_percent || 0,
-      category: jsonData.category || "General",
-      rating: Math.min(5, Math.max(0, jsonData.rating || 4.5)),
-      review_count: jsonData.review_count || 0,
-      features: jsonData.features || [],
-      seller: jsonData.seller || "",
-      images: (jsonData.images || []).filter((img: string) => img && img.startsWith("http")),
+      name: extracted.product_title || "Untitled Product",
+      short_description: extracted.short_description || "",
+      description: extracted.description || markdown.slice(0, 2000),
+      price: extracted.price || 0,
+      original_price: extracted.original_price || extracted.price || 0,
+      discount_percent: extracted.discount_percent || 0,
+      category: extracted.category || "General",
+      rating: Math.min(5, Math.max(0, extracted.rating || 4.5)),
+      review_count: extracted.review_count || 0,
+      features: extracted.features || [],
+      seller: extracted.seller || "",
+      images,
       free_delivery: true,
       is_visible: true,
       stock: 100,
@@ -133,7 +129,6 @@ serve(async (req) => {
       source_url: formattedUrl,
     };
 
-    // Auto-calculate discount if not provided
     if (!product.discount_percent && product.original_price > product.price && product.price > 0) {
       product.discount_percent = Math.round(
         ((product.original_price - product.price) / product.original_price) * 100
