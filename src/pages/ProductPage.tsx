@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
-import { products as staticProducts } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
@@ -21,9 +20,7 @@ const ProductPage = () => {
   const { addToCart } = useCart();
   const { products: dbProducts, loading: dbLoading } = useProducts();
 
-  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
-  const staticProduct = staticProducts.find((p) => p.id === id);
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
@@ -42,7 +39,7 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : staticProduct;
+  } : null;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
@@ -112,7 +109,6 @@ const ProductPage = () => {
     { name: 'Lakshmi A.', rating: 5, comment: 'My daughter uses it for online classes. Crystal clear audio.', date: '1 week ago', avatar: 'L' },
   ];
 
-  // Deterministic shuffle based on product id
   const hash = (product.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const reviews = [...allReviews]
     .sort((a, b) => {
