@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { Navigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Package, Image, Tag, Bell, Settings, LogOut, Menu, X, ChevronRight,
+  LayoutDashboard, Package, Image, Tag, Bell, Settings, LogOut, Menu, X, ChevronRight, ShoppingCart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
