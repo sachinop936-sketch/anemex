@@ -74,7 +74,7 @@ const CheckoutPaymentPage = () => {
     );
   }
 
-  const canProceed = isOnline ? !!selectedUpi : isCod;
+  const canProceed = !!selectedUpi;
 
   const handlePay = async () => {
     setPayLoading(true);
