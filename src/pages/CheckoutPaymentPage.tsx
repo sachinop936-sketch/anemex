@@ -185,7 +185,7 @@ const CheckoutPaymentPage = () => {
                 <span className="text-muted-foreground">Discount</span>
                 <span className="text-green-600 font-medium">-₹{discount.toLocaleString()}.00</span>
               </div>
-              {isOnline && onlineDiscount > 0 && (
+              {onlineDiscount > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-green-600 font-medium">Online Payment Discount</span>
                   <span className="text-green-600 font-medium">-₹{onlineDiscount.toLocaleString()}.00</span>
