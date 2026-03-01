@@ -54,7 +54,7 @@ import earbud142 from '@/assets/earbud-14.2.jpg';
 import earbud143 from '@/assets/earbud-14.3.jpg';
 import earbud151 from '@/assets/earbud-15.1.jpg';
 import earbud152 from '@/assets/earbud-15.2.jpg';
-import earbud153 from '@/assets/earbud-15.3.jpg';
+
 import earbud161 from '@/assets/earbud-16.1.jpg';
 import earbud162 from '@/assets/earbud-16.2.jpg';
 import earbud163 from '@/assets/earbud-16.3.jpg';
