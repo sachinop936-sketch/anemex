@@ -76,9 +76,14 @@ const AdminProducts = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">Products</h1>
-        <Button onClick={() => setShowForm(true)} size="sm" className="gap-1">
-          <Plus className="h-4 w-4" /> Add Product
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setShowImport(true)} size="sm" variant="outline" className="gap-1">
+            <Download className="h-4 w-4" /> Import
+          </Button>
+          <Button onClick={() => setShowForm(true)} size="sm" className="gap-1">
+            <Plus className="h-4 w-4" /> Add Product
+          </Button>
+        </div>
       </div>
 
       <div className="relative mb-4">
