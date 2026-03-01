@@ -426,7 +426,7 @@ export const products: Product[] = [
     discountPrice: 949,
     discountPercent: 79,
     image: earbud151,
-    images: [earbud151, earbud152, earbud153],
+    images: [earbud151, earbud152],
     category: "Electronics",
     tag: "bestseller",
     rating: 4.1,
