@@ -20,6 +20,7 @@ import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminLayout from "./components/admin/AdminLayout";
+import ExportData from "./pages/ExportData";
 
 const queryClient = new QueryClient();
 
