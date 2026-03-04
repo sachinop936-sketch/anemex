@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
+import { products as staticProducts } from '@/data/products';
+import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
 import {
@@ -17,37 +19,30 @@ const ProductPage = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const [productsData, setProductsData] = useState<any>({ products: [] });
-  const [isLoading, setIsLoading] = useState(true);
+  const { products: dbProducts, loading: dbLoading } = useProducts();
 
-  useEffect(() => {
-    fetch('/data/products.json')
-      .then(res => res.json())
-      .then(data => setProductsData(data))
-      .catch(err => console.error('Failed to load products:', err))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const rawProduct = productsData.products.find((p: any) => p.id === id);
-  const product = rawProduct ? {
-    id: rawProduct.id,
-    name: rawProduct.name,
-    description: rawProduct.description,
-    shortDescription: rawProduct.short_description,
-    originalPrice: rawProduct.original_price,
-    discountPrice: rawProduct.price,
-    discountPercent: rawProduct.discount_percent,
-    image: rawProduct.image,
-    images: rawProduct.images,
-    category: rawProduct.category,
-    tag: rawProduct.tag as any,
-    stockTag: rawProduct.stock_tag,
-    rating: rawProduct.rating,
-    reviewCount: rawProduct.review_count,
-    features: rawProduct.features,
-    seller: rawProduct.seller,
-    freeDelivery: rawProduct.free_delivery,
-  } : null;
+  // Try DB first, then static
+  const dbProduct = dbProducts.find((p) => p.id === id);
+  const staticProduct = staticProducts.find((p) => p.id === id);
+  const product = dbProduct ? {
+    id: dbProduct.id,
+    name: dbProduct.name,
+    description: dbProduct.description,
+    shortDescription: dbProduct.short_description,
+    originalPrice: dbProduct.original_price,
+    discountPrice: dbProduct.price,
+    discountPercent: dbProduct.discount_percent,
+    image: dbProduct.image,
+    images: dbProduct.images,
+    category: dbProduct.category,
+    tag: dbProduct.tag as any,
+    stockTag: dbProduct.stock_tag,
+    rating: dbProduct.rating,
+    reviewCount: dbProduct.review_count,
+    features: dbProduct.features,
+    seller: dbProduct.seller,
+    freeDelivery: dbProduct.free_delivery,
+  } : staticProduct;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
@@ -72,13 +67,10 @@ const ProductPage = () => {
     }
   };
 
-  if (isLoading) {
+  if (dbLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-center">
-          <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p className="text-sm text-muted-foreground">Loading product...</p>
-        </div>
+        <div className="animate-pulse text-muted-foreground text-sm">Loading product...</div>
       </div>
     );
   }
@@ -120,6 +112,7 @@ const ProductPage = () => {
     { name: 'Lakshmi A.', rating: 5, comment: 'My daughter uses it for online classes. Crystal clear audio.', date: '1 week ago', avatar: 'L' },
   ];
 
+  // Deterministic shuffle based on product id
   const hash = (product.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const reviews = [...allReviews]
     .sort((a, b) => {
