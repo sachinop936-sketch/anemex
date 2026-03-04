@@ -194,14 +194,12 @@ const OrderSummaryPage = () => {
             <p className="text-xs text-muted-foreground line-through">₹{Math.round(totalOriginalPrice).toLocaleString()}</p>
             <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</p>
           </div>
-          <Button
-            variant="gradient"
-            size="xl"
-            className="flex-1 max-w-[200px]"
+          <button
             onClick={handleContinue}
+            className="flex-1 max-w-[200px] h-14 rounded-2xl bg-[hsl(40,100%,55%)] hover:bg-[hsl(40,100%,50%)] text-[hsl(0,0%,10%)] font-bold text-base transition-colors active:scale-[0.98]"
           >
             Continue
-          </Button>
+          </button>
         </div>
       </div>
     </div>
