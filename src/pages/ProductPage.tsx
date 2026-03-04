@@ -18,12 +18,14 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const [productsData, setProductsData] = useState<any>({ products: [] });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/data/products.json')
       .then(res => res.json())
       .then(data => setProductsData(data))
-      .catch(err => console.error('Failed to load products:', err));
+      .catch(err => console.error('Failed to load products:', err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const rawProduct = productsData.products.find((p: any) => p.id === id);
@@ -69,6 +71,17 @@ const ProductPage = () => {
       toast.success(`Added ${quantity} item${quantity > 1 ? 's' : ''} to cart!`);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-center">
+          <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-sm text-muted-foreground">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
