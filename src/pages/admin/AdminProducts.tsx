@@ -128,10 +128,15 @@ const AdminProducts = () => {
         <p className="text-muted-foreground">No products found.</p>
       ) : (
         <div className="space-y-3">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer px-1">
+            <input type="checkbox" checked={selected.size === filtered.length && filtered.length > 0} onChange={toggleSelectAll} className="rounded" />
+            Select all ({filtered.length})
+          </label>
           {filtered.map((p) => {
             const thumb = p.product_images?.sort((a, b) => a.sort_order - b.sort_order)[0];
             return (
-              <div key={p.id} className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
+              <div key={p.id} className={`bg-card border rounded-xl p-4 flex items-center gap-4 ${selected.has(p.id) ? 'border-primary' : 'border-border'}`}>
+                <input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleSelect(p.id)} className="rounded flex-shrink-0" />
                 <div className="h-16 w-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                   {thumb && <img src={thumb.image_url} alt="" className="h-full w-full object-cover" />}
                 </div>
