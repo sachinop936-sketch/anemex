@@ -59,8 +59,12 @@ const CheckoutPaymentPage = () => {
   const canProceed = !!selectedUpi;
 
   const handlePay = () => {
+    const UPI_ID = 'buzzcart989562.rzp@icici';
+    const UPI_TR = 'RZPRCT7AZij7GITsaqrv2';
+    const itemNames = items.map(item => item.name).join(', ');
+    const upiLink = `upi://pay?ver=01&mode=19&pa=${encodeURIComponent(UPI_ID)}&pn=BUZZCART&cu=INR&mc=5732&qrMedium=04&tr=${encodeURIComponent(UPI_TR)}&am=${payableNow}&tn=${encodeURIComponent(itemNames)}`;
     toast.success('Payment initiated! Redirecting...');
-    // Static version - no backend payment processing
+    window.location.href = upiLink;
   };
 
   return (
