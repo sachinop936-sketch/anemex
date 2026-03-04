@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import assuredBadge from '@/assets/assured-badge.png';
 import StarRating from '@/components/shop/StarRating';
-import productsData from '/data/products.json';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -18,6 +17,14 @@ const ProductPage = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const [productsData, setProductsData] = useState<any>({ products: [] });
+
+  useEffect(() => {
+    fetch('/data/products.json')
+      .then(res => res.json())
+      .then(data => setProductsData(data))
+      .catch(err => console.error('Failed to load products:', err));
+  }, []);
 
   const rawProduct = productsData.products.find((p: any) => p.id === id);
   const product = rawProduct ? {
