@@ -186,16 +186,6 @@ const AddressPage = () => {
               />
             </div>
 
-            <div>
-              <Label htmlFor="roadArea" className="text-sm text-muted-foreground">Road name, Area, Colony</Label>
-              <Input
-                id="roadArea"
-                placeholder="Road name, Area, Colony"
-                value={formData.roadArea}
-                onChange={(e) => handleInputChange('roadArea', e.target.value)}
-                className="mt-1"
-              />
-            </div>
           </div>
         </div>
       </main>
