@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ShopHeader from '@/components/shop/ShopHeader';
+import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { ArrowLeft, QrCode, Percent } from 'lucide-react';
+import { QrCode, Percent } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -103,20 +103,10 @@ const CheckoutPaymentPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader />
+      <CheckoutHeader title="Payment" />
       <CheckoutSteps currentStep={3} />
 
       <main className="pb-28">
-        {/* Header */}
-        <div className="container py-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Payments
-          </button>
-        </div>
 
         {/* Timer */}
         <div className="container">

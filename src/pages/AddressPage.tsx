@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
-import { ArrowLeft, Loader2, ChevronDown } from 'lucide-react';
+import { Loader2, ChevronDown } from 'lucide-react';
+import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -67,13 +68,7 @@ const AddressPage = () => {
 
   return (
     <div className="min-h-screen bg-[hsl(220,20%,96%)] flex flex-col">
-      {/* Top Header Bar */}
-      <div className="bg-[hsl(217,89%,55%)] text-white px-4 py-4 flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="p-0">
-          <ArrowLeft className="h-6 w-6 text-white" />
-        </button>
-        <h1 className="text-lg font-semibold">Add delivery address</h1>
-      </div>
+      <CheckoutHeader title="Add delivery address" />
 
       {/* Checkout Steps */}
       <CheckoutSteps currentStep={1} />
