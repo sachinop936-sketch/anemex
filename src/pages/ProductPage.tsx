@@ -18,12 +18,14 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const [productsData, setProductsData] = useState<any>({ products: [] });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/data/products.json')
       .then(res => res.json())
       .then(data => setProductsData(data))
-      .catch(err => console.error('Failed to load products:', err));
+      .catch(err => console.error('Failed to load products:', err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const rawProduct = productsData.products.find((p: any) => p.id === id);
