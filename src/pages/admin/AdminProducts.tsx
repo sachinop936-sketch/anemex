@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download, CheckSquare } from 'lucide-react';
 import AdminProductForm from '@/components/admin/AdminProductForm';
 import AdminProductImport from '@/components/admin/AdminProductImport';
 
@@ -26,6 +26,32 @@ const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const toggleSelect = (id: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selected.size === filtered.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filtered.map(p => p.id)));
+    }
+  };
+
+  const bulkDelete = async () => {
+    if (!confirm(`Delete ${selected.size} product(s)?`)) return;
+    const ids = Array.from(selected);
+    await supabase.from('products').delete().in('id', ids);
+    toast.success(`${ids.length} product(s) deleted`);
+    setSelected(new Set());
+    fetchProducts();
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -75,8 +101,13 @@ const AdminProducts = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Products</h1>
+        <h1 className="text-2xl font-bold text-foreground">Products ({filtered.length})</h1>
         <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={bulkDelete} size="sm" variant="destructive" className="gap-1">
+              <Trash2 className="h-4 w-4" /> Delete ({selected.size})
+            </Button>
+          )}
           <Button onClick={() => setShowImport(true)} size="sm" variant="outline" className="gap-1">
             <Download className="h-4 w-4" /> Import
           </Button>
@@ -97,10 +128,15 @@ const AdminProducts = () => {
         <p className="text-muted-foreground">No products found.</p>
       ) : (
         <div className="space-y-3">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer px-1">
+            <input type="checkbox" checked={selected.size === filtered.length && filtered.length > 0} onChange={toggleSelectAll} className="rounded" />
+            Select all ({filtered.length})
+          </label>
           {filtered.map((p) => {
             const thumb = p.product_images?.sort((a, b) => a.sort_order - b.sort_order)[0];
             return (
-              <div key={p.id} className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
+              <div key={p.id} className={`bg-card border rounded-xl p-4 flex items-center gap-4 ${selected.has(p.id) ? 'border-primary' : 'border-border'}`}>
+                <input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleSelect(p.id)} className="rounded flex-shrink-0" />
                 <div className="h-16 w-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                   {thumb && <img src={thumb.image_url} alt="" className="h-full w-full object-cover" />}
                 </div>
