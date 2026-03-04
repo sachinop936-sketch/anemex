@@ -26,6 +26,32 @@ const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const toggleSelect = (id: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selected.size === filtered.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filtered.map(p => p.id)));
+    }
+  };
+
+  const bulkDelete = async () => {
+    if (!confirm(`Delete ${selected.size} product(s)?`)) return;
+    const ids = Array.from(selected);
+    await supabase.from('products').delete().in('id', ids);
+    toast.success(`${ids.length} product(s) deleted`);
+    setSelected(new Set());
+    fetchProducts();
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
