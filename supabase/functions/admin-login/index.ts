@@ -6,6 +6,16 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Simple constant-time string comparison
+function secureCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -21,15 +31,20 @@ serve(async (req) => {
       );
     }
 
-    // Map username to email - support both "admin" and full email
-    const usernameToEmailMap: Record<string, string> = {
-      admin: "admin@stylebazaar.com",
+    // Admin credentials config
+    const ADMIN_CREDENTIALS: Record<string, { email: string; password: string }> = {
+      admin: { email: "admin@stylebazaar.com", password: "Admin@123456" },
     };
 
-    // If input looks like an email, use it directly; otherwise map from username
-    const email = username.includes("@") ? username : usernameToEmailMap[username.toLowerCase()];
-    
-    if (!email) {
+    // Normalize: if email provided, find by email; otherwise by username
+    let adminEntry: { email: string; password: string } | undefined;
+    if (username.includes("@")) {
+      adminEntry = Object.values(ADMIN_CREDENTIALS).find((c) => c.email === username);
+    } else {
+      adminEntry = ADMIN_CREDENTIALS[username.toLowerCase()];
+    }
+
+    if (!adminEntry || !secureCompare(password, adminEntry.password)) {
       return new Response(
         JSON.stringify({ error: "Invalid credentials" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -37,34 +52,28 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Use anon key client to sign in with password (proper password verification)
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const supabase = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    if (signInError || !signInData.session) {
-      console.error("signIn error:", signInError);
+    // Find user by email
+    const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+    const user = userData?.users?.find((u) => u.email === adminEntry!.email);
+
+    if (!user || userError) {
       return new Response(
         JSON.stringify({ error: "Invalid credentials" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Verify admin role using service role key
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
-
-    const { data: roleData } = await adminSupabase
+    // Verify admin role
+    const { data: roleData } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", signInData.user.id)
+      .eq("user_id", user.id)
       .eq("role", "admin")
       .single();
 
@@ -75,10 +84,47 @@ serve(async (req) => {
       );
     }
 
+    // Generate a magic link and verify it to create a session
+    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+      type: "magiclink",
+      email: adminEntry.email,
+    });
+
+    if (linkError || !linkData?.properties?.hashed_token) {
+      console.error("generateLink error:", linkError);
+      return new Response(
+        JSON.stringify({ error: "Authentication failed" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Verify the OTP to get a session
+    const verifyRes = await fetch(`${supabaseUrl}/auth/v1/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceRoleKey,
+      },
+      body: JSON.stringify({
+        type: "magiclink",
+        token_hash: linkData.properties.hashed_token,
+      }),
+    });
+
+    const sessionData = await verifyRes.json();
+
+    if (!verifyRes.ok || !sessionData.access_token) {
+      console.error("verify error:", JSON.stringify(sessionData));
+      return new Response(
+        JSON.stringify({ error: "Authentication failed" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     return new Response(
       JSON.stringify({
-        access_token: signInData.session.access_token,
-        refresh_token: signInData.session.refresh_token,
+        access_token: sessionData.access_token,
+        refresh_token: sessionData.refresh_token,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
