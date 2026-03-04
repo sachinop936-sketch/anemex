@@ -3,12 +3,20 @@ import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
-import productsData from '/data/products.json';
 
 const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000;
 
 const ShopHome = () => {
+  const [productsData, setProductsData] = useState<any>({ products: [], banners: [], settings: {} });
+
+  useEffect(() => {
+    fetch('/data/products.json')
+      .then(res => res.json())
+      .then(data => setProductsData(data))
+      .catch(err => console.error('Failed to load products:', err));
+  }, []);
+
   const sourceProducts = productsData.products;
   const bannerUrl = productsData.banners?.[0]?.image_url || null;
 
