@@ -204,15 +204,13 @@ const CheckoutPaymentPage = () => {
             )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
-          <Button
-            variant="gradient"
-            size="xl"
-            className="flex-1"
+          <button
+            className={`flex-1 h-14 rounded-2xl bg-[hsl(40,100%,55%)] hover:bg-[hsl(40,100%,50%)] text-[hsl(0,0%,10%)] font-bold text-base transition-colors active:scale-[0.98] ${(!canProceed || payLoading) ? 'opacity-50 pointer-events-none' : ''}`}
             disabled={!canProceed || payLoading}
             onClick={handlePay}
           >
             Continue
-          </Button>
+          </button>
         </div>
       </div>
     </div>
