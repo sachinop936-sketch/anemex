@@ -101,7 +101,6 @@ serve(async (req) => {
           category: p.category,
           price: p.price,
           original_price: p.original_price,
-          discount_percent: p.discount_percent,
           rating: p.rating,
           review_count: p.review_count,
           short_description: p.short_description,
