@@ -63,8 +63,6 @@ const OrderSummaryPage = () => {
       <main className="pb-32">
         {/* Delivered To Section */}
         <div className="container py-4">
-          <div
-
           <div className="rounded-xl bg-card p-4 border border-border">
             <h2 className="text-base font-semibold text-primary mb-2">Delivered to:</h2>
             {address && (
