@@ -26,9 +26,8 @@ serve(async (req) => {
       admin: "admin@stylebazaar.com",
     };
 
-    // If input looks like an email, use it directly; otherwise map from username
     const email = username.includes("@") ? username : usernameToEmailMap[username.toLowerCase()];
-    
+
     if (!email) {
       return new Response(
         JSON.stringify({ error: "Invalid credentials" }),
@@ -37,34 +36,29 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Use anon key client to sign in with password (proper password verification)
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const supabase = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    if (signInError || !signInData.session) {
-      console.error("signIn error:", signInError);
+    // Find user by email
+    const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+    const user = userData?.users?.find((u) => u.email === email);
+
+    if (!user || userError) {
+      console.error("User lookup error:", userError);
       return new Response(
         JSON.stringify({ error: "Invalid credentials" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Verify admin role using service role key
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
-
-    const { data: roleData } = await adminSupabase
+    // Verify admin role
+    const { data: roleData } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", signInData.user.id)
+      .eq("user_id", user.id)
       .eq("role", "admin")
       .single();
 
@@ -75,10 +69,30 @@ serve(async (req) => {
       );
     }
 
+    // Verify password by attempting signInWithPassword via the GoTrue API directly
+    const verifyRes = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceRoleKey,
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const sessionData = await verifyRes.json();
+
+    if (!verifyRes.ok || !sessionData.access_token) {
+      console.error("Password verify failed:", sessionData);
+      return new Response(
+        JSON.stringify({ error: "Invalid credentials" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     return new Response(
       JSON.stringify({
-        access_token: signInData.session.access_token,
-        refresh_token: signInData.session.refresh_token,
+        access_token: sessionData.access_token,
+        refresh_token: sessionData.refresh_token,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
