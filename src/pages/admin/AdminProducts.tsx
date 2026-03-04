@@ -101,8 +101,13 @@ const AdminProducts = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Products</h1>
+        <h1 className="text-2xl font-bold text-foreground">Products ({filtered.length})</h1>
         <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={bulkDelete} size="sm" variant="destructive" className="gap-1">
+              <Trash2 className="h-4 w-4" /> Delete ({selected.size})
+            </Button>
+          )}
           <Button onClick={() => setShowImport(true)} size="sm" variant="outline" className="gap-1">
             <Download className="h-4 w-4" /> Import
           </Button>
