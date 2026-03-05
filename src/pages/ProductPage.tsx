@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
-import { products as staticProducts } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
@@ -12,7 +11,6 @@ import {
 import assuredBadge from '@/assets/assured-badge.png';
 import StarRating from '@/components/shop/StarRating';
 
-/** Extract available sizes from features array. Looks for "Available Sizes: S, M, L, XL, XXL" */
 const extractSizes = (features: string[]): string[] => {
   for (const f of features) {
     const match = f.match(/Available Sizes?:\s*(.+)/i);
@@ -31,11 +29,9 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addToCart } = useCart();
-  const { products: dbProducts, loading: dbLoading } = useProducts();
+  const { products: dbProducts } = useProducts();
 
-  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
-  const staticProduct = staticProducts.find((p) => p.id === id);
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
@@ -54,11 +50,10 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : staticProduct;
+  } : null;
 
   const sizes = product ? extractSizes(product.features) : [];
 
-  // Auto-select first size
   useEffect(() => {
     if (sizes.length > 0 && !selectedSize) {
       setSelectedSize(sizes[0]);
@@ -92,14 +87,6 @@ const ProductPage = () => {
       toast.success(`Added ${quantity} item${quantity > 1 ? 's' : ''} to cart!`);
     }
   };
-
-  if (dbLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground text-sm">Loading product...</div>
-      </div>
-    );
-  }
 
   if (!product) {
     return (
@@ -147,7 +134,6 @@ const ProductPage = () => {
     })
     .slice(0, 4);
 
-  // Filter out the "Available Sizes" feature from display since we show it as a selector
   const displayFeatures = product.features.filter((f) => !f.match(/Available Sizes?:/i));
 
   return (
@@ -241,17 +227,10 @@ const ProductPage = () => {
               <span className="text-sm font-semibold text-foreground mb-2 block">Size: <span className="font-normal text-primary">{selectedSize}</span></span>
               <div className="flex flex-wrap gap-2">
                 {sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
+                  <button key={size} onClick={() => setSelectedSize(size)}
                     className={`h-10 min-w-[44px] px-3 rounded-lg border-2 text-sm font-semibold transition-all ${
-                      selectedSize === size
-                        ? 'border-primary bg-primary/10 text-primary'
-                        : 'border-border bg-card text-foreground hover:border-primary/50'
-                    }`}
-                  >
-                    {size}
-                  </button>
+                      selectedSize === size ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-card text-foreground hover:border-primary/50'
+                    }`}>{size}</button>
                 ))}
               </div>
             </div>
