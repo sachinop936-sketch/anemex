@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
 import { useProducts } from '@/hooks/useProducts';
@@ -15,14 +15,7 @@ const ShopHome = () => {
 
   const sourceProducts = dbProducts;
 
-  const shuffledProducts = useMemo(() => {
-    const arr = [...sourceProducts];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }, [sourceProducts]);
+  const shuffledProducts = sourceProducts;
 
   const [timeLeft, setTimeLeft] = useState(0);
 
