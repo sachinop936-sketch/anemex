@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
-import { products as staticProducts } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
@@ -19,12 +18,9 @@ const ProductPage = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const { products: dbProducts } = useProducts();
+  const { products: dbProducts, loading: dbLoading } = useProducts();
 
-  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
-  const staticProduct = staticProducts.find((p) => p.id === id);
-
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
@@ -43,7 +39,7 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : staticProduct;
+  } : null;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
@@ -68,6 +64,14 @@ const ProductPage = () => {
     }
   };
 
+  if (dbLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground text-sm">Loading product...</div>
+      </div>
+    );
+  }
+
   if (!product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -82,12 +86,37 @@ const ProductPage = () => {
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % product.images.length);
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
 
-  const reviews = [
+  const allReviews = [
     { name: 'Priya S.', rating: 5, comment: 'Excellent quality! Very happy with the purchase.', date: '2 days ago', avatar: 'P' },
     { name: 'Ananya M.', rating: 4, comment: 'Good product, fast delivery. Matches description.', date: '1 week ago', avatar: 'A' },
     { name: 'Ritu K.', rating: 5, comment: 'Loved it! Will order again. Best value for money.', date: '2 weeks ago', avatar: 'R' },
     { name: 'Sneha G.', rating: 5, comment: 'Amazing product! Exactly as shown in pictures.', date: '3 weeks ago', avatar: 'S' },
+    { name: 'Vikram T.', rating: 4, comment: 'Decent quality for the price. Delivery was quick.', date: '3 days ago', avatar: 'V' },
+    { name: 'Meera J.', rating: 5, comment: 'Superb sound quality, very comfortable to wear all day.', date: '5 days ago', avatar: 'M' },
+    { name: 'Arjun P.', rating: 3, comment: 'Average product. Battery could be better.', date: '1 week ago', avatar: 'A' },
+    { name: 'Kavita R.', rating: 5, comment: 'Perfect gift for my husband. He loves it!', date: '4 days ago', avatar: 'K' },
+    { name: 'Rohit D.', rating: 4, comment: 'Nice build quality. Bass is impressive for the price.', date: '6 days ago', avatar: 'R' },
+    { name: 'Deepa N.', rating: 5, comment: 'Best purchase I made this month. Highly recommended!', date: '1 week ago', avatar: 'D' },
+    { name: 'Suresh B.', rating: 4, comment: 'Good noise cancellation. Mic quality is decent too.', date: '2 weeks ago', avatar: 'S' },
+    { name: 'Neha L.', rating: 5, comment: 'Fantastic product! Worth every rupee spent.', date: '3 days ago', avatar: 'N' },
+    { name: 'Amit K.', rating: 3, comment: 'Okay product. Fit could be improved for smaller ears.', date: '10 days ago', avatar: 'A' },
+    { name: 'Pooja V.', rating: 5, comment: 'Received ahead of schedule. Brilliant sound clarity!', date: '1 week ago', avatar: 'P' },
+    { name: 'Rahul M.', rating: 4, comment: 'Solid earbuds at a great price point. Happy customer.', date: '2 weeks ago', avatar: 'R' },
+    { name: 'Sanya W.', rating: 5, comment: 'Love the design and color. Pairs instantly with phone.', date: '5 days ago', avatar: 'S' },
+    { name: 'Kiran H.', rating: 4, comment: 'Comfortable fit, good battery life. Minor latency in games.', date: '9 days ago', avatar: 'K' },
+    { name: 'Divya C.', rating: 5, comment: 'Second time buying this brand. Never disappoints!', date: '4 days ago', avatar: 'D' },
+    { name: 'Manoj S.', rating: 4, comment: 'Clean packaging, genuine product. Works as advertised.', date: '12 days ago', avatar: 'M' },
+    { name: 'Lakshmi A.', rating: 5, comment: 'My daughter uses it for online classes. Crystal clear audio.', date: '1 week ago', avatar: 'L' },
   ];
+
+  const hash = (product.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const reviews = [...allReviews]
+    .sort((a, b) => {
+      const ha = (hash * a.name.charCodeAt(0)) % 100;
+      const hb = (hash * b.name.charCodeAt(0)) % 100;
+      return ha - hb;
+    })
+    .slice(0, 4);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -272,7 +301,7 @@ const ProductPage = () => {
           <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-white text-gray-800 text-sm font-medium border-r border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide" onClick={handleAddToCart}>
             Add to Cart
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FFE500] text-gray-900 text-sm font-medium hover:bg-[#F5DC00] transition-colors uppercase tracking-wide"
+          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[hsl(40,100%,55%)] text-[hsl(0,0%,10%)] text-sm font-bold hover:bg-[hsl(40,100%,50%)] transition-colors uppercase tracking-wide"
             onClick={() => {
               for (let i = 0; i < quantity; i++) {
                 addToCart({ id: product.id, name: product.name, price: product.discountPrice, originalPrice: product.originalPrice, image: product.images[0] });
