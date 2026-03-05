@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
+import { products as staticProducts } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
@@ -20,7 +21,9 @@ const ProductPage = () => {
   const { addToCart } = useCart();
   const { products: dbProducts, loading: dbLoading } = useProducts();
 
+  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
+  const staticProduct = staticProducts.find((p) => p.id === id);
   const product = dbProduct ? {
     id: dbProduct.id,
     name: dbProduct.name,
@@ -39,7 +42,7 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : null;
+  } : staticProduct;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
@@ -109,6 +112,7 @@ const ProductPage = () => {
     { name: 'Lakshmi A.', rating: 5, comment: 'My daughter uses it for online classes. Crystal clear audio.', date: '1 week ago', avatar: 'L' },
   ];
 
+  // Deterministic shuffle based on product id
   const hash = (product.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const reviews = [...allReviews]
     .sort((a, b) => {
@@ -301,7 +305,7 @@ const ProductPage = () => {
           <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-white text-gray-800 text-sm font-medium border-r border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide" onClick={handleAddToCart}>
             Add to Cart
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[hsl(40,100%,55%)] text-[hsl(0,0%,10%)] text-sm font-bold hover:bg-[hsl(40,100%,50%)] transition-colors uppercase tracking-wide"
+          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FFE500] text-gray-900 text-sm font-medium hover:bg-[#F5DC00] transition-colors uppercase tracking-wide"
             onClick={() => {
               for (let i = 0; i < quantity; i++) {
                 addToCart({ id: product.id, name: product.name, price: product.discountPrice, originalPrice: product.originalPrice, image: product.images[0] });
