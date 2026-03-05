@@ -30,8 +30,7 @@ const AdminProducts = () => {
   const [bulkOptimizing, setBulkOptimizing] = useState(false);
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [showPriceChange, setShowPriceChange] = useState(false);
-  const [priceChangeAmount, setPriceChangeAmount] = useState('');
-  const [priceChangeType, setPriceChangeType] = useState<'increase' | 'decrease'>('decrease');
+  const [fixedPrice, setFixedPrice] = useState('');
   const [priceChanging, setPriceChanging] = useState(false);
 
   const fetchProducts = async () => {
@@ -137,30 +136,19 @@ const AdminProducts = () => {
   };
 
   const bulkPriceChange = async () => {
-    const amount = Number(priceChangeAmount);
-    if (!amount || amount <= 0) { toast.error('Enter a valid amount in ₹'); return; }
+    const price = Number(fixedPrice);
+    if (!price || price <= 0) { toast.error('Enter a valid price in ₹'); return; }
     if (selectedIds.size === 0) return;
     setPriceChanging(true);
 
     for (const id of selectedIds) {
-      const product = products.find(p => p.id === id);
-      if (!product) continue;
-      const newPrice = priceChangeType === 'increase'
-        ? product.price + amount
-        : Math.max(0, product.price - amount);
-      const newOriginal = priceChangeType === 'increase'
-        ? product.original_price + amount
-        : Math.max(0, product.original_price - amount);
-      await supabase.from('products').update({
-        price: newPrice,
-        original_price: newOriginal,
-      }).eq('id', id);
+      await supabase.from('products').update({ price }).eq('id', id);
     }
 
-    toast.success(`Price updated for ${selectedIds.size} product(s)`);
+    toast.success(`Price set to ₹${price} for ${selectedIds.size} product(s)`);
     setSelectedIds(new Set());
     setShowPriceChange(false);
-    setPriceChangeAmount('');
+    setFixedPrice('');
     setPriceChanging(false);
     fetchProducts();
   };
@@ -249,23 +237,12 @@ const AdminProducts = () => {
       {showPriceChange && selectedIds.size > 0 && (
         <div className="bg-card border border-border rounded-xl p-4 mb-4 flex items-end gap-3 flex-wrap max-w-lg">
           <div>
-            <label className="text-xs font-medium text-foreground">Type</label>
-            <select
-              value={priceChangeType}
-              onChange={(e) => setPriceChangeType(e.target.value as 'increase' | 'decrease')}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
-            >
-              <option value="decrease">Decrease ₹</option>
-              <option value="increase">Increase ₹</option>
-            </select>
-          </div>
-          <div>
-            <label className="text-xs font-medium text-foreground">Amount (₹)</label>
+            <label className="text-xs font-medium text-foreground">Set Price (₹)</label>
             <Input
               type="number"
-              placeholder="e.g. 100"
-              value={priceChangeAmount}
-              onChange={(e) => setPriceChangeAmount(e.target.value)}
+              placeholder="e.g. 249"
+              value={fixedPrice}
+              onChange={(e) => setFixedPrice(e.target.value)}
               className="mt-1 w-32"
             />
           </div>
@@ -273,7 +250,7 @@ const AdminProducts = () => {
             {priceChanging ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
             Apply
           </Button>
-          <Button size="sm" variant="ghost" onClick={() => { setShowPriceChange(false); setPriceChangeAmount(''); }}>
+          <Button size="sm" variant="ghost" onClick={() => { setShowPriceChange(false); setFixedPrice(''); }}>
             Cancel
           </Button>
         </div>
