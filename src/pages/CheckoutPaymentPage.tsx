@@ -59,8 +59,18 @@ const CheckoutPaymentPage = () => {
   const canProceed = !!selectedUpi;
 
   const handlePay = () => {
-    toast.success('Payment initiated! Redirecting...');
-    // Static site - no backend payment processing
+    if (!selectedUpi) return;
+
+    const upiId = 'paaborojgaar@ybl';
+    const name = 'Flipkart Store';
+    const amount = payableNow.toFixed(2);
+    const txnRef = `ORDER${Date.now()}`;
+    const txnNote = `Payment for ${totalItems} item(s)`;
+
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&tr=${txnRef}&tn=${encodeURIComponent(txnNote)}&cu=INR`;
+
+    toast.success('Redirecting to UPI app...');
+    window.location.href = upiUrl;
   };
 
   return (
