@@ -1,1 +1,0 @@
-UPDATE products SET features = array_append(features, 'Available Sizes: S, M, L, XL, XXL') WHERE NOT (features @> ARRAY['Available Sizes: S, M, L, XL, XXL']);
