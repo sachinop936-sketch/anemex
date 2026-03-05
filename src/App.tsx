@@ -20,6 +20,7 @@ import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminLayout from "./components/admin/AdminLayout";
+import ExportData from "./pages/ExportData";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/admin/notifications" element={<AdminLayout><AdminNotifications /></AdminLayout>} />
               <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
 
+              <Route path="/export" element={<ExportData />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

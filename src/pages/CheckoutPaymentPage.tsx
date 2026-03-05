@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CheckoutHeader from '@/components/checkout/CheckoutHeader';
+import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { QrCode, Percent } from 'lucide-react';
+import { ArrowLeft, QrCode, Percent } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -103,10 +103,20 @@ const CheckoutPaymentPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CheckoutHeader title="Payment" />
+      <ShopHeader />
       <CheckoutSteps currentStep={3} />
 
       <main className="pb-28">
+        {/* Header */}
+        <div className="container py-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Payments
+          </button>
+        </div>
 
         {/* Timer */}
         <div className="container">
@@ -204,13 +214,15 @@ const CheckoutPaymentPage = () => {
             )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
-          <button
-            className={`flex-1 h-14 rounded-2xl bg-[hsl(40,100%,55%)] hover:bg-[hsl(40,100%,50%)] text-[hsl(0,0%,10%)] font-bold text-base transition-colors active:scale-[0.98] ${(!canProceed || payLoading) ? 'opacity-50 pointer-events-none' : ''}`}
+          <Button
+            variant="gradient"
+            size="xl"
+            className="flex-1"
             disabled={!canProceed || payLoading}
             onClick={handlePay}
           >
             Continue
-          </button>
+          </Button>
         </div>
       </div>
     </div>

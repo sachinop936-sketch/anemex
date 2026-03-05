@@ -305,7 +305,7 @@ const ProductPage = () => {
           <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-white text-gray-800 text-sm font-medium border-r border-gray-200 hover:bg-gray-50 transition-colors uppercase tracking-wide" onClick={handleAddToCart}>
             Add to Cart
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[hsl(40,100%,55%)] text-[hsl(0,0%,10%)] text-sm font-bold hover:bg-[hsl(40,100%,50%)] transition-colors uppercase tracking-wide"
+          <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#FFE500] text-gray-900 text-sm font-medium hover:bg-[#F5DC00] transition-colors uppercase tracking-wide"
             onClick={() => {
               for (let i = 0; i < quantity; i++) {
                 addToCart({ id: product.id, name: product.name, price: product.discountPrice, originalPrice: product.originalPrice, image: product.images[0] });
