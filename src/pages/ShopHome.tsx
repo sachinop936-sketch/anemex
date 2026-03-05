@@ -1,53 +1,43 @@
 import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
-import { useProducts } from '@/hooks/useProducts';
-import { products as staticProducts } from '@/data/products';
+import { products } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
-import { supabase } from '@/integrations/supabase/client';
 
 const TIMER_KEY = 'flipkart_sale_timer_end';
-const TIMER_DURATION = 7 * 60 * 1000;
+const TIMER_DURATION = 7 * 60 * 1000; // 7 minutes in milliseconds
 
 const ShopHome = () => {
-  const { products: dbProducts, loading } = useProducts();
-
-  // Use DB products if available, fallback to static
-  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
-
+  // Shuffle product positions on each page load (prices stay fixed per product)
   const shuffledProducts = useMemo(() => {
-    const arr = [...sourceProducts];
+    const arr = [...products];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
-  }, [sourceProducts]);
+  }, []);
 
   const [timeLeft, setTimeLeft] = useState(0);
-  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Fetch active banner
-    supabase.from('banners').select('image_url').eq('is_active', true).order('sort_order').limit(1).then(({ data }) => {
-      if (data && data.length > 0) setBannerUrl(data[0].image_url);
-    });
-  }, []);
 
   useEffect(() => {
     const getEndTime = (): number => {
       const stored = localStorage.getItem(TIMER_KEY);
-      if (stored && parseInt(stored) > Date.now()) return parseInt(stored);
+      if (stored && parseInt(stored) > Date.now()) {
+        return parseInt(stored);
+      }
       const newEnd = Date.now() + TIMER_DURATION;
       localStorage.setItem(TIMER_KEY, newEnd.toString());
       return newEnd;
     };
 
     let endTime = getEndTime();
+
     const updateTimer = () => {
       const remaining = Math.max(0, endTime - Date.now());
       setTimeLeft(remaining);
+      
       if (remaining <= 0) {
         endTime = Date.now() + TIMER_DURATION;
         localStorage.setItem(TIMER_KEY, endTime.toString());
@@ -65,28 +55,6 @@ const ShopHome = () => {
     const secs = totalSeconds % 60;
     return `${mins.toString().padStart(2, '0')}min ${secs.toString().padStart(2, '0')}sec`;
   };
-
-  // Normalize product for card component
-  const normalizeProduct = (p: any) => ({
-    id: p.id,
-    name: p.name,
-    description: p.description,
-    shortDescription: p.shortDescription || p.short_description || '',
-    originalPrice: p.originalPrice || p.original_price || 0,
-    discountPrice: p.discountPrice || p.price || 0,
-    discountPercent: p.discountPercent || p.discount_percent || 0,
-    image: p.image,
-    images: p.images,
-    category: p.category,
-    tag: p.tag,
-    stockTag: p.stockTag || p.stock_tag,
-    rating: p.rating,
-    reviewCount: p.reviewCount || p.review_count || 0,
-    features: p.features || [],
-    seller: p.seller || '',
-    freeDelivery: p.freeDelivery ?? p.free_delivery ?? true,
-  });
-
   return (
     <div className="min-h-screen bg-muted">
       <ShopHeader />
@@ -95,7 +63,7 @@ const ShopHome = () => {
         {/* Hero Banner */}
         <section>
           <img 
-            src={bannerUrl || heroBanner} 
+            src={heroBanner} 
             alt="Big End of Season Sale - Live Now" 
             className="w-full h-auto"
           />
@@ -138,11 +106,12 @@ const ShopHome = () => {
           </p>
         </section>
 
-        {/* Products Grid */}
+
+        {/* Products Grid - Meesho 2-column Style */}
         <section className="bg-background">
           <div className="grid grid-cols-2">
             {shuffledProducts.map((product, index) => (
-              <ShopProductCard key={product.id} product={normalizeProduct(product)} index={index} />
+              <ShopProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
         </section>

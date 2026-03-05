@@ -1,24 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { Product } from '@/data/products';
 import assuredBadge from '@/assets/assured-badge.png';
 import wowBadge from '@/assets/wow-badge.png';
 import StarRating from '@/components/shop/StarRating';
 
-interface ProductCardData {
-  id: string;
-  name: string;
-  originalPrice: number;
-  discountPrice: number;
-  discountPercent: number;
-  image: string;
-  images: string[];
-  category: string;
-  rating: number;
-  stockTag?: string | null;
-  [key: string]: any;
-}
-
 interface ShopProductCardProps {
-  product: ProductCardData;
+  product: Product;
   index?: number;
 }
 
@@ -46,29 +33,20 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-3 flex flex-col">
-        <p
-          className="text-sm font-medium text-foreground mb-2"
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical' as const,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            lineHeight: '1.25rem',
-            height: '2.5rem',
-            wordBreak: 'break-word',
-          }}
-        >
+      <div className="p-3">
+        {/* Product Name */}
+        <h3 className="text-sm font-medium text-foreground line-clamp-2 leading-tight min-h-[2.5rem]">
           {product.name}
-        </p>
+        </h3>
 
-        <div className="flex items-center gap-2">
+        {/* Price Row */}
+        <div className="flex items-center gap-2 mt-1">
           <span className="text-base font-bold text-foreground">₹{product.discountPrice.toLocaleString()}</span>
           <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</span>
           <span className="text-xs font-semibold text-green-600">{product.discountPercent}% off</span>
         </div>
 
+        {/* Wow Price + Limited Stock row */}
         <div className="flex items-center justify-between mt-1.5">
           <div className="flex items-center gap-1.5">
             <img src={wowBadge} alt="WOW! DEAL" className="h-8 object-contain" />
@@ -77,8 +55,10 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
           <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Limited Stock</span>
         </div>
 
+        {/* Star Rating + Assured */}
         <div className="flex items-center gap-1.5 mt-2">
           <StarRating rating={product.rating} className="h-3.5" />
+          {/* Assured Badge */}
           <div className="ml-auto">
             <img src={assuredBadge} alt="Assured" className="h-5 object-contain" />
           </div>

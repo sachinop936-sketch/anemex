@@ -4,7 +4,7 @@ import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { ArrowLeft, QrCode, Percent } from 'lucide-react';
+import { ArrowLeft, QrCode, Truck, Percent, Info } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -37,6 +37,7 @@ const CheckoutPaymentPage = () => {
   const navigate = useNavigate();
   const { items } = useCart();
 
+  const [paymentType, setPaymentType] = useState<'online' | 'cod' | null>(null);
   const [selectedUpi, setSelectedUpi] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(6 * 60 + 20);
   const [payLoading, setPayLoading] = useState(false);
@@ -46,9 +47,15 @@ const CheckoutPaymentPage = () => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const discount = totalOriginalPrice - totalPrice;
 
-  const onlineDiscount = Math.round(totalPrice * ONLINE_DISCOUNT_PERCENT / 100);
-  const finalPrice = totalPrice - onlineDiscount;
-  const payableNow = finalPrice;
+  const isOnline = paymentType === 'online';
+  const isCod = paymentType === 'cod';
+
+  const onlineDiscount = isOnline ? Math.round(totalPrice * ONLINE_DISCOUNT_PERCENT / 100) : 0;
+  const finalPrice = isOnline ? totalPrice - onlineDiscount : totalPrice;
+  const codAdvance = isCod ? Math.ceil(totalPrice * 0.5) : 0;
+  const codRemaining = isCod ? totalPrice - codAdvance : 0;
+
+  const payableNow = isOnline ? finalPrice : isCod ? codAdvance : totalPrice;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -74,7 +81,7 @@ const CheckoutPaymentPage = () => {
     );
   }
 
-  const canProceed = !!selectedUpi;
+  const canProceed = isOnline ? !!selectedUpi : isCod;
 
   const handlePay = async () => {
     setPayLoading(true);
@@ -126,52 +133,103 @@ const CheckoutPaymentPage = () => {
         </div>
 
         <div className="container space-y-4">
-          {/* Online Discount Banner */}
-          <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
-            <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-xs font-semibold text-green-800">Extra {ONLINE_DISCOUNT_PERCENT}% Online Discount Applied!</p>
-              <p className="text-[11px] text-green-700 mt-0.5">
-                You save ₹{onlineDiscount.toLocaleString()} extra with online payment.
-              </p>
+          {/* Payment Type Selection */}
+          <div className="bg-card border border-border rounded-xl p-4">
+            <h3 className="text-sm font-bold text-foreground mb-3">Choose Payment Type</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Online Payment */}
+              <button
+                onClick={() => { setPaymentType('online'); setSelectedUpi(null); }}
+                className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                  isOnline ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/50'
+                }`}
+              >
+                {/* Discount badge */}
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                  <Percent className="h-2.5 w-2.5" />{ONLINE_DISCOUNT_PERCENT}% OFF
+                </span>
+                <QrCode className={`h-6 w-6 ${isOnline ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className="text-xs font-semibold text-foreground">Online Payment</span>
+                <span className="text-[10px] text-green-600 font-medium">Extra {ONLINE_DISCOUNT_PERCENT}% discount</span>
+              </button>
+
+              {/* Cash on Delivery */}
+              <button
+                onClick={() => { setPaymentType('cod'); setSelectedUpi(null); }}
+                className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                  isCod ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/50'
+                }`}
+              >
+                <Truck className={`h-6 w-6 ${isCod ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className="text-xs font-semibold text-foreground">Cash on Delivery</span>
+                <span className="text-[10px] text-amber-600 font-medium">50% advance required</span>
+              </button>
             </div>
           </div>
 
-          {/* UPI Method Selection */}
-          <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
-            <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
-            <div className="space-y-3">
-              {upiMethods.map((method) => (
-                <button
-                  key={method.id}
-                  onClick={() => setSelectedUpi(method.id)}
-                  className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
-                    selectedUpi === method.id
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border bg-card hover:border-primary/50'
-                  }`}
-                >
-                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
-                    selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'
-                  }`}>
-                    {selectedUpi === method.id && (
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary" />
-                    )}
-                  </div>
-                  <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
-                  {method.logo ? (
-                    <div className="h-8 w-8 rounded flex items-center justify-center bg-white p-0.5">
-                      <img src={method.logo} alt={method.name} className="h-6 w-auto object-contain" />
-                    </div>
-                  ) : (
-                    <div className="h-8 w-8 rounded flex items-center justify-center bg-muted">
-                      {method.icon && <method.icon className="h-4 w-4 text-muted-foreground" />}
-                    </div>
-                  )}
-                </button>
-              ))}
+          {/* COD Info Banner */}
+          {isCod && (
+            <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 flex items-start gap-3 animate-fade-in">
+              <Info className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-semibold text-amber-800">50% Advance Payment Required</p>
+                <p className="text-[11px] text-amber-700 mt-0.5">
+                  Pay ₹{codAdvance.toLocaleString()} now for order confirmation. Remaining ₹{codRemaining.toLocaleString()} at delivery.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Online Discount Banner */}
+          {isOnline && (
+            <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
+              <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-semibold text-green-800">Extra {ONLINE_DISCOUNT_PERCENT}% Online Discount Applied!</p>
+                <p className="text-[11px] text-green-700 mt-0.5">
+                  You save ₹{onlineDiscount.toLocaleString()} extra with online payment.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* UPI Method Selection (only for online) */}
+          {isOnline && (
+            <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
+              <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
+              <div className="space-y-3">
+                {upiMethods.map((method) => (
+                  <button
+                    key={method.id}
+                    onClick={() => setSelectedUpi(method.id)}
+                    className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
+                      selectedUpi === method.id
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border bg-card hover:border-primary/50'
+                    }`}
+                  >
+                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                      selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'
+                    }`}>
+                      {selectedUpi === method.id && (
+                        <div className="h-2.5 w-2.5 rounded-full bg-primary" />
+                      )}
+                    </div>
+                    <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
+                    {method.logo ? (
+                      <div className="h-8 w-8 rounded flex items-center justify-center bg-white p-0.5">
+                        <img src={method.logo} alt={method.name} className="h-6 w-auto object-contain" />
+                      </div>
+                    ) : (
+                      <div className="h-8 w-8 rounded flex items-center justify-center bg-muted">
+                        {method.icon && <method.icon className="h-4 w-4 text-muted-foreground" />}
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Price Details */}
           <div className="bg-card border border-border rounded-xl p-4">
@@ -185,7 +243,7 @@ const CheckoutPaymentPage = () => {
                 <span className="text-muted-foreground">Discount</span>
                 <span className="text-green-600 font-medium">-₹{discount.toLocaleString()}.00</span>
               </div>
-              {onlineDiscount > 0 && (
+              {isOnline && onlineDiscount > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-green-600 font-medium">Online Payment Discount</span>
                   <span className="text-green-600 font-medium">-₹{onlineDiscount.toLocaleString()}.00</span>
@@ -200,6 +258,19 @@ const CheckoutPaymentPage = () => {
                 <span className="text-foreground">Total Amount</span>
                 <span className="text-foreground">₹{finalPrice.toLocaleString()}.00</span>
               </div>
+              {isCod && (
+                <>
+                  <div className="border-t border-dashed border-border my-2" />
+                  <div className="flex justify-between text-sm">
+                    <span className="text-amber-700 font-semibold">Pay Now (50% Advance)</span>
+                    <span className="text-amber-700 font-bold">₹{codAdvance.toLocaleString()}.00</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Pay at Delivery</span>
+                    <span className="text-foreground">₹{codRemaining.toLocaleString()}.00</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -209,8 +280,11 @@ const CheckoutPaymentPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="container flex items-center gap-4">
           <div className="flex flex-col">
-            {onlineDiscount > 0 && (
+            {(isOnline && onlineDiscount > 0) && (
               <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>
+            )}
+            {isCod && (
+              <span className="text-[10px] text-amber-600 font-medium">50% Advance</span>
             )}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
@@ -221,7 +295,7 @@ const CheckoutPaymentPage = () => {
             disabled={!canProceed || payLoading}
             onClick={handlePay}
           >
-            Continue
+            {isCod ? 'Pay Advance & Place Order' : 'Continue'}
           </Button>
         </div>
       </div>
