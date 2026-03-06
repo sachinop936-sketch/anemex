@@ -13,8 +13,8 @@ const TIMER_DURATION = 7 * 60 * 1000;
 const ShopHome = () => {
   const { products: dbProducts, loading } = useProducts();
 
-  // Use DB products if available, fallback to static
-  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
+  // Use DB products if available, fallback to static (only after loading completes)
+  const sourceProducts = loading ? [] : (dbProducts.length > 0 ? dbProducts : staticProducts);
 
   const shuffledProducts = useMemo(() => {
     const arr = [...sourceProducts];
@@ -86,6 +86,14 @@ const ShopHome = () => {
     seller: p.seller || '',
     freeDelivery: p.freeDelivery ?? p.free_delivery ?? true,
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-muted flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-muted">
