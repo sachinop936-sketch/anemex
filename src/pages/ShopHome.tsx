@@ -13,8 +13,8 @@ const TIMER_DURATION = 7 * 60 * 1000;
 const ShopHome = () => {
   const { products: dbProducts, loading } = useProducts();
 
-  // Use DB products if available, fallback to static
-  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
+  // Use DB products if available, fallback to static (only after loading completes)
+  const sourceProducts = loading ? [] : (dbProducts.length > 0 ? dbProducts : staticProducts);
 
   const shuffledProducts = useMemo(() => {
     const arr = [...sourceProducts];
