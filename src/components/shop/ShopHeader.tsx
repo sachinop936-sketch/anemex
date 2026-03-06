@@ -55,7 +55,7 @@ const ShopHeader = () => {
             <Search className="h-5 w-5 text-white" />
           </button>
           <button 
-            onClick={() => navigate('/order-summary')}
+            onClick={() => navigate('/cart')}
             className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-blue-500 transition-colors relative"
           >
             <ShoppingCart className="h-5 w-5 text-white" />
