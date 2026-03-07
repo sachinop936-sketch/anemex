@@ -7,6 +7,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./hooks/useAuth";
 import ShopHome from "./pages/ShopHome";
 import ProductPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
 import AddressPage from "./pages/AddressPage";
 import OrderSummaryPage from "./pages/OrderSummaryPage";
 import CheckoutPaymentPage from "./pages/CheckoutPaymentPage";
@@ -35,6 +36,7 @@ const App = () => (
               {/* Shop routes */}
               <Route path="/" element={<ShopHome />} />
               <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/cart" element={<CartPage />} />
               <Route path="/address" element={<AddressPage />} />
               <Route path="/order-summary" element={<OrderSummaryPage />} />
               <Route path="/payment" element={<CheckoutPaymentPage />} />
