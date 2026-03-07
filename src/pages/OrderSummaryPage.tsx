@@ -78,8 +78,8 @@ const OrderSummaryPage = () => {
         {/* Cart Items */}
         <div className="container space-y-3">
           <h2 className="text-base font-semibold text-foreground">Cart Items ({items.length})</h2>
-          {items.map((item) => (
-            <div key={item.id} className="rounded-xl bg-card p-4 border border-border">
+          {items.map((item, idx) => (
+            <div key={`${item.id}-${item.size || ''}-${idx}`} className="rounded-xl bg-card p-4 border border-border">
               <div className="flex gap-4">
                 <div className="h-20 w-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0 relative">
                   <img
@@ -94,12 +94,17 @@ const OrderSummaryPage = () => {
                       {item.name}
                     </h3>
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.id, item.size)}
                       className="h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
+                  {item.size && (
+                    <span className="inline-block mt-1 text-[10px] font-semibold bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      Size: {item.size}
+                    </span>
+                  )}
                   <div className="flex items-center gap-1 mt-1">
                     <div className="flex items-center gap-1 rounded-sm bg-blue-600 px-1.5 py-0.5">
                       <ShieldCheck className="h-3 w-3 text-white" />
@@ -109,7 +114,7 @@ const OrderSummaryPage = () => {
                   <div className="flex items-center gap-3 mt-2">
                     <div className="flex items-center">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1, item.size)}
                         className="h-7 w-7 flex items-center justify-center rounded-l-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
                       >
                         −
@@ -118,7 +123,7 @@ const OrderSummaryPage = () => {
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1, item.size)}
                         className="h-7 w-7 flex items-center justify-center rounded-r-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
                         disabled={item.quantity >= 10}
                       >

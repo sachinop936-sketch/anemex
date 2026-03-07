@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download, Sparkles, IndianRupee, Loader2, CheckSquare, Square } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download, Sparkles, DollarSign } from 'lucide-react';
 import AdminProductForm from '@/components/admin/AdminProductForm';
 import AdminProductImport from '@/components/admin/AdminProductImport';
 
@@ -26,12 +26,82 @@ const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [bulkOptimizing, setBulkOptimizing] = useState(false);
-  const [bulkDeleting, setBulkDeleting] = useState(false);
-  const [showPriceChange, setShowPriceChange] = useState(false);
-  const [fixedPrice, setFixedPrice] = useState('');
-  const [priceChanging, setPriceChanging] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const toggleSelect = (id: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selected.size === filtered.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filtered.map(p => p.id)));
+    }
+  };
+
+  const bulkDelete = async () => {
+    if (!confirm(`Delete ${selected.size} product(s)?`)) return;
+    const ids = Array.from(selected);
+    await supabase.from('products').delete().in('id', ids);
+    toast.success(`${ids.length} product(s) deleted`);
+    setSelected(new Set());
+    fetchProducts();
+  };
+
+  const [bulkPriceMode, setBulkPriceMode] = useState(false);
+  const [priceAction, setPriceAction] = useState<'increase' | 'decrease'>('decrease');
+  const [pricePercent, setPricePercent] = useState('10');
+  const [bulkLoading, setBulkLoading] = useState(false);
+
+  const bulkAiOptimize = async () => {
+    const ids = Array.from(selected);
+    const toOptimize = products.filter((p) => ids.includes(p.id));
+    setBulkLoading(true);
+    let success = 0;
+    for (const p of toOptimize) {
+      try {
+        const { data, error } = await supabase.functions.invoke('ai-optimize-product', {
+          body: { product: { name: p.name, price: p.price, original_price: p.original_price, category: p.category, description: '' } },
+        });
+        if (!error && data) {
+          await supabase.from('products').update({
+            name: data.name || p.name,
+            description: data.description || undefined,
+            features: data.features || undefined,
+            short_description: data.short_description || undefined,
+            tag: data.tag || undefined,
+          }).eq('id', p.id);
+          success++;
+        }
+      } catch { /* skip */ }
+    }
+    setBulkLoading(false);
+    toast.success(`AI optimized ${success}/${ids.length} product(s)`);
+    setSelected(new Set());
+    fetchProducts();
+  };
+
+  const bulkPriceChange = async () => {
+    const pct = parseFloat(pricePercent);
+    if (isNaN(pct) || pct <= 0 || pct > 90) { toast.error('Enter a valid percentage (1-90)'); return; }
+    const ids = Array.from(selected);
+    const toUpdate = products.filter((p) => ids.includes(p.id));
+    const multiplier = priceAction === 'decrease' ? (1 - pct / 100) : (1 + pct / 100);
+    for (const p of toUpdate) {
+      const newPrice = Math.round(p.price * multiplier);
+      const newOriginal = Math.round(p.original_price * multiplier);
+      await supabase.from('products').update({ price: Math.max(1, newPrice), original_price: Math.max(1, newOriginal) }).eq('id', p.id);
+    }
+    toast.success(`Updated prices for ${ids.length} product(s)`);
+    setBulkPriceMode(false);
+    setSelected(new Set());
+    fetchProducts();
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -60,99 +130,6 @@ const AdminProducts = () => {
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
-  };
-
-  const toggleSelectAll = () => {
-    if (selectedIds.size === filtered.length) {
-      setSelectedIds(new Set());
-    } else {
-      setSelectedIds(new Set(filtered.map(p => p.id)));
-    }
-  };
-
-  const bulkDelete = async () => {
-    if (selectedIds.size === 0) return;
-    if (!confirm(`Delete ${selectedIds.size} product(s)?`)) return;
-    setBulkDeleting(true);
-    for (const id of selectedIds) {
-      await supabase.from('product_images').delete().eq('product_id', id);
-      await supabase.from('products').delete().eq('id', id);
-    }
-    toast.success(`${selectedIds.size} product(s) deleted`);
-    setSelectedIds(new Set());
-    setBulkDeleting(false);
-    fetchProducts();
-  };
-
-  const bulkAiOptimize = async () => {
-    if (selectedIds.size === 0) return;
-    setBulkOptimizing(true);
-    let success = 0;
-    let failed = 0;
-    for (const id of selectedIds) {
-      const product = products.find(p => p.id === id);
-      if (!product) continue;
-      try {
-        // Fetch full product data
-        const { data: fullProduct } = await supabase.from('products').select('*').eq('id', id).single();
-        if (!fullProduct) { failed++; continue; }
-
-        const { data, error } = await supabase.functions.invoke('ai-optimize-product', {
-          body: {
-            product: {
-              name: fullProduct.name,
-              description: fullProduct.description,
-              category: fullProduct.category,
-              price: fullProduct.price,
-              features: fullProduct.features || [],
-            },
-          },
-        });
-        if (error || !data?.success) { failed++; continue; }
-
-        const o = data.optimized;
-        await supabase.from('products').update({
-          name: o.optimized_title || fullProduct.name,
-          short_description: o.short_description || fullProduct.short_description,
-          description: o.description || fullProduct.description,
-          features: o.features || fullProduct.features,
-          tag: o.tag || fullProduct.tag,
-        }).eq('id', id);
-        success++;
-      } catch {
-        failed++;
-      }
-    }
-    toast.success(`AI optimized ${success} product(s)${failed > 0 ? `, ${failed} failed` : ''}`);
-    setSelectedIds(new Set());
-    setBulkOptimizing(false);
-    fetchProducts();
-  };
-
-  const bulkPriceChange = async () => {
-    const price = Number(fixedPrice);
-    if (!price || price <= 0) { toast.error('Enter a valid price in ₹'); return; }
-    if (selectedIds.size === 0) return;
-    setPriceChanging(true);
-
-    for (const id of selectedIds) {
-      await supabase.from('products').update({ price }).eq('id', id);
-    }
-
-    toast.success(`Price set to ₹${price} for ${selectedIds.size} product(s)`);
-    setSelectedIds(new Set());
-    setShowPriceChange(false);
-    setFixedPrice('');
-    setPriceChanging(false);
-    fetchProducts();
-  };
-
   if (showImport) {
     return (
       <AdminProductImport
@@ -174,8 +151,21 @@ const AdminProducts = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Products</h1>
+        <h1 className="text-2xl font-bold text-foreground">Products ({filtered.length})</h1>
         <div className="flex gap-2">
+          {selected.size > 0 && (
+            <>
+              <Button onClick={bulkDelete} size="sm" variant="destructive" className="gap-1">
+                <Trash2 className="h-4 w-4" /> Delete ({selected.size})
+              </Button>
+              <Button onClick={bulkAiOptimize} size="sm" variant="outline" className="gap-1" disabled={bulkLoading}>
+                <Sparkles className="h-4 w-4" /> {bulkLoading ? 'Optimizing...' : `AI Optimize (${selected.size})`}
+              </Button>
+              <Button onClick={() => setBulkPriceMode(!bulkPriceMode)} size="sm" variant="outline" className="gap-1">
+                <DollarSign className="h-4 w-4" /> Price Change ({selected.size})
+              </Button>
+            </>
+          )}
           <Button onClick={() => setShowImport(true)} size="sm" variant="outline" className="gap-1">
             <Download className="h-4 w-4" /> Import
           </Button>
@@ -185,76 +175,22 @@ const AdminProducts = () => {
         </div>
       </div>
 
+      {bulkPriceMode && selected.size > 0 && (
+        <div className="mb-4 p-4 rounded-xl bg-card border border-border flex flex-wrap items-center gap-3">
+          <select value={priceAction} onChange={(e) => setPriceAction(e.target.value as any)} className="h-9 rounded-md border border-border bg-background px-3 text-sm">
+            <option value="decrease">Decrease by %</option>
+            <option value="increase">Increase by %</option>
+          </select>
+          <Input type="number" value={pricePercent} onChange={(e) => setPricePercent(e.target.value)} className="w-24 h-9" placeholder="%" min="1" max="90" />
+          <Button size="sm" onClick={bulkPriceChange}>Apply</Button>
+          <Button size="sm" variant="ghost" onClick={() => setBulkPriceMode(false)}>Cancel</Button>
+        </div>
+      )}
+
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
-
-      {/* Bulk Actions Bar */}
-      {filtered.length > 0 && (
-        <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <Button variant="outline" size="sm" onClick={toggleSelectAll} className="gap-1">
-            {selectedIds.size === filtered.length ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
-            {selectedIds.size === filtered.length ? 'Deselect All' : 'Select All'}
-          </Button>
-          {selectedIds.size > 0 && (
-            <>
-              <span className="text-xs text-muted-foreground">{selectedIds.size} selected</span>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1"
-                disabled={bulkOptimizing}
-                onClick={bulkAiOptimize}
-              >
-                {bulkOptimizing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                AI Optimize
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1"
-                onClick={() => setShowPriceChange(!showPriceChange)}
-              >
-                <IndianRupee className="h-4 w-4" /> Price Change
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                className="gap-1"
-                disabled={bulkDeleting}
-                onClick={bulkDelete}
-              >
-                {bulkDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                Delete ({selectedIds.size})
-              </Button>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Price Change Panel */}
-      {showPriceChange && selectedIds.size > 0 && (
-        <div className="bg-card border border-border rounded-xl p-4 mb-4 flex items-end gap-3 flex-wrap max-w-lg">
-          <div>
-            <label className="text-xs font-medium text-foreground">Set Price (₹)</label>
-            <Input
-              type="number"
-              placeholder="e.g. 249"
-              value={fixedPrice}
-              onChange={(e) => setFixedPrice(e.target.value)}
-              className="mt-1 w-32"
-            />
-          </div>
-          <Button size="sm" disabled={priceChanging} onClick={bulkPriceChange}>
-            {priceChanging ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
-            Apply
-          </Button>
-          <Button size="sm" variant="ghost" onClick={() => { setShowPriceChange(false); setFixedPrice(''); }}>
-            Cancel
-          </Button>
-        </div>
-      )}
 
       {loading ? (
         <p className="text-muted-foreground">Loading...</p>
@@ -262,21 +198,15 @@ const AdminProducts = () => {
         <p className="text-muted-foreground">No products found.</p>
       ) : (
         <div className="space-y-3">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer px-1">
+            <input type="checkbox" checked={selected.size === filtered.length && filtered.length > 0} onChange={toggleSelectAll} className="rounded" />
+            Select all ({filtered.length})
+          </label>
           {filtered.map((p) => {
             const thumb = p.product_images?.sort((a, b) => a.sort_order - b.sort_order)[0];
-            const isSelected = selectedIds.has(p.id);
             return (
-              <div
-                key={p.id}
-                className={`bg-card border rounded-xl p-4 flex items-center gap-4 cursor-pointer transition-colors ${isSelected ? 'border-primary bg-primary/5' : 'border-border'}`}
-                onClick={() => toggleSelect(p.id)}
-              >
-                <div className="flex-shrink-0">
-                  {isSelected
-                    ? <CheckSquare className="h-5 w-5 text-primary" />
-                    : <Square className="h-5 w-5 text-muted-foreground" />
-                  }
-                </div>
+              <div key={p.id} className={`bg-card border rounded-xl p-4 flex items-center gap-4 ${selected.has(p.id) ? 'border-primary' : 'border-border'}`}>
+                <input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleSelect(p.id)} className="rounded flex-shrink-0" />
                 <div className="h-16 w-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                   {thumb && <img src={thumb.image_url} alt="" className="h-full w-full object-cover" />}
                 </div>
@@ -285,7 +215,7 @@ const AdminProducts = () => {
                   <p className="text-xs text-muted-foreground">{p.category} • Stock: {p.stock}</p>
                   <p className="text-sm font-bold text-foreground">₹{p.price} <span className="text-xs text-muted-foreground line-through">₹{p.original_price}</span></p>
                 </div>
-                <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-1">
                   <Button variant="ghost" size="icon" onClick={() => toggleVisibility(p.id, p.is_visible)} title={p.is_visible ? 'Hide' : 'Show'}>
                     {p.is_visible ? <Eye className="h-4 w-4 text-green-600" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
                   </Button>
