@@ -14,6 +14,3 @@ verify_jwt = false
 
 [functions.admin-login]
 verify_jwt = false
-
-[functions.import-clothing]
-verify_jwt = false
