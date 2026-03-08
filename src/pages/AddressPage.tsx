@@ -85,20 +85,10 @@ const AddressPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader />
+      <CheckoutHeader title="Add delivery address" />
       <CheckoutSteps currentStep={1} />
 
       <main className="pb-28">
-        {/* Header */}
-        <div className="container py-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Add delivery address
-          </button>
-        </div>
 
         {/* Form */}
         <div className="container">
