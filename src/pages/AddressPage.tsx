@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import ShopHeader from '@/components/shop/ShopHeader';
+import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -75,30 +75,14 @@ const AddressPage = () => {
     navigate(`/order-summary?productId=${productId}&address=${addressQuery}`);
   };
 
-  const isFormValid =
-    formData.fullName &&
-    formData.mobile &&
-    formData.pincode &&
-    formData.city &&
-    formData.state &&
-    formData.houseNo;
+  const isFormValid = true;
 
   return (
     <div className="min-h-screen bg-background">
-      <ShopHeader />
+      <CheckoutHeader title="Add delivery address" />
       <CheckoutSteps currentStep={1} />
 
       <main className="pb-28">
-        {/* Header */}
-        <div className="container py-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Add delivery address
-          </button>
-        </div>
 
         {/* Form */}
         <div className="container">
