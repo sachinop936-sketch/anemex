@@ -11,10 +11,8 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000;
 
 const ShopHome = () => {
-  const { products: dbProducts, loading } = useProducts();
-
-  // Use DB products if available, fallback to static
-  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
+  // Always use static products as the source of truth
+  const sourceProducts = staticProducts;
 
   const shuffledProducts = useMemo(() => {
     const arr = [...sourceProducts];
