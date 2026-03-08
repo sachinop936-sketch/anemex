@@ -83,11 +83,11 @@ const OrderSummaryPage = () => {
               : 0;
 
             return (
-              <div key={item.id} className="bg-card rounded-lg border border-border p-4">
+              <div key={item.id} className="bg-card border border-border p-4">
                 <div className="flex gap-3">
-                  {/* Product Images */}
-                  <div className="flex-shrink-0 flex gap-1">
-                    <div className="h-20 w-16 rounded overflow-hidden bg-white border border-border">
+                  {/* Product Image */}
+                  <div className="flex-shrink-0">
+                    <div className="h-20 w-16 overflow-hidden bg-white border border-border">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -98,17 +98,9 @@ const OrderSummaryPage = () => {
 
                   {/* Product Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-sm font-medium text-foreground line-clamp-1">
-                        {item.name}
-                      </h3>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
-                      >
-                        <X className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
+                    <h3 className="text-sm font-medium text-foreground line-clamp-2">
+                      {item.name}
+                    </h3>
 
                     {/* Assured badge */}
                     <div className="mt-1">
@@ -117,27 +109,7 @@ const OrderSummaryPage = () => {
 
                     {/* Qty and Price row */}
                     <div className="flex items-center gap-3 mt-3">
-                      <div className="flex items-center">
-                        <span className="text-sm text-foreground font-medium">Qty: </span>
-                        <div className="flex items-center ml-1">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="h-6 w-6 flex items-center justify-center rounded-l border border-border bg-muted text-xs font-bold hover:bg-muted/80 transition-colors"
-                          >
-                            −
-                          </button>
-                          <span className="h-6 w-7 flex items-center justify-center border-t border-b border-border text-xs font-semibold bg-card">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="h-6 w-6 flex items-center justify-center rounded-r border border-border bg-muted text-xs font-bold hover:bg-muted/80 transition-colors"
-                            disabled={item.quantity >= 10}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
+                      <span className="text-sm text-foreground font-medium">Qty: {item.quantity}</span>
 
                       {discountPercent > 0 && (
                         <span className="text-xs font-semibold text-green-600">{discountPercent}%</span>
