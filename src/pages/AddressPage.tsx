@@ -148,7 +148,7 @@ const AddressPage = () => {
           </div>
 
           {/* House No */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="House No., Building Name"
