@@ -82,7 +82,7 @@ const AddressPage = () => {
       <main className="pb-28 px-4 pt-4">
         <div className="space-y-4">
           {/* Full Name */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="Full Name"
