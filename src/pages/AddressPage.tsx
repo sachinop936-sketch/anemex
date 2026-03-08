@@ -134,7 +134,7 @@ const AddressPage = () => {
               value={formData.state}
               onValueChange={(value) => handleInputChange('state', value)}
             >
-              <SelectTrigger className="h-auto py-4 px-4 rounded-lg border-border bg-card text-sm">
+              <SelectTrigger className="h-auto py-4 px-4 border-border bg-card text-sm rounded-none">
                 <SelectValue placeholder="State" />
               </SelectTrigger>
               <SelectContent>
