@@ -6,30 +6,18 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import phonepeLogo from '@/assets/phonepe-logo.png';
+import paytmLogo from '@/assets/paytm-logo.png';
+import bhimUpiLogo from '@/assets/bhimupi-logo.png';
+import upiLogo from '@/assets/upi-logo.png';
 
 const ONLINE_DISCOUNT_PERCENT = 3;
 
 const upiMethods = [
-  {
-    id: 'phonepe',
-    name: 'PhonePe',
-    logo: 'https://cdn.worldvectorlogo.com/logos/phonepe-1.svg',
-  },
-  {
-    id: 'paytm',
-    name: 'Paytm',
-    logo: 'https://cdn.worldvectorlogo.com/logos/paytm-1.svg',
-  },
-  {
-    id: 'bhimupi',
-    name: 'Bhim UPI',
-    logo: 'https://cdn.worldvectorlogo.com/logos/bhim-1.svg',
-  },
-  {
-    id: 'upi',
-    name: 'Other UPI APP',
-    logo: 'https://cdn.worldvectorlogo.com/logos/upi-1.svg',
-  },
+  { id: 'phonepe', name: 'PhonePe', logo: phonepeLogo },
+  { id: 'paytm', name: 'Paytm', logo: paytmLogo },
+  { id: 'bhimupi', name: 'Bhim UPI', logo: bhimUpiLogo },
+  { id: 'upi', name: 'Other UPI APP', logo: upiLogo },
 ];
 
 const CheckoutPaymentPage = () => {
