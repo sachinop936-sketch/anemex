@@ -125,7 +125,7 @@ const CheckoutPaymentPage = () => {
             <button
               key={method.id}
               onClick={() => setSelectedUpi(method.id)}
-              className={`w-full flex items-center gap-4 p-5 rounded-xl border-2 transition-all bg-card ${
+              className={`w-full flex items-center gap-4 p-5 border-2 transition-all bg-card ${
                 selectedUpi === method.id
                   ? 'border-primary'
                   : 'border-border hover:border-primary/30'
