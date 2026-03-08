@@ -23,7 +23,7 @@ const OrderSummaryPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const addressParam = searchParams.get('address');
-  const { items, removeFromCart, updateQuantity } = useCart();
+  const { items } = useCart();
 
   const address: Address | null = useMemo(() => {
     if (!addressParam) return null;
