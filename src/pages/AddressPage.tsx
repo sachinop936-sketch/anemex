@@ -75,13 +75,7 @@ const AddressPage = () => {
     navigate(`/order-summary?productId=${productId}&address=${addressQuery}`);
   };
 
-  const isFormValid =
-    formData.fullName &&
-    formData.mobile &&
-    formData.pincode &&
-    formData.city &&
-    formData.state &&
-    formData.houseNo;
+  const isFormValid = true;
 
   return (
     <div className="min-h-screen bg-background">
