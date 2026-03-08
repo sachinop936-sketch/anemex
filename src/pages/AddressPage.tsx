@@ -121,7 +121,7 @@ const AddressPage = () => {
 
           {/* City & State */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-border bg-card">
+            <div className="border border-border bg-card">
               <input
                 type="text"
                 placeholder="City"
