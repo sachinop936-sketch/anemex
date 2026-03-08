@@ -6,30 +6,18 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import phonepeLogo from '@/assets/phonepe-logo.png';
+import paytmLogo from '@/assets/paytm-logo.png';
+import bhimUpiLogo from '@/assets/bhimupi-logo.png';
+import upiLogo from '@/assets/upi-logo.png';
 
 const ONLINE_DISCOUNT_PERCENT = 3;
 
 const upiMethods = [
-  {
-    id: 'phonepe',
-    name: 'PhonePe',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png',
-  },
-  {
-    id: 'paytm',
-    name: 'Paytm',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png',
-  },
-  {
-    id: 'bhimupi',
-    name: 'Bhim UPI',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/440px-UPI-Logo-vector.svg.png',
-  },
-  {
-    id: 'upi',
-    name: 'Other UPI APP',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/440px-UPI-Logo-vector.svg.png',
-  },
+  { id: 'phonepe', name: 'PhonePe', logo: phonepeLogo },
+  { id: 'paytm', name: 'Paytm', logo: paytmLogo },
+  { id: 'bhimupi', name: 'Bhim UPI', logo: bhimUpiLogo },
+  { id: 'upi', name: 'Other UPI APP', logo: upiLogo },
 ];
 
 const CheckoutPaymentPage = () => {
