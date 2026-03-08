@@ -93,7 +93,7 @@ const AddressPage = () => {
           </div>
 
           {/* Mobile */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="tel"
               placeholder="Mobile number"
