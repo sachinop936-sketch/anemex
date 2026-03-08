@@ -1,9 +1,9 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CheckoutHeader from '@/components/checkout/CheckoutHeader';
+import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { ShieldCheck, X } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 import { z } from 'zod';
 import { useMemo } from 'react';
 
@@ -57,12 +57,20 @@ const OrderSummaryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CheckoutHeader title="Order Summary" />
+      <ShopHeader />
       <CheckoutSteps currentStep={2} />
 
       <main className="pb-32">
         {/* Delivered To Section */}
         <div className="container py-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+
           <div className="rounded-xl bg-card p-4 border border-border">
             <h2 className="text-base font-semibold text-primary mb-2">Delivered to:</h2>
             {address && (
@@ -194,12 +202,14 @@ const OrderSummaryPage = () => {
             <p className="text-xs text-muted-foreground line-through">₹{Math.round(totalOriginalPrice).toLocaleString()}</p>
             <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</p>
           </div>
-          <button
+          <Button
+            variant="gradient"
+            size="xl"
+            className="flex-1 max-w-[200px]"
             onClick={handleContinue}
-            className="flex-1 max-w-[200px] h-14 rounded-2xl bg-[hsl(40,100%,55%)] hover:bg-[hsl(40,100%,50%)] text-[hsl(0,0%,10%)] font-bold text-base transition-colors active:scale-[0.98]"
           >
             Continue
-          </button>
+          </Button>
         </div>
       </div>
     </div>

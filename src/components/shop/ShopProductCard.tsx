@@ -71,7 +71,8 @@ const ShopProductCard = ({ product, index = 0 }: ShopProductCardProps) => {
 
         <div className="flex items-center justify-between mt-1.5">
           <div className="flex items-center gap-1.5">
-            <img src={wowBadge} alt="WOW! DEAL" className="h-10 object-contain" />
+            <img src={wowBadge} alt="WOW! DEAL" className="h-8 object-contain" />
+            <span className="text-xs font-semibold text-foreground">₹{product.discountPrice.toLocaleString()}</span>
           </div>
           <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Limited Stock</span>
         </div>
