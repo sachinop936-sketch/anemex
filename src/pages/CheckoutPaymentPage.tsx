@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ShopHeader from '@/components/shop/ShopHeader';
+import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { ArrowLeft, QrCode, Percent } from 'lucide-react';
+import { QrCode, Percent } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
