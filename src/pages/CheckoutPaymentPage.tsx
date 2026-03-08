@@ -13,22 +13,22 @@ const upiMethods = [
   {
     id: 'phonepe',
     name: 'PhonePe',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png',
+    logo: 'https://cdn.worldvectorlogo.com/logos/phonepe-1.svg',
   },
   {
     id: 'paytm',
     name: 'Paytm',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png',
+    logo: 'https://cdn.worldvectorlogo.com/logos/paytm-1.svg',
   },
   {
     id: 'bhimupi',
     name: 'Bhim UPI',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/440px-UPI-Logo-vector.svg.png',
+    logo: 'https://cdn.worldvectorlogo.com/logos/bhim-1.svg',
   },
   {
     id: 'upi',
     name: 'Other UPI APP',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/440px-UPI-Logo-vector.svg.png',
+    logo: 'https://cdn.worldvectorlogo.com/logos/upi-1.svg',
   },
 ];
 
