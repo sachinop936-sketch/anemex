@@ -159,7 +159,7 @@ const AddressPage = () => {
           </div>
 
           {/* Road Area */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="Road name, Area, Colony"
