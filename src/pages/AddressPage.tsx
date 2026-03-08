@@ -104,7 +104,7 @@ const AddressPage = () => {
           </div>
 
           {/* Pincode */}
-          <div className="rounded-lg border border-border bg-card relative">
+          <div className="border border-border bg-card relative">
             <input
               type="text"
               placeholder="Pincode"
