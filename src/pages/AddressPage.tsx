@@ -82,7 +82,7 @@ const AddressPage = () => {
       <main className="pb-28 px-4 pt-4">
         <div className="space-y-4">
           {/* Full Name */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="Full Name"
@@ -93,7 +93,7 @@ const AddressPage = () => {
           </div>
 
           {/* Mobile */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="tel"
               placeholder="Mobile number"
@@ -104,7 +104,7 @@ const AddressPage = () => {
           </div>
 
           {/* Pincode */}
-          <div className="rounded-lg border border-border bg-card relative">
+          <div className="border border-border bg-card relative">
             <input
               type="text"
               placeholder="Pincode"
@@ -121,7 +121,7 @@ const AddressPage = () => {
 
           {/* City & State */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-border bg-card">
+            <div className="border border-border bg-card">
               <input
                 type="text"
                 placeholder="City"
@@ -134,7 +134,7 @@ const AddressPage = () => {
               value={formData.state}
               onValueChange={(value) => handleInputChange('state', value)}
             >
-              <SelectTrigger className="h-auto py-4 px-4 rounded-lg border-border bg-card text-sm">
+              <SelectTrigger className="h-auto py-4 px-4 border-border bg-card text-sm rounded-none">
                 <SelectValue placeholder="State" />
               </SelectTrigger>
               <SelectContent>
@@ -148,7 +148,7 @@ const AddressPage = () => {
           </div>
 
           {/* House No */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="House No., Building Name"
@@ -159,7 +159,7 @@ const AddressPage = () => {
           </div>
 
           {/* Road Area */}
-          <div className="rounded-lg border border-border bg-card">
+          <div className="border border-border bg-card">
             <input
               type="text"
               placeholder="Road name, Area, Colony"
