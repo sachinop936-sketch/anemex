@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
-import { useProducts } from '@/hooks/useProducts';
+
 import { products as staticProducts } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
