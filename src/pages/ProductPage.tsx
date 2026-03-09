@@ -20,9 +20,7 @@ const ProductPage = () => {
   const { addToCart } = useCart();
   const { products: dbProducts } = useProducts();
 
-  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
-  const staticProduct = staticProducts.find((p) => p.id === id);
 
   const product = dbProduct ? {
     id: dbProduct.id,
@@ -42,7 +40,7 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : staticProduct;
+  } : null;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;

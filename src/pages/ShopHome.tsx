@@ -62,25 +62,25 @@ const ShopHome = () => {
     return `${mins.toString().padStart(2, '0')}min ${secs.toString().padStart(2, '0')}sec`;
   };
 
-  // Normalize product for card component
+  // Normalize DB product for card component
   const normalizeProduct = (p: any) => ({
     id: p.id,
     name: p.name,
     description: p.description,
-    shortDescription: p.shortDescription || p.short_description || '',
-    originalPrice: p.originalPrice || p.original_price || 0,
-    discountPrice: p.discountPrice || p.price || 0,
-    discountPercent: p.discountPercent || p.discount_percent || 0,
+    shortDescription: p.short_description || '',
+    originalPrice: p.original_price || 0,
+    discountPrice: p.price || 0,
+    discountPercent: p.discount_percent || 0,
     image: p.image,
     images: p.images,
     category: p.category,
     tag: p.tag,
-    stockTag: p.stockTag || p.stock_tag,
+    stockTag: p.stock_tag,
     rating: p.rating,
-    reviewCount: p.reviewCount || p.review_count || 0,
+    reviewCount: p.review_count || 0,
     features: p.features || [],
     seller: p.seller || '',
-    freeDelivery: p.freeDelivery ?? p.free_delivery ?? true,
+    freeDelivery: p.free_delivery ?? true,
   });
 
   return (
