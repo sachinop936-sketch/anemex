@@ -5,32 +5,15 @@ import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { QrCode, Percent } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const ONLINE_DISCOUNT_PERCENT = 3;
 
 const upiMethods = [
-  {
-    id: 'gpay',
-    name: 'Google Pay',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png',
-  },
-  {
-    id: 'phonepe',
-    name: 'PhonePe',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png',
-  },
-  {
-    id: 'paytm',
-    name: 'Paytm',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png',
-  },
-  {
-    id: 'upi',
-    name: 'Other UPI APP',
-    icon: QrCode,
-  },
+  { id: 'gpay', name: 'Google Pay', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png' },
+  { id: 'phonepe', name: 'PhonePe', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png' },
+  { id: 'paytm', name: 'Paytm', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png' },
+  { id: 'upi', name: 'Other UPI APP', icon: QrCode },
 ];
 
 const CheckoutPaymentPage = () => {
@@ -79,23 +62,10 @@ const CheckoutPaymentPage = () => {
   const handlePay = async () => {
     setPayLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment-link', {
-        body: {
-          items: items.map(item => ({ name: item.name })),
-          totalAmount: payableNow,
-        },
-      });
-
-      if (error || !data?.paymentUrl) {
-        toast.error('Payment failed. Please try again.');
-        console.error('Payment error:', error);
-        return;
-      }
-
-      window.location.href = data.paymentUrl;
+      toast.success('Order placed successfully!');
+      setTimeout(() => navigate('/'), 1500);
     } catch (err) {
       toast.error('Payment failed. Please try again.');
-      console.error('Payment error:', err);
     } finally {
       setPayLoading(false);
     }
@@ -107,8 +77,6 @@ const CheckoutPaymentPage = () => {
       <CheckoutSteps currentStep={3} />
 
       <main className="pb-28">
-
-        {/* Timer */}
         <div className="container">
           <div className="text-center py-4">
             <p className="text-xl font-semibold text-orange-500">{formatTime(timeLeft)}</p>
@@ -116,37 +84,22 @@ const CheckoutPaymentPage = () => {
         </div>
 
         <div className="container space-y-4">
-          {/* Online Discount Banner */}
           <div className="rounded-xl bg-green-50 border border-green-200 p-3 flex items-start gap-3 animate-fade-in">
             <Percent className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-xs font-semibold text-green-800">Extra {ONLINE_DISCOUNT_PERCENT}% Online Discount Applied!</p>
-              <p className="text-[11px] text-green-700 mt-0.5">
-                You save ₹{onlineDiscount.toLocaleString()} extra with online payment.
-              </p>
+              <p className="text-[11px] text-green-700 mt-0.5">You save ₹{onlineDiscount.toLocaleString()} extra with online payment.</p>
             </div>
           </div>
 
-          {/* UPI Method Selection */}
           <div className="bg-card border border-border rounded-xl p-4 animate-fade-in">
             <h3 className="text-sm font-bold text-foreground mb-3">Select UPI App</h3>
             <div className="space-y-3">
               {upiMethods.map((method) => (
-                <button
-                  key={method.id}
-                  onClick={() => setSelectedUpi(method.id)}
-                  className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${
-                    selectedUpi === method.id
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border bg-card hover:border-primary/50'
-                  }`}
-                >
-                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
-                    selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'
-                  }`}>
-                    {selectedUpi === method.id && (
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary" />
-                    )}
+                <button key={method.id} onClick={() => setSelectedUpi(method.id)}
+                  className={`w-full flex items-center gap-4 p-3 rounded-lg border transition-all ${selectedUpi === method.id ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/50'}`}>
+                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === method.id ? 'border-primary' : 'border-muted-foreground/40'}`}>
+                    {selectedUpi === method.id && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
                   </div>
                   <span className="text-sm font-medium text-foreground flex-1 text-left">{method.name}</span>
                   {method.logo ? (
@@ -163,7 +116,6 @@ const CheckoutPaymentPage = () => {
             </div>
           </div>
 
-          {/* Price Details */}
           <div className="bg-card border border-border rounded-xl p-4">
             <h3 className="text-base font-bold text-foreground mb-3">Price Details</h3>
             <div className="space-y-2">
@@ -195,13 +147,10 @@ const CheckoutPaymentPage = () => {
         </div>
       </main>
 
-      {/* Sticky Pay Button */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="container flex items-center gap-4">
           <div className="flex flex-col">
-            {onlineDiscount > 0 && (
-              <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>
-            )}
+            {onlineDiscount > 0 && <span className="text-xs text-muted-foreground line-through">₹{totalPrice.toLocaleString()}.00</span>}
             <span className="text-base font-bold text-foreground">₹{payableNow.toLocaleString()}.00</span>
           </div>
           <button
