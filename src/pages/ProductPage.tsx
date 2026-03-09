@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { Button } from '@/components/ui/button';
+import { products as staticProducts } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from 'sonner';
@@ -20,7 +21,9 @@ const ProductPage = () => {
   const { addToCart } = useCart();
   const { products: dbProducts } = useProducts();
 
+  // Try DB first, then static
   const dbProduct = dbProducts.find((p) => p.id === id);
+  const staticProduct = staticProducts.find((p) => p.id === id);
 
   const product = dbProduct ? {
     id: dbProduct.id,
@@ -40,7 +43,7 @@ const ProductPage = () => {
     features: dbProduct.features,
     seller: dbProduct.seller,
     freeDelivery: dbProduct.free_delivery,
-  } : null;
+  } : staticProduct;
 
   useEffect(() => {
     if (!product || product.images.length <= 1) return;
