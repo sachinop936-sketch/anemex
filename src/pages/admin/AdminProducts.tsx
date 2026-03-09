@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Search, Download, Sparkles, IndianRupee, Loader2 } from 'lucide-react';
 import AdminProductForm from '@/components/admin/AdminProductForm';
 import AdminProductImport from '@/components/admin/AdminProductImport';
 
@@ -26,6 +27,12 @@ const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
+
+  // Bulk state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkPrice, setBulkPrice] = useState('');
+  const [showPriceInput, setShowPriceInput] = useState(false);
+  const [bulkLoading, setBulkLoading] = useState<'delete' | 'price' | 'ai' | null>(null);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -53,6 +60,86 @@ const AdminProducts = () => {
   };
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
+
+  // Select helpers
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filtered.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filtered.map(p => p.id)));
+    }
+  };
+
+  const selectedCount = selectedIds.size;
+
+  // Bulk Delete
+  const handleBulkDelete = async () => {
+    if (!confirm(`Delete ${selectedCount} products?`)) return;
+    setBulkLoading('delete');
+    for (const id of selectedIds) {
+      await supabase.from('products').delete().eq('id', id);
+    }
+    toast.success(`${selectedCount} products deleted`);
+    setSelectedIds(new Set());
+    setBulkLoading(null);
+    fetchProducts();
+  };
+
+  // Bulk Set Fixed Price
+  const handleBulkSetPrice = async () => {
+    const price = parseFloat(bulkPrice);
+    if (isNaN(price) || price < 0) { toast.error('Enter a valid price'); return; }
+    setBulkLoading('price');
+    for (const id of selectedIds) {
+      await supabase.from('products').update({ price }).eq('id', id);
+    }
+    toast.success(`Price set to ₹${price} for ${selectedCount} products`);
+    setSelectedIds(new Set());
+    setBulkPrice('');
+    setShowPriceInput(false);
+    setBulkLoading(null);
+    fetchProducts();
+  };
+
+  // Bulk AI Optimize
+  const handleBulkAiOptimize = async () => {
+    setBulkLoading('ai');
+    let success = 0;
+    let failed = 0;
+    for (const id of selectedIds) {
+      const product = products.find(p => p.id === id);
+      if (!product) continue;
+      try {
+        const { data, error } = await supabase.functions.invoke('ai-optimize-product', {
+          body: { product: { name: product.name, price: product.price, category: product.category } },
+        });
+        if (error || !data?.success) { failed++; continue; }
+        const o = data.optimized;
+        await supabase.from('products').update({
+          name: o.optimized_title || product.name,
+          short_description: o.short_description || undefined,
+          description: o.description || undefined,
+          features: o.features || undefined,
+          tag: o.tag || undefined,
+        }).eq('id', id);
+        success++;
+      } catch {
+        failed++;
+      }
+    }
+    toast.success(`AI optimized ${success} products${failed ? `, ${failed} failed` : ''}`);
+    setSelectedIds(new Set());
+    setBulkLoading(null);
+    fetchProducts();
+  };
 
   if (showImport) {
     return (
@@ -91,6 +178,87 @@ const AdminProducts = () => {
         <Input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
       </div>
 
+      {/* Bulk Actions Bar */}
+      {filtered.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-muted/50 rounded-xl border border-border">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={selectedIds.size === filtered.length && filtered.length > 0}
+              onCheckedChange={toggleSelectAll}
+            />
+            <span className="text-sm font-medium text-foreground">
+              {selectedCount > 0 ? `${selectedCount} selected` : 'Select All'}
+            </span>
+          </div>
+
+          {selectedCount > 0 && (
+            <>
+              <div className="h-5 w-px bg-border mx-1" />
+
+              {/* Bulk Delete */}
+              <Button
+                size="sm"
+                variant="destructive"
+                className="gap-1"
+                disabled={bulkLoading !== null}
+                onClick={handleBulkDelete}
+              >
+                {bulkLoading === 'delete' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                Delete
+              </Button>
+
+              {/* Bulk Set Price */}
+              {showPriceInput ? (
+                <div className="flex items-center gap-1.5">
+                  <div className="relative">
+                    <IndianRupee className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                    <Input
+                      type="number"
+                      placeholder="249"
+                      value={bulkPrice}
+                      onChange={(e) => setBulkPrice(e.target.value)}
+                      className="h-8 w-24 pl-7 text-sm"
+                    />
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    disabled={bulkLoading !== null || !bulkPrice}
+                    onClick={handleBulkSetPrice}
+                  >
+                    {bulkLoading === 'price' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Set'}
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => { setShowPriceInput(false); setBulkPrice(''); }}>✕</Button>
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1"
+                  disabled={bulkLoading !== null}
+                  onClick={() => setShowPriceInput(true)}
+                >
+                  <IndianRupee className="h-3.5 w-3.5" />
+                  Set Price
+                </Button>
+              )}
+
+              {/* Bulk AI Optimize */}
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1"
+                disabled={bulkLoading !== null}
+                onClick={handleBulkAiOptimize}
+              >
+                {bulkLoading === 'ai' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                AI Optimize
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+
       {loading ? (
         <p className="text-muted-foreground">Loading...</p>
       ) : filtered.length === 0 ? (
@@ -101,6 +269,10 @@ const AdminProducts = () => {
             const thumb = p.product_images?.sort((a, b) => a.sort_order - b.sort_order)[0];
             return (
               <div key={p.id} className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
+                <Checkbox
+                  checked={selectedIds.has(p.id)}
+                  onCheckedChange={() => toggleSelect(p.id)}
+                />
                 <div className="h-16 w-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                   {thumb && <img src={thumb.image_url} alt="" className="h-full w-full object-cover" />}
                 </div>
