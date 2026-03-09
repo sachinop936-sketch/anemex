@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
-
+import { useProducts } from '@/hooks/useProducts';
 import { products as staticProducts } from '@/data/products';
 import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
@@ -11,8 +11,10 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000;
 
 const ShopHome = () => {
-  // Always use static products as the source of truth
-  const sourceProducts = staticProducts;
+  const { products: dbProducts, loading } = useProducts();
+
+  // Use DB products if available, fallback to static
+  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
 
   const shuffledProducts = useMemo(() => {
     const arr = [...sourceProducts];

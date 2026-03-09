@@ -1,11 +1,11 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CheckoutHeader from '@/components/checkout/CheckoutHeader';
+import ShopHeader from '@/components/shop/ShopHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
+import { ArrowLeft, ShieldCheck, X } from 'lucide-react';
 import { z } from 'zod';
 import { useMemo } from 'react';
-import assuredBadge from '@/assets/assured-badge.png';
 
 const AddressSchema = z.object({
   fullName: z.string().min(1).max(100),
@@ -23,7 +23,7 @@ const OrderSummaryPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const addressParam = searchParams.get('address');
-  const { items } = useCart();
+  const { items, removeFromCart, updateQuantity } = useCart();
 
   const address: Address | null = useMemo(() => {
     if (!addressParam) return null;
@@ -57,99 +57,139 @@ const OrderSummaryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CheckoutHeader title="Order Summary" />
+      <ShopHeader />
       <CheckoutSteps currentStep={2} />
 
       <main className="pb-32">
         {/* Delivered To Section */}
-        <div className="px-4 py-4">
-          <h2 className="text-base font-bold text-foreground mb-2">Delivered to:</h2>
-          {address && (
-            <div className="text-sm text-muted-foreground space-y-0.5">
-              <p>Address: {address.houseNo}, {address.roadArea}, {address.city}, {address.state.substring(0, 2).toUpperCase()},</p>
-              <p>Contact Number: {address.mobile}</p>
-            </div>
-          )}
+        <div className="container py-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+
+          <div className="rounded-xl bg-card p-4 border border-border">
+            <h2 className="text-base font-semibold text-primary mb-2">Delivered to:</h2>
+            {address && (
+              <div className="text-sm text-muted-foreground">
+                <p>Address: {address.houseNo}, {address.roadArea}</p>
+                <p>{address.city}, {address.state} - {address.pincode}</p>
+                <p>Contact Number: {address.mobile}</p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="border-t border-border" />
-
         {/* Cart Items */}
-        <div className="px-4 py-4 space-y-4">
-          {items.map((item) => {
-            const discountPercent = item.originalPrice > 0
-              ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
-              : 0;
-
-            return (
-              <div key={item.id} className="bg-card border border-border p-4">
-                <div className="flex gap-3">
-                  {/* Product Image */}
-                  <div className="flex-shrink-0">
-                    <div className="h-20 w-16 overflow-hidden bg-white border border-border">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="h-full w-full object-contain p-1"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="flex-1 min-w-0">
+        <div className="container space-y-3">
+          <h2 className="text-base font-semibold text-foreground">Cart Items ({items.length})</h2>
+          {items.map((item) => (
+            <div key={item.id} className="rounded-xl bg-card p-4 border border-border">
+              <div className="flex gap-4">
+                <div className="h-20 w-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0 relative">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-full w-full object-contain p-1"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
                     <h3 className="text-sm font-medium text-foreground line-clamp-2">
                       {item.name}
                     </h3>
-
-                    {/* Assured badge */}
-                    <div className="mt-1">
-                      <img src={assuredBadge} alt="Assured" className="h-4 object-contain" />
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors flex-shrink-0"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <div className="flex items-center gap-1 rounded-sm bg-blue-600 px-1.5 py-0.5">
+                      <ShieldCheck className="h-3 w-3 text-white" />
+                      <span className="text-[10px] font-semibold text-white">Assured</span>
                     </div>
-
-                    {/* Qty and Price row */}
-                    <div className="flex items-center gap-3 mt-3">
-                      <span className="text-sm text-foreground font-medium">Qty: {item.quantity}</span>
-
-                      {discountPercent > 0 && (
-                        <span className="text-xs font-semibold text-green-600">{discountPercent}%</span>
-                      )}
-                      <span className="text-xs text-muted-foreground line-through">
-                        ₹{(item.originalPrice * item.quantity).toLocaleString()}
+                  </div>
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        className="h-7 w-7 flex items-center justify-center rounded-l-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
+                      >
+                        −
+                      </button>
+                      <span className="h-7 w-8 flex items-center justify-center border-t border-b border-border text-xs font-semibold bg-card">
+                        {item.quantity}
                       </span>
-                      <span className="text-sm font-bold text-foreground">
-                        {(item.price * item.quantity).toLocaleString()}.00
-                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="h-7 w-7 flex items-center justify-center rounded-r-md border border-border bg-muted text-sm font-bold hover:bg-muted/80 transition-colors"
+                        disabled={item.quantity >= 10}
+                      >
+                        +
+                      </button>
                     </div>
+                    <span className="text-xs text-muted-foreground line-through">
+                      ₹{(item.originalPrice * item.quantity).toLocaleString()}
+                    </span>
+                    <span className="text-sm font-bold text-foreground">
+                      ₹{(item.price * item.quantity).toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
-        <div className="border-t border-border" />
-
         {/* Price Details */}
-        <div className="px-4 py-4">
-          <h2 className="text-base font-bold text-foreground mb-4">Price Details</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Price ({items.length} {items.length === 1 ? 'item' : 'items'})</span>
-              <span className="text-foreground">₹{Math.round(totalOriginalPrice).toLocaleString()}.00</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Discount</span>
-              <span className="text-green-600 font-medium">₹{Math.round(savings).toLocaleString()}.00</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Delivery Charges</span>
-              <span className="text-green-600 font-semibold">FREE Delivery</span>
-            </div>
-            <div className="border-t border-border pt-3">
-              <div className="flex justify-between text-sm font-bold">
-                <span className="text-foreground">Total Amount</span>
-                <span className="text-foreground">₹{totalDiscountPrice.toLocaleString()}.00</span>
+        <div className="container mt-4">
+          <div className="rounded-xl bg-card p-4 border border-border">
+            <h2 className="text-base font-semibold text-foreground mb-4">Price Details</h2>
+            
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Price ({items.length} items)</span>
+                <span className="text-foreground">₹{Math.round(totalOriginalPrice).toLocaleString()}</span>
               </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Discount</span>
+                <span className="text-green-600">-₹{Math.round(savings).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Delivery Charges</span>
+                <span className="text-green-600">FREE Delivery</span>
+              </div>
+              
+              <div className="border-t border-border pt-3">
+                <div className="flex justify-between">
+                  <span className="font-semibold text-foreground">Total Amount</span>
+                  <span className="font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 rounded-lg bg-green-50 border border-green-200">
+              <p className="text-sm font-medium text-green-700">
+                You will save ₹{Math.round(savings).toLocaleString()} on this order
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust Badge */}
+        <div className="container mt-4">
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/50">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <ShieldCheck className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">Safe and secure payments. Easy returns.</p>
+              <p className="text-xs text-muted-foreground">100% Authentic products.</p>
             </div>
           </div>
         </div>
@@ -160,7 +200,7 @@ const OrderSummaryPage = () => {
         <div className="container flex items-center justify-between gap-4">
           <div>
             <p className="text-xs text-muted-foreground line-through">₹{Math.round(totalOriginalPrice).toLocaleString()}</p>
-            <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}.00</p>
+            <p className="text-xl font-bold text-foreground">₹{totalDiscountPrice.toLocaleString()}</p>
           </div>
           <Button
             variant="gradient"
