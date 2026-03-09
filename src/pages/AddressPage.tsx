@@ -1,16 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ChevronDown } from 'lucide-react';
+import CheckoutHeader from '@/components/checkout/CheckoutHeader';
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -26,6 +18,7 @@ const AddressPage = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get('productId');
   const [pincodeLoading, setPincodeLoading] = useState(false);
+  const [stateOpen, setStateOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -68,129 +61,142 @@ const AddressPage = () => {
   };
 
   const handleSaveAddress = () => {
+    console.log('Address data:', formData);
     const addressQuery = encodeURIComponent(JSON.stringify(formData));
     navigate(`/order-summary?productId=${productId}&address=${addressQuery}`);
   };
 
-  const isFormValid = 
-    formData.fullName.trim() !== '' &&
-    formData.mobile.trim() !== '' &&
-    formData.pincode.trim() !== '' &&
-    formData.city.trim() !== '' &&
-    formData.state.trim() !== '' &&
-    formData.houseNo.trim() !== '' &&
-    formData.roadArea.trim() !== '';
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[hsl(220,20%,96%)] flex flex-col">
       <CheckoutHeader title="Add delivery address" />
+
+      {/* Checkout Steps */}
       <CheckoutSteps currentStep={1} />
 
-      <main className="pb-28 px-4 pt-4">
-        <div className="space-y-4">
-          {/* Full Name */}
-          <div className="border border-border bg-card">
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={(e) => handleInputChange('fullName', e.target.value)}
-              className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
-            />
-          </div>
+      {/* Form Card */}
+      <div className="flex-1 px-4 py-4 pb-28">
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="text-base font-bold text-[hsl(0,0%,13%)] mb-5">Delivery Details</h2>
 
-          {/* Mobile */}
-          <div className="border border-border bg-card">
-            <input
-              type="tel"
-              placeholder="Mobile number"
-              value={formData.mobile}
-              onChange={(e) => handleInputChange('mobile', e.target.value)}
-              className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
-            />
-          </div>
+          <div className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange('fullName', e.target.value)}
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+              />
+            </div>
 
-          {/* Pincode */}
-          <div className="border border-border bg-card relative">
-            <input
-              type="text"
-              placeholder="Pincode"
-              value={formData.pincode}
-              onChange={(e) => handlePincodeChange(e.target.value)}
-              inputMode="numeric"
-              maxLength={6}
-              className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
-            />
-            {pincodeLoading && (
-              <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />
-            )}
-          </div>
+            {/* Mobile */}
+            <div>
+              <input
+                type="tel"
+                placeholder="Mobile number"
+                value={formData.mobile}
+                onChange={(e) => handleInputChange('mobile', e.target.value)}
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+              />
+            </div>
 
-          {/* City & State */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="border border-border bg-card">
+            {/* Pincode */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Pincode"
+                value={formData.pincode}
+                onChange={(e) => handlePincodeChange(e.target.value)}
+                inputMode="numeric"
+                maxLength={6}
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+              />
+              {pincodeLoading && (
+                <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-[hsl(220,10%,62%)]" />
+              )}
+            </div>
+
+            {/* City + State Row */}
+            <div className="grid grid-cols-2 gap-3">
               <input
                 type="text"
                 placeholder="City"
                 value={formData.city}
                 onChange={(e) => handleInputChange('city', e.target.value)}
-                className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+              />
+
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setStateOpen(!stateOpen)}
+                  className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-left flex items-center justify-between focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+                >
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs text-[hsl(220,10%,62%)] leading-tight">State</span>
+                    <span className={`text-sm truncate ${formData.state ? 'text-[hsl(0,0%,13%)]' : 'text-[hsl(220,10%,62%)]'}`}>
+                      {formData.state || 'Select'}
+                    </span>
+                  </div>
+                  <ChevronDown className="h-5 w-5 text-[hsl(220,10%,62%)] shrink-0 ml-1" />
+                </button>
+
+                {stateOpen && (
+                  <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border border-[hsl(220,13%,85%)] rounded-xl shadow-lg max-h-52 overflow-y-auto">
+                    {indianStates.map((state) => (
+                      <button
+                        key={state}
+                        type="button"
+                        onClick={() => {
+                          handleInputChange('state', state);
+                          setStateOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-[hsl(220,20%,96%)] transition-colors ${
+                          formData.state === state ? 'bg-[hsl(217,89%,95%)] text-[hsl(217,89%,55%)] font-medium' : 'text-[hsl(0,0%,13%)]'
+                        }`}
+                      >
+                        {state}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* House No */}
+            <div>
+              <input
+                type="text"
+                placeholder="House No., Building Name"
+                value={formData.houseNo}
+                onChange={(e) => handleInputChange('houseNo', e.target.value)}
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
               />
             </div>
-            <Select
-              value={formData.state}
-              onValueChange={(value) => handleInputChange('state', value)}
-            >
-              <SelectTrigger className="h-auto py-4 px-4 border-border bg-card text-sm rounded-none">
-                <SelectValue placeholder="State" />
-              </SelectTrigger>
-              <SelectContent>
-                {indianStates.map((state) => (
-                  <SelectItem key={state} value={state}>
-                    {state}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
 
-          {/* House No */}
-          <div className="border border-border bg-card">
-            <input
-              type="text"
-              placeholder="House No., Building Name"
-              value={formData.houseNo}
-              onChange={(e) => handleInputChange('houseNo', e.target.value)}
-              className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
-            />
-          </div>
-
-          {/* Road Area */}
-          <div className="border border-border bg-card">
-            <input
-              type="text"
-              placeholder="Road name, Area, Colony"
-              value={formData.roadArea}
-              onChange={(e) => handleInputChange('roadArea', e.target.value)}
-              className="w-full bg-transparent px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
-            />
+            {/* Road Area */}
+            <div>
+              <input
+                type="text"
+                placeholder="Road name, Area, Colony"
+                value={formData.roadArea}
+                onChange={(e) => handleInputChange('roadArea', e.target.value)}
+                className="w-full h-14 px-4 rounded-xl border border-[hsl(220,13%,85%)] bg-white text-base text-[hsl(0,0%,13%)] placeholder:text-[hsl(220,10%,62%)] focus:outline-none focus:border-[hsl(217,89%,55%)] transition-colors"
+              />
+            </div>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Sticky Save Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
-        <div className="container">
-          <Button
-            variant="gradient"
-            size="xl"
-            className="w-full"
-            disabled={!isFormValid}
-            onClick={handleSaveAddress}
-          >
-            Save Address
-          </Button>
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[hsl(220,13%,90%)] p-4 safe-bottom">
+        <button
+          onClick={handleSaveAddress}
+          className="w-full h-14 rounded-2xl bg-[hsl(40,100%,55%)] hover:bg-[hsl(40,100%,50%)] text-[hsl(0,0%,10%)] font-bold text-base transition-colors active:scale-[0.98]"
+        >
+          Save Address
+        </button>
       </div>
     </div>
   );
