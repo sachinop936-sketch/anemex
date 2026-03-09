@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
-
-import { products as staticProducts } from '@/data/products';
-import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
+import { useProducts } from '@/hooks/useProducts';
+import { Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -11,17 +10,16 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000;
 
 const ShopHome = () => {
-  // Always use static products as the source of truth
-  const sourceProducts = staticProducts;
+  const { products: dbProducts, loading } = useProducts();
 
   const shuffledProducts = useMemo(() => {
-    const arr = [...sourceProducts];
+    const arr = [...dbProducts];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
-  }, [sourceProducts]);
+  }, [dbProducts]);
 
   const [timeLeft, setTimeLeft] = useState(0);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
