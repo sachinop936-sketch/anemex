@@ -136,11 +136,21 @@ const ShopHome = () => {
 
         {/* Products Grid */}
         <section className="bg-background">
-          <div className="grid grid-cols-2">
-            {shuffledProducts.map((product, index) => (
-              <ShopProductCard key={product.id} product={normalizeProduct(product)} index={index} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <p className="text-muted-foreground">Loading products...</p>
+            </div>
+          ) : shuffledProducts.length === 0 ? (
+            <div className="flex items-center justify-center py-20">
+              <p className="text-muted-foreground">No products available.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2">
+              {shuffledProducts.map((product, index) => (
+                <ShopProductCard key={product.id} product={normalizeProduct(product)} index={index} />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
