@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import ShopHeader from '@/components/shop/ShopHeader';
 import ShopProductCard from '@/components/shop/ShopProductCard';
-
-import { products as staticProducts } from '@/data/products';
-import { ChevronRight, Sparkles, Gift, Percent, Tag } from 'lucide-react';
+import { useProducts } from '@/hooks/useProducts';
+import { Sparkles, Gift, Percent, Tag } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.webp';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -11,17 +10,16 @@ const TIMER_KEY = 'flipkart_sale_timer_end';
 const TIMER_DURATION = 7 * 60 * 1000;
 
 const ShopHome = () => {
-  // Always use static products as the source of truth
-  const sourceProducts = staticProducts;
+  const { products: dbProducts, loading } = useProducts();
 
   const shuffledProducts = useMemo(() => {
-    const arr = [...sourceProducts];
+    const arr = [...dbProducts];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
-  }, [sourceProducts]);
+  }, [dbProducts]);
 
   const [timeLeft, setTimeLeft] = useState(0);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
@@ -64,25 +62,25 @@ const ShopHome = () => {
     return `${mins.toString().padStart(2, '0')}min ${secs.toString().padStart(2, '0')}sec`;
   };
 
-  // Normalize product for card component
+  // Normalize DB product for card component
   const normalizeProduct = (p: any) => ({
     id: p.id,
     name: p.name,
     description: p.description,
-    shortDescription: p.shortDescription || p.short_description || '',
-    originalPrice: p.originalPrice || p.original_price || 0,
-    discountPrice: p.discountPrice || p.price || 0,
-    discountPercent: p.discountPercent || p.discount_percent || 0,
+    shortDescription: p.short_description || '',
+    originalPrice: p.original_price || 0,
+    discountPrice: p.price || 0,
+    discountPercent: p.discount_percent || 0,
     image: p.image,
     images: p.images,
     category: p.category,
     tag: p.tag,
-    stockTag: p.stockTag || p.stock_tag,
+    stockTag: p.stock_tag,
     rating: p.rating,
-    reviewCount: p.reviewCount || p.review_count || 0,
+    reviewCount: p.review_count || 0,
     features: p.features || [],
     seller: p.seller || '',
-    freeDelivery: p.freeDelivery ?? p.free_delivery ?? true,
+    freeDelivery: p.free_delivery ?? true,
   });
 
   return (
@@ -138,11 +136,21 @@ const ShopHome = () => {
 
         {/* Products Grid */}
         <section className="bg-background">
-          <div className="grid grid-cols-2">
-            {shuffledProducts.map((product, index) => (
-              <ShopProductCard key={product.id} product={normalizeProduct(product)} index={index} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <p className="text-muted-foreground">Loading products...</p>
+            </div>
+          ) : shuffledProducts.length === 0 ? (
+            <div className="flex items-center justify-center py-20">
+              <p className="text-muted-foreground">No products available.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2">
+              {shuffledProducts.map((product, index) => (
+                <ShopProductCard key={product.id} product={normalizeProduct(product)} index={index} />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
