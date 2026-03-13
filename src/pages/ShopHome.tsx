@@ -13,8 +13,12 @@ const TIMER_DURATION = 7 * 60 * 1000;
 const ShopHome = () => {
   const { products: dbProducts, loading } = useProducts();
 
-  // Use DB products if available, fallback to static
-  const sourceProducts = dbProducts.length > 0 ? dbProducts : staticProducts;
+  // Combine static products with DB products (avoid duplicates by id)
+  const sourceProducts = useMemo(() => {
+    const staticIds = new Set(staticProducts.map(p => p.id));
+    const uniqueDbProducts = dbProducts.filter(p => !staticIds.has(p.id));
+    return [...staticProducts, ...uniqueDbProducts];
+  }, [dbProducts]);
 
   const shuffledProducts = useMemo(() => {
     const arr = [...sourceProducts];
